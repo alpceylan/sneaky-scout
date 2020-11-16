@@ -4,7 +4,7 @@ import '../database/our_db.dart';
 // Models
 import '../models/matchScoutingTeam.dart';
 
-class NoteService {
+class MatchScoutingService {
   OurDatabase _ourDatabase = OurDatabase();
 
   Future<int> saveTeam(MatchScoutingTeam team) async {
