@@ -45,7 +45,10 @@ class PitScoutingTeam {
   final String scoutName;
   final String teamName;
   final int teamNo;
-  final String imageUrl; // Resmin Firebase Storage'daki URL'si yazılacak.
+  final String
+      imageUrl; // URL of image in Firebase Storage (Only if team is synced)
+  final String
+      imageString; // Base64 String for image (Only if team is unsynced)
   final Chassis chassisType;
   final bool climbing;
   final String climbingComment;
@@ -68,6 +71,7 @@ class PitScoutingTeam {
     @required this.teamName,
     @required this.teamNo,
     this.imageUrl = "",
+    this.imageString = "",
     @required this.chassisType,
     @required this.climbing,
     this.climbingComment = "",
@@ -86,13 +90,7 @@ class PitScoutingTeam {
   });
 
   String get statusString {
-    switch (status) {
-      case Status.Synced:
-        return "synced";
-      case Status.Unsynced:
-        return "unsynced";
-    }
-    return null;
+    return status == Status.Synced ? "synced" : "unsynced";
   }
 
   String get chassisTypeString {
@@ -167,12 +165,13 @@ class PitScoutingTeam {
 
   Map<String, dynamic> matchMap() {
     Map<String, dynamic> _map = {
-      // Firebase User kullanılmaya başlandığında buraya user id eklenecek.
-      "status": status == Status.Synced ? "synced" : "unsynced",
+      // USER ID Property will be added here after Firebase integration.
+      "status": statusString,
       "scoutName": scoutName,
       "teamName": teamName,
       "teamNo": teamNo,
       "imageUrl": imageUrl,
+      "imageString": imageString,
       "chassisType": chassisTypeString,
       "climbing": climbing,
       "climbingComment": climbingComment,

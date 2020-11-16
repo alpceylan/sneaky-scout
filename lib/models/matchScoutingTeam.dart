@@ -65,13 +65,7 @@ class MatchScoutingTeam {
   });
 
   String get statusString {
-    switch (status) {
-      case Status.Synced:
-        return "synced";
-      case Status.Unsynced:
-        return "unsynced";
-    }
-    return null;
+    return status == Status.Synced ? "synced" : "unsynced";
   }
 
   String get matchTypeString {
@@ -113,7 +107,7 @@ class MatchScoutingTeam {
   Map<String, dynamic> matchMap() {
     Map<String, dynamic> _map = {
       // Firebase User kullanılmaya başlandığında buraya user id eklenecek.
-      "status": status == Status.Synced ? "synced" : "unsynced",
+      "status": statusString,
       "scoutName": scoutName,
       "teamName": teamName,
       "teamNo": teamNo,
