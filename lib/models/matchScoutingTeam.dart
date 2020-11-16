@@ -104,7 +104,7 @@ class MatchScoutingTeam {
     return null;
   }
 
-  Map<String, dynamic> matchMap() {
+  Map<String, dynamic> teamMap() {
     Map<String, dynamic> _map = {
       // Firebase User kullanılmaya başlandığında buraya user id eklenecek.
       "status": statusString,

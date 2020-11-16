@@ -19,9 +19,9 @@ class OurDatabase {
     return await db.insert(table, data);
   }
 
-  Future<List<Map<String, dynamic>>> getAll(String table, userId) async {
+  Future<List<Map<String, dynamic>>> getAll(String table) async {
     Database db = await database;
-    return await db.query(table, where: 'userId=?', whereArgs: [userId]);
+    return await db.query(table);
   }
 
   Future<List<Map<String, dynamic>>> getById(String table, itemId) async {

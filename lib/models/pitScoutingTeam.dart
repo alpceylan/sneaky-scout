@@ -163,7 +163,7 @@ class PitScoutingTeam {
     return null;
   }
 
-  Map<String, dynamic> matchMap() {
+  Map<String, dynamic> teamMap() {
     Map<String, dynamic> _map = {
       // USER ID Property will be added here after Firebase integration.
       "status": statusString,
