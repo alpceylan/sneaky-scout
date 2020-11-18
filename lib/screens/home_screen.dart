@@ -1,115 +1,77 @@
 import 'package:flutter/material.dart';
 
-// Models
-import '../models/matchScoutingTeam.dart';
+// Screens
+import './match_scouting_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  static const routeName = '/home';
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int currentIndex = 0;
+
+  var teamMode = false;
+
   @override
   Widget build(BuildContext context) {
-    final deviceHeight = MediaQuery.of(context).size.height;
-    final deviceWidth = MediaQuery.of(context).size.width;
+    List<Widget> appBars = [
+      AppBar(
+        title: Text("Match Scouting"),
+        actions: [
+          if (!teamMode)
+            IconButton(
+              icon: Icon(Icons.sync),
+              onPressed: () {
+                print("sync button clicked.");
+              },
+            ),
+        ],
+      ),
+      AppBar(
+        title: Text("Pit"),
+      ),
+      AppBar(
+        title: Text("Team"),
+      ),
+      AppBar(
+        title: Text("Profile"),
+      ),
+    ];
 
-    final List<MatchScoutingTeam> mstList = [
-      MatchScoutingTeam(
-          scoutName: "my first scout",
-          teamName: "turkish frc team",
-          teamNo: 7285,
-          matchType: Match.Practice,
-          matchNo: 03,
-          color: "orange",
-          powerCellCount: 3,
-          powerCellLocation: PowerCellLocation.Inner,
-          autonomous: true,
-          autonomousStartingPoint: AutonomousStartingPoint.Middle,
-          defense: true,
-          defenseComment: "it was fantastic!",
-          foul: 3,
-          techFoul: 4,
-          imageProcessing: true,
-          finalScore: 11,
-          comment: "lets follow this team"),
-      MatchScoutingTeam(
-          status: Status.Synced,
-          scoutName: "my second scout",
-          teamName: "polish frc team",
-          teamNo: 7490,
-          matchType: Match.Qual,
-          matchNo: 10,
-          color: "red",
-          powerCellCount: 5,
-          powerCellLocation: PowerCellLocation.Inner,
-          autonomous: true,
-          autonomousStartingPoint: AutonomousStartingPoint.Middle,
-          defense: true,
-          defenseComment: "it was fantastic!",
-          foul: 3,
-          techFoul: 4,
-          imageProcessing: true,
-          finalScore: 11,
-          comment: "lets follow this team"),
-      MatchScoutingTeam(
-          scoutName: "my third scout",
-          teamName: "lebanese frc team",
-          teamNo: 7490,
-          matchType: Match.Qual,
-          matchNo: 15,
-          color: "blue",
-          powerCellCount: 2,
-          powerCellLocation: PowerCellLocation.Inner,
-          autonomous: true,
-          autonomousStartingPoint: AutonomousStartingPoint.Middle,
-          defense: true,
-          defenseComment: "it was great!",
-          foul: 3,
-          techFoul: 4,
-          imageProcessing: true,
-          finalScore: 15,
-          comment: "lets follow this team"),
-    ]; // fake data
-
-    Widget _createMatchScoutingListTile(MatchScoutingTeam team) {
-      return ListTile(
-        title: Text(team.scoutName),
-        subtitle: Text("${team.teamNo} - ${team.teamName}"),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              team.status == Status.Synced ? "Synced" : "Unsynced",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            SizedBox(
-              width: deviceWidth * 0.03,
-            ),
-            CircleAvatar(
-              backgroundColor:
-                  team.status == Status.Synced ? Colors.green : Colors.red,
-              child: Icon(
-                team.status == Status.Synced ? Icons.done : Icons.close,
-                color: Colors.white,
-              ),
-            ),
-          ],
-        ),
-      );
-    }
+    List<Widget> screens = [
+      MatchScoutingScreen(),
+      Center(child: Text("Pit")),
+      Center(child: Text("Team")),
+      Center(child: Text("Profile")),
+    ];
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Match Scouting"),
-      ),
-      body: Container(
-        child: Column(
-          children: [
-            ListView.builder(
-              shrinkWrap: true,
-              itemBuilder: (ctx, i) {
-                return _createMatchScoutingListTile(mstList[i]);
-              },
-              itemCount: mstList.length,
-            ),
-          ],
-        ),
+      appBar: appBars[currentIndex],
+      body: screens[currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentIndex,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.radio_button_on),
+            label: "Match Scouting",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.browser_not_supported_outlined),
+            label: "Pit Scouting",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: "Profile",
+          ),
+        ],
+        onTap: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+        },
       ),
     );
   }
