@@ -16,6 +16,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
   bool autonomous;
   bool imageProcessing;
   int autonomousStartingPointInt;
+  bool defense;
 
   @override
   Widget build(BuildContext context) {
@@ -50,183 +51,284 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
       }
     }
 
+    if (defense == null) defense = team.defense;
+
     return Scaffold(
       appBar: AppBar(
         title: Text("${team.teamName}"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: () {},
+          ),
+        ],
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: deviceWidth * 0.05,
-          vertical: deviceHeight * 0.02,
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  width: deviceWidth * 0.55,
-                  child: TextFormField(
-                    decoration: InputDecoration(labelText: "Scout Name"),
-                    initialValue: team.scoutName,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: deviceWidth * 0.4,
-                  child: TextFormField(
-                    decoration: InputDecoration(labelText: "Team Name"),
-                    initialValue: team.teamName,
-                  ),
-                ),
-                Container(
-                  width: deviceWidth * 0.4,
-                  child: TextFormField(
-                    decoration: InputDecoration(labelText: "Team Number"),
-                    initialValue: "${team.teamNo}",
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Container(
-                  width: deviceWidth * 0.3,
-                  height: deviceHeight * 0.065,
-                  child: DropdownButton(
-                    isExpanded: true,
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: Colors.black,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: deviceWidth * 0.05,
+            vertical: deviceHeight * 0.02,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: deviceWidth * 0.4,
+                    child: TextFormField(
+                      decoration: InputDecoration(labelText: "Scout Name"),
+                      initialValue: team.scoutName,
                     ),
-                    value: matchInt,
-                    items: [
-                      DropdownMenuItem(
-                        child: Text("Practice"),
-                        value: 1,
+                  ),
+                  Container(
+                    width: deviceWidth * 0.4,
+                    child: TextFormField(
+                      decoration: InputDecoration(labelText: "Final Score"),
+                      initialValue: "${team.finalScore}",
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: deviceWidth * 0.4,
+                    child: TextFormField(
+                      decoration: InputDecoration(labelText: "Team Name"),
+                      initialValue: team.teamName,
+                    ),
+                  ),
+                  Container(
+                    width: deviceWidth * 0.4,
+                    child: TextFormField(
+                      decoration: InputDecoration(labelText: "Team Number"),
+                      initialValue: "${team.teamNo}",
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    width: deviceWidth * 0.3,
+                    height: deviceHeight * 0.065,
+                    child: DropdownButton(
+                      isExpanded: true,
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: Colors.black,
                       ),
-                      DropdownMenuItem(
-                        child: Text("Playoff"),
-                        value: 2,
-                      ),
-                      DropdownMenuItem(
-                        child: Text("Qual"),
-                        value: 3,
+                      value: matchInt,
+                      items: [
+                        DropdownMenuItem(
+                          child: Text("Practice"),
+                          value: 1,
+                        ),
+                        DropdownMenuItem(
+                          child: Text("Playoff"),
+                          value: 2,
+                        ),
+                        DropdownMenuItem(
+                          child: Text("Qual"),
+                          value: 3,
+                        ),
+                      ],
+                      onChanged: (value) {
+                        matchInt = value;
+                      },
+                    ),
+                  ),
+                  Container(
+                    width: deviceWidth * 0.4,
+                    child: TextFormField(
+                      decoration: InputDecoration(labelText: "Match Number"),
+                      initialValue: "${team.matchNo}",
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: deviceWidth * 0.4,
+                    child: TextFormField(
+                      decoration: InputDecoration(labelText: "Robot Color"),
+                      initialValue: "${team.color}",
+                    ),
+                  ),
+                  Container(
+                    width: deviceWidth * 0.4,
+                    child: TextFormField(
+                      decoration: InputDecoration(labelText: "Powercell Count"),
+                      initialValue: "${team.powerCellCount}",
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text("Autonomous:"),
+                      Switch(
+                        value: autonomous,
+                        activeTrackColor: Colors.lightBlueAccent,
+                        activeColor: Colors.blue,
+                        onChanged: (value) {
+                          setState(() {
+                            autonomous = value;
+                          });
+                        },
                       ),
                     ],
-                    onChanged: (value) {
-                      matchInt = value;
-                    },
                   ),
-                ),
-                Container(
-                  width: deviceWidth * 0.4,
-                  child: TextFormField(
-                    decoration: InputDecoration(labelText: "Match Number"),
-                    initialValue: "${team.matchNo}",
+                  Row(
+                    children: [
+                      Text("Image Processing:"),
+                      Switch(
+                        value: imageProcessing,
+                        activeTrackColor: Colors.lightBlueAccent,
+                        activeColor: Colors.blue,
+                        onChanged: (value) {
+                          setState(() {
+                            imageProcessing = value;
+                          });
+                        },
+                      ),
+                    ],
                   ),
+                ],
+              ),
+              AnimatedContainer(
+                height: autonomous ? deviceHeight * 0.05 : 0,
+                duration: Duration(
+                  milliseconds: 300,
                 ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: deviceWidth * 0.4,
-                  child: TextFormField(
-                    decoration: InputDecoration(labelText: "Robot Color"),
-                    initialValue: "${team.color}",
-                  ),
-                ),
-                Container(
-                  width: deviceWidth * 0.4,
-                  child: TextFormField(
-                    decoration: InputDecoration(labelText: "Powercell Count"),
-                    initialValue: "${team.powerCellCount}",
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("Autonomous:"),
-                    Switch(
-                      value: autonomous,
-                      activeTrackColor: Colors.lightBlueAccent,
-                      activeColor: Colors.blue,
-                      onChanged: (value) {
-                        setState(() {
-                          autonomous = value;
-                        });
-                      },
+                    Text("Autonomous Starting Point:"),
+                    Container(
+                      width: deviceWidth * 0.3,
+                      height: deviceHeight * 0.065,
+                      child: DropdownButton(
+                        isExpanded: true,
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.black,
+                        ),
+                        value: autonomousStartingPointInt,
+                        items: [
+                          DropdownMenuItem(
+                            child: Text("Left"),
+                            value: 1,
+                          ),
+                          DropdownMenuItem(
+                            child: Text("Middle"),
+                            value: 2,
+                          ),
+                          DropdownMenuItem(
+                            child: Text("Right"),
+                            value: 3,
+                          ),
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            autonomousStartingPointInt = value;
+                          });
+                        },
+                      ),
                     ),
                   ],
                 ),
-                Row(
-                  children: [
-                    Text("Image Processing:"),
-                    Switch(
-                      value: imageProcessing,
-                      activeTrackColor: Colors.lightBlueAccent,
-                      activeColor: Colors.blue,
-                      onChanged: (value) {
-                        setState(() {
-                          imageProcessing = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Autonomous Starting Point:"),
-                Container(
-                  width: deviceWidth * 0.3,
-                  height: deviceHeight * 0.065,
-                  child: DropdownButton(
-                    isExpanded: true,
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: Colors.black,
-                    ),
-                    value: autonomousStartingPointInt,
-                    items: [
-                      DropdownMenuItem(
-                        child: Text("Left"),
-                        value: 1,
-                      ),
-                      DropdownMenuItem(
-                        child: Text("Middle"),
-                        value: 2,
-                      ),
-                      DropdownMenuItem(
-                        child: Text("Right"),
-                        value: 3,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text("Defense: "),
+                      Switch(
+                        value: defense,
+                        activeTrackColor: Colors.lightBlueAccent,
+                        activeColor: Colors.blue,
+                        onChanged: (value) {
+                          setState(() {
+                            defense = value;
+                          });
+                        },
                       ),
                     ],
-                    onChanged: (value) {
-                      setState(() {
-                        autonomousStartingPointInt = value;
-                      });
-                    },
+                  ),
+                  Container(
+                    width: deviceWidth * 0.4,
+                    child: TextFormField(
+                      decoration: InputDecoration(labelText: "Final Score"),
+                      initialValue: "${team.finalScore}",
+                    ),
+                  ),
+                ],
+              ),
+              AnimatedContainer(
+                height: defense ? deviceHeight * 0.1 : 0,
+                duration: Duration(
+                  milliseconds: 300,
+                ),
+                child: TextFormField(
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 2,
+                  initialValue: team.defenseComment,
+                  decoration: InputDecoration(
+                    labelText: "Defense comment",
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.grey,
+                      ),
+                    ),
                   ),
                 ),
-              ],
-            ),
-          ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: deviceWidth * 0.4,
+                    child: TextFormField(
+                      decoration: InputDecoration(labelText: "Foul"),
+                      initialValue: "${team.foul}",
+                    ),
+                  ),
+                  Container(
+                    width: deviceWidth * 0.4,
+                    child: TextFormField(
+                      decoration: InputDecoration(labelText: "Tech Foul"),
+                      initialValue: "${team.techFoul}",
+                    ),
+                  ),
+                ],
+              ),
+              TextFormField(
+                keyboardType: TextInputType.multiline,
+                maxLines: 3,
+                initialValue: team.defenseComment,
+                decoration: InputDecoration(
+                  labelText: "Comment",
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
