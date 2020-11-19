@@ -21,13 +21,14 @@ class _HomeScreenState extends State<HomeScreen> {
       AppBar(
         title: Text("Match Scouting"),
         actions: [
-          if (!teamMode)
-            IconButton(
-              icon: Icon(Icons.sync),
-              onPressed: () {
-                print("sync button clicked.");
-              },
-            ),
+          !teamMode
+              ? IconButton(
+                  icon: Icon(Icons.sync),
+                  onPressed: () {
+                    print("sync button clicked.");
+                  },
+                )
+              : null
         ],
       ),
       AppBar(

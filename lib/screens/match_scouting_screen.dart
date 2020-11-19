@@ -7,8 +7,6 @@ import './match_scouting_detail_screen.dart';
 import '../models/matchScoutingTeam.dart';
 
 class MatchScoutingScreen extends StatelessWidget {
-  static const routeName = '/match-scouting';
-
   var teamMode = false;
 
   @override
@@ -46,7 +44,7 @@ class MatchScoutingScreen extends StatelessWidget {
           powerCellCount: 5,
           powerCellLocation: PowerCellLocation.Inner,
           autonomous: true,
-          autonomousStartingPoint: AutonomousStartingPoint.Middle,
+          autonomousStartingPoint: AutonomousStartingPoint.Left,
           defense: true,
           defenseComment: "it was fantastic!",
           foul: 3,
