@@ -72,14 +72,35 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
     }
 
     if (_defense == null) _defense = team.defense;
+    if (_newMatchInt == null) _newMatchInt = _matchInt;
+    if (_newAutonomous == null) _newAutonomous = _autonomous;
+    if (_newImageProcessing == null) _newImageProcessing = _imageProcessing;
+    if (_newAutonomousStartingPointInt == null)
+      _newAutonomousStartingPointInt = _autonomousStartingPointInt;
+    if (_newDefense == null) _newDefense = _defense;
 
-    _newMatchInt = _matchInt;
-    _newAutonomous = _autonomous;
-    _newImageProcessing = _imageProcessing;
-    _newAutonomousStartingPointInt = _autonomousStartingPointInt;
-    _newDefense = _defense;
+    Widget _createTextInput({
+      String labelText,
+      String initialValue,
+      Function(String value) validator,
+      Function(String newValue) onSaved,
+      TextInputType keyboardType,
+    }) {
+      return Container(
+        width: deviceWidth * 0.4,
+        child: TextFormField(
+          decoration: InputDecoration(
+            labelText: labelText,
+          ),
+          initialValue: initialValue,
+          keyboardType: keyboardType,
+          validator: validator,
+          onSaved: onSaved,
+        ),
+      );
+    }
 
-    _validate() {
+    void _validate() {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
         if (_scoutName == team.scoutName &&
@@ -168,43 +189,35 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      width: deviceWidth * 0.4,
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          labelText: "Team name",
-                        ),
-                        initialValue: team.teamName,
-                        keyboardType: TextInputType.name,
-                        validator: (value) {
-                          if (value.length == 0) {
-                            return "Team name shouldn't be empty.";
-                          }
-                          return null;
-                        },
-                        onSaved: (newValue) {
-                          _teamName = newValue;
-                        },
-                      ),
+                    _createTextInput(
+                      labelText: "Team name",
+                      initialValue: team.teamName,
+                      keyboardType: TextInputType.name,
+                      validator: (value) {
+                        if (value.length == 0) {
+                          return "Team name shouldn't be empty.";
+                        }
+                        return null;
+                      },
+                      onSaved: (newValue) {
+                        _teamName = newValue;
+                      },
                     ),
-                    Container(
-                      width: deviceWidth * 0.4,
-                      child: TextFormField(
-                        decoration: InputDecoration(labelText: "Team number"),
-                        initialValue: "${team.teamNo}",
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value.length == 0) {
-                            return "Team number shouldn't be empty.";
-                          } else if (int.parse(value) is int == false) {
-                            return "Team number should be integer.";
-                          }
-                          return null;
-                        },
-                        onSaved: (newValue) {
-                          _teamNumber = int.parse(newValue);
-                        },
-                      ),
+                    _createTextInput(
+                      labelText: "Team number",
+                      initialValue: "${team.teamNo}",
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value.length == 0) {
+                          return "Team number shouldn't be empty.";
+                        } else if (int.parse(value) is int == false) {
+                          return "Team number should be integer.";
+                        }
+                        return null;
+                      },
+                      onSaved: (newValue) {
+                        _teamNumber = int.parse(newValue);
+                      },
                     ),
                   ],
                 ),
@@ -241,63 +254,52 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                         },
                       ),
                     ),
-                    Container(
-                      width: deviceWidth * 0.4,
-                      child: TextFormField(
-                        decoration: InputDecoration(labelText: "Match Number"),
-                        initialValue: "${team.matchNo}",
-                        validator: (value) {
-                          if (value.length == 0) {
-                            return "Match number shouldn't be empty.";
-                          }
-                          return null;
-                        },
-                        onSaved: (newValue) {
-                          _matchNumber = newValue;
-                        },
-                      ),
+                    _createTextInput(
+                      labelText: "Match number",
+                      initialValue: "${team.matchNo}",
+                      validator: (value) {
+                        if (value.length == 0) {
+                          return "Match number shouldn't be empty.";
+                        }
+                        return null;
+                      },
+                      onSaved: (newValue) {
+                        _matchNumber = newValue;
+                      },
                     ),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      width: deviceWidth * 0.4,
-                      child: TextFormField(
-                        decoration: InputDecoration(labelText: "Robot color"),
-                        initialValue: "${team.color}",
-                        keyboardType: TextInputType.name,
-                        validator: (value) {
-                          if (value.length == 0) {
-                            return "Robot color shouldn't be empty.";
-                          }
-                          return null;
-                        },
-                        onSaved: (newValue) {
-                          _robotColor = newValue;
-                        },
-                      ),
+                    _createTextInput(
+                      labelText: "Robot color",
+                      initialValue: team.color,
+                      validator: (value) {
+                        if (value.length == 0) {
+                          return "Robot color shouldn't be empty.";
+                        }
+                        return null;
+                      },
+                      onSaved: (newValue) {
+                        _robotColor = newValue;
+                      },
                     ),
-                    Container(
-                      width: deviceWidth * 0.4,
-                      child: TextFormField(
-                        decoration:
-                            InputDecoration(labelText: "Powercell count"),
-                        initialValue: "${team.powerCellCount}",
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value.length == 0) {
-                            return "Powercell count shouldn't be empty.";
-                          } else if (int.parse(value) is int == false) {
-                            return "Powercell count should be integer.";
-                          }
-                          return null;
-                        },
-                        onSaved: (newValue) {
-                          _powercellCount = int.parse(newValue);
-                        },
-                      ),
+                    _createTextInput(
+                      labelText: "Powercell count",
+                      initialValue: "${team.powerCellCount}",
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value.length == 0) {
+                          return "Powercell count shouldn't be empty.";
+                        } else if (int.parse(value) is int == false) {
+                          return "Powercell count should be integer.";
+                        }
+                        return null;
+                      },
+                      onSaved: (newValue) {
+                        _powercellCount = int.parse(newValue);
+                      },
                     ),
                   ],
                 ),
@@ -397,23 +399,21 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                         ),
                       ],
                     ),
-                    Container(
-                      width: deviceWidth * 0.4,
-                      child: TextFormField(
-                        decoration: InputDecoration(labelText: "Final Score"),
-                        initialValue: "${team.finalScore}",
-                        validator: (value) {
-                          if (value.length == 0) {
-                            return "Final score shouldn't be empty.";
-                          } else if (int.parse(value) is int == false) {
-                            return "Final score should be integer.";
-                          }
-                          return null;
-                        },
-                        onSaved: (newValue) {
-                          _finalScore = int.parse(newValue);
-                        },
-                      ),
+                    _createTextInput(
+                      labelText: "Final Score",
+                      initialValue: "${team.finalScore}",
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value.length == 0) {
+                          return "Final score shouldn't be empty.";
+                        } else if (int.parse(value) is int == false) {
+                          return "Final score should be integer.";
+                        }
+                        return null;
+                      },
+                      onSaved: (newValue) {
+                        _finalScore = int.parse(newValue);
+                      },
                     ),
                   ],
                 ),
@@ -451,43 +451,37 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      width: deviceWidth * 0.4,
-                      child: TextFormField(
-                        decoration: InputDecoration(labelText: "Foul"),
-                        initialValue: "${team.foul}",
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value.length == 0) {
-                            return "Foul shouldn't be empty.";
-                          } else if (int.parse(value) is int == false) {
-                            return "Foul should be integer.";
-                          }
-                          return null;
-                        },
-                        onSaved: (newValue) {
-                          _foul = int.parse(newValue);
-                        },
-                      ),
+                    _createTextInput(
+                      labelText: "Foul",
+                      initialValue: "${team.foul}",
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value.length == 0) {
+                          return "Foul shouldn't be empty.";
+                        } else if (int.parse(value) is int == false) {
+                          return "Foul should be integer.";
+                        }
+                        return null;
+                      },
+                      onSaved: (newValue) {
+                        _foul = int.parse(newValue);
+                      },
                     ),
-                    Container(
-                      width: deviceWidth * 0.4,
-                      child: TextFormField(
-                        decoration: InputDecoration(labelText: "Tech Foul"),
-                        initialValue: "${team.techFoul}",
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value.length == 0) {
-                            return "Tech foul shouldn't be empty.";
-                          } else if (int.parse(value) is int == false) {
-                            return "Tech foul should be integer.";
-                          }
-                          return null;
-                        },
-                        onSaved: (newValue) {
-                          _techFoul = int.parse(newValue);
-                        },
-                      ),
+                    _createTextInput(
+                      labelText: "Tech Foul",
+                      initialValue: "${team.techFoul}",
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value.length == 0) {
+                          return "Tech foul shouldn't be empty.";
+                        } else if (int.parse(value) is int == false) {
+                          return "Tech foul should be integer.";
+                        }
+                        return null;
+                      },
+                      onSaved: (newValue) {
+                        _techFoul = int.parse(newValue);
+                      },
                     ),
                   ],
                 ),
