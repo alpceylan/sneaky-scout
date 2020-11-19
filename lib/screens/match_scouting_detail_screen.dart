@@ -72,6 +72,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
     }
 
     if (_defense == null) _defense = team.defense;
+    
     if (_newMatchInt == null) _newMatchInt = _matchInt;
     if (_newAutonomous == null) _newAutonomous = _autonomous;
     if (_newImageProcessing == null) _newImageProcessing = _imageProcessing;
