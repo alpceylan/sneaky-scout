@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 // Models
 import '../models/matchScoutingTeam.dart';
 
+// Widgets
+import '../widgets/custom_text_input.dart';
+
 class MatchScoutingDetailScreen extends StatefulWidget {
   static const routeName = '/match-scouting-detail';
 
@@ -72,34 +75,13 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
     }
 
     if (_defense == null) _defense = team.defense;
-    
+
     if (_newMatchInt == null) _newMatchInt = _matchInt;
     if (_newAutonomous == null) _newAutonomous = _autonomous;
     if (_newImageProcessing == null) _newImageProcessing = _imageProcessing;
     if (_newAutonomousStartingPointInt == null)
       _newAutonomousStartingPointInt = _autonomousStartingPointInt;
     if (_newDefense == null) _newDefense = _defense;
-
-    Widget _createTextInput({
-      String labelText,
-      String initialValue,
-      Function(String value) validator,
-      Function(String newValue) onSaved,
-      TextInputType keyboardType,
-    }) {
-      return Container(
-        width: deviceWidth * 0.4,
-        child: TextFormField(
-          decoration: InputDecoration(
-            labelText: labelText,
-          ),
-          initialValue: initialValue,
-          keyboardType: keyboardType,
-          validator: validator,
-          onSaved: onSaved,
-        ),
-      );
-    }
 
     void _validate() {
       if (_formKey.currentState.validate()) {
@@ -190,7 +172,8 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _createTextInput(
+                    CustomTextInput(
+                      deviceWidth: deviceWidth,
                       labelText: "Team name",
                       initialValue: team.teamName,
                       keyboardType: TextInputType.name,
@@ -204,7 +187,8 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                         _teamName = newValue;
                       },
                     ),
-                    _createTextInput(
+                    CustomTextInput(
+                      deviceWidth: deviceWidth,
                       labelText: "Team number",
                       initialValue: "${team.teamNo}",
                       keyboardType: TextInputType.number,
@@ -255,7 +239,8 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                         },
                       ),
                     ),
-                    _createTextInput(
+                    CustomTextInput(
+                      deviceWidth: deviceWidth,
                       labelText: "Match number",
                       initialValue: "${team.matchNo}",
                       validator: (value) {
@@ -273,7 +258,8 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _createTextInput(
+                    CustomTextInput(
+                      deviceWidth: deviceWidth,
                       labelText: "Robot color",
                       initialValue: team.color,
                       validator: (value) {
@@ -286,7 +272,8 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                         _robotColor = newValue;
                       },
                     ),
-                    _createTextInput(
+                    CustomTextInput(
+                      deviceWidth: deviceWidth,
                       labelText: "Powercell count",
                       initialValue: "${team.powerCellCount}",
                       keyboardType: TextInputType.number,
@@ -400,7 +387,8 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                         ),
                       ],
                     ),
-                    _createTextInput(
+                    CustomTextInput(
+                      deviceWidth: deviceWidth,
                       labelText: "Final Score",
                       initialValue: "${team.finalScore}",
                       keyboardType: TextInputType.number,
@@ -436,7 +424,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                       ),
                     ),
                     validator: (value) {
-                      if (_defense) {
+                      if (_newDefense) {
                         if (value.length == 0) {
                           return "Defense comment shouldn't be empty.";
                         }
@@ -452,7 +440,8 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _createTextInput(
+                    CustomTextInput(
+                      deviceWidth: deviceWidth,
                       labelText: "Foul",
                       initialValue: "${team.foul}",
                       keyboardType: TextInputType.number,
@@ -468,7 +457,8 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                         _foul = int.parse(newValue);
                       },
                     ),
-                    _createTextInput(
+                    CustomTextInput(
+                      deviceWidth: deviceWidth,
                       labelText: "Tech Foul",
                       initialValue: "${team.techFoul}",
                       keyboardType: TextInputType.number,

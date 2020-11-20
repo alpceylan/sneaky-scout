@@ -1,7 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
+
+// Screens
+import '../screens/pit_scouting_detail_screen.dart';
 
 // Models
 import '../models/pitScoutingTeam.dart';
@@ -62,31 +64,41 @@ class PitScoutingScreen extends StatelessWidget {
     ];
 
     Widget _createMatchScoutingListTile(PitScoutingTeam team) {
-      return ListTile(
-        leading: CircleAvatar(
-          backgroundImage: MemoryImage(base64Decode(team.imageString)),
-        ),
-        title: Text(team.scoutName),
-        subtitle: Text("${team.teamNo} - ${team.teamName}"),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              team.status == Status.Synced ? "Synced" : "Unsynced",
-              style: TextStyle(fontWeight: FontWeight.bold),
+      return GestureDetector(
+        onTap: () {
+          Navigator.of(context).pushNamed(
+            PitScoutingDetailScreen.routeName,
+            arguments: team,
+          );
+        },
+        child: ListTile(
+          leading: CircleAvatar(
+            backgroundImage: MemoryImage(
+              base64Decode(team.imageString),
             ),
-            SizedBox(
-              width: deviceWidth * 0.03,
-            ),
-            CircleAvatar(
-              backgroundColor:
-                  team.status == Status.Synced ? Colors.green : Colors.red,
-              child: Icon(
-                team.status == Status.Synced ? Icons.done : Icons.close,
-                color: Colors.white,
+          ),
+          title: Text(team.scoutName),
+          subtitle: Text("${team.teamNo} - ${team.teamName}"),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                team.status == Status.Synced ? "Synced" : "Unsynced",
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
-            ),
-          ],
+              SizedBox(
+                width: deviceWidth * 0.03,
+              ),
+              CircleAvatar(
+                backgroundColor:
+                    team.status == Status.Synced ? Colors.green : Colors.red,
+                child: Icon(
+                  team.status == Status.Synced ? Icons.done : Icons.close,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
