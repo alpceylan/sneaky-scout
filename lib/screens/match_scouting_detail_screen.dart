@@ -340,7 +340,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                   ],
                 ),
                 AnimatedContainer(
-                  height: _autonomous ? deviceHeight * 0.05 : 0,
+                  height: _newAutonomous ? deviceHeight * 0.05 : 0,
                   duration: Duration(
                     milliseconds: 300,
                   ),
@@ -419,7 +419,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                   ],
                 ),
                 AnimatedContainer(
-                  height: _defense ? deviceHeight * 0.1 : 0,
+                  height: _newDefense ? deviceHeight * 0.1 : 0,
                   duration: Duration(
                     milliseconds: 300,
                   ),
