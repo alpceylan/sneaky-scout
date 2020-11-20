@@ -29,7 +29,7 @@ class MatchScoutingTeam {
   final String teamName;
   final int teamNo;
   final Match matchType;
-  final dynamic matchNo;
+  final String matchNo;
   final String color;
   final int powerCellCount;
   final PowerCellLocation powerCellLocation;
@@ -112,7 +112,7 @@ class MatchScoutingTeam {
       "teamName": teamName,
       "teamNo": teamNo,
       "matchType": matchTypeString,
-      "matchNo": "$matchNo",
+      "matchNo": matchNo,
       "color": color,
       "powerCellCount": powerCellCount,
       "powerCellLocation": powerCellLocationString,
