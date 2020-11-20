@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import '../models/pitScoutingTeam.dart';
 
 class PitScoutingScreen extends StatelessWidget {
+  var teamMode = false;
+
   @override
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;

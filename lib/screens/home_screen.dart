@@ -14,15 +14,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
 
-  var teamMode = false;
-
   @override
   Widget build(BuildContext context) {
     List<Widget> appBars = [
       AppBar(
         title: Text("Match Scouting"),
         actions: [
-          !teamMode
+          !MatchScoutingScreen().teamMode
               ? IconButton(
                   icon: Icon(Icons.sync),
                   onPressed: () {
@@ -35,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
       AppBar(
         title: Text("Pit"),
         actions: [
-          !teamMode
+          !PitScoutingScreen().teamMode
               ? IconButton(
                   icon: Icon(Icons.sync),
                   onPressed: () {
