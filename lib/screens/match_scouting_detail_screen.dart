@@ -83,7 +83,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
       _newAutonomousStartingPointInt = _autonomousStartingPointInt;
     if (_newDefense == null) _newDefense = _defense;
 
-    void _validate() {
+    _validate() {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
         if (_scoutName == team.scoutName &&

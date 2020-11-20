@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 // Models
 import '../models/pitScoutingTeam.dart';
@@ -18,6 +20,7 @@ class PitScoutingDetailScreen extends StatefulWidget {
 
 class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final ImagePicker picker = ImagePicker();
 
   bool _climbing;
   bool _imageProcessing;
@@ -29,6 +32,7 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
   int _funnelTypeInt;
   bool _autonomous;
   int _chassisTypeInt;
+  String _imageString;
 
   bool _newClimbing;
   bool _newImageProcessing;
@@ -40,6 +44,7 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
   int _newFunnelTypeInt;
   bool _newAutonomous;
   int _newChassisTypeInt;
+  String _newImageString;
 
   String _scoutName;
   String _teamName;
@@ -120,6 +125,8 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
       }
     }
 
+    if (_imageString == null) _imageString = team.imageString;
+
     if (_newClimbing == null) _newClimbing = _climbing;
     if (_newImageProcessing == null) _newImageProcessing = _imageProcessing;
     if (_newShooterTypeInt == null) _newShooterTypeInt = _shooterTypeInt;
@@ -131,8 +138,9 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
     if (_newIntakeTypeInt == null) _newIntakeTypeInt = _intakeTypeInt;
     if (_newAutonomous == null) _newAutonomous = _autonomous;
     if (_newChassisTypeInt == null) _newChassisTypeInt = _chassisTypeInt;
+    if (_newImageString == null) _newImageString = _imageString;
 
-    void _validate() {
+    _validate() {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
         if (_scoutName == team.scoutName &&
@@ -152,7 +160,8 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
             _newIntakeTypeInt == _intakeTypeInt &&
             _newFunnelTypeInt == _funnelTypeInt &&
             _newAutonomous == _autonomous &&
-            _newChassisTypeInt == _chassisTypeInt) {
+            _newChassisTypeInt == _chassisTypeInt &&
+            _newImageString == _imageString) {
           showDialog(
             context: context,
             child: AlertDialog(
@@ -172,6 +181,71 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
           // Saving functions will be here.
         }
       }
+    }
+
+    Future _getImageFromCamera() async {
+      final pickedFile = await picker.getImage(
+        source: ImageSource.camera,
+        imageQuality: 50,
+      );
+
+      setState(() {
+        if (pickedFile != null) {
+          var _image = File(pickedFile.path);
+          List<int> bytes = _image.readAsBytesSync();
+          _newImageString = base64Encode(bytes);
+        }
+      });
+    }
+
+    Future _getImageFromGallery() async {
+      final pickedFile = await picker.getImage(
+        source: ImageSource.gallery,
+        imageQuality: 50,
+      );
+
+      setState(() {
+        if (pickedFile != null) {
+          var _image = File(pickedFile.path);
+          List<int> bytes = _image.readAsBytesSync();
+          _newImageString = base64Encode(bytes);
+        }
+      });
+    }
+
+    _showPicker(BuildContext ctx) {
+      showModalBottomSheet(
+        context: ctx,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: Wrap(
+                children: [
+                  ListTile(
+                      leading: Icon(
+                        Icons.photo_library,
+                      ),
+                      title: Text('Photo Library'),
+                      onTap: () {
+                        _getImageFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  ListTile(
+                    leading: Icon(
+                      Icons.photo_camera,
+                    ),
+                    title: Text('Camera'),
+                    onTap: () {
+                      _getImageFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
     }
 
     return Scaffold(
@@ -214,11 +288,18 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                         _scoutName = newValue;
                       },
                     ),
-                    CircleAvatar(
-                      backgroundImage: MemoryImage(
-                        base64Decode(team.imageString),
+                    GestureDetector(
+                      onTap: () {
+                        _showPicker(context);
+                      },
+                      child: CircleAvatar(
+                        backgroundImage: team.imageUrl != ""
+                            ? NetworkImage(team.imageUrl)
+                            : MemoryImage(
+                                base64Decode(_newImageString),
+                              ),
+                        minRadius: deviceWidth * 0.09,
                       ),
-                      minRadius: deviceWidth * 0.09,
                     ),
                   ],
                 ),
