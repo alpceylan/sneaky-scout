@@ -41,6 +41,9 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
   bool _newAutonomous;
   int _newChassisTypeInt;
 
+  String _scoutName;
+  String _teamName;
+  int _teamNumber;
   int _maxBalls;
   String _climbingComment;
   String _autonomousComment;
@@ -129,6 +132,48 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
     if (_newAutonomous == null) _newAutonomous = _autonomous;
     if (_newChassisTypeInt == null) _newChassisTypeInt = _chassisTypeInt;
 
+    void _validate() {
+      if (_formKey.currentState.validate()) {
+        _formKey.currentState.save();
+        if (_scoutName == team.scoutName &&
+            _teamName == team.teamName &&
+            _teamNumber == team.teamNo &&
+            _maxBalls == team.maxBalls &&
+            _climbingComment == team.climbingComment &&
+            _autonomousComment == team.autonomousComment &&
+            _extra == team.extra &&
+            _comment == team.comment &&
+            _newClimbing == _climbing &&
+            _newImageProcessing == _imageProcessing &&
+            _newImageProcessingTypeInt == _imageProcessingTypeInt &&
+            _newShooterTypeInt == _shooterTypeInt &&
+            _newIntake == _intake &&
+            _newHoodTypeInt == _hoodTypeInt &&
+            _newIntakeTypeInt == _intakeTypeInt &&
+            _newFunnelTypeInt == _funnelTypeInt &&
+            _newAutonomous == _autonomous &&
+            _newChassisTypeInt == _chassisTypeInt) {
+          showDialog(
+            context: context,
+            child: AlertDialog(
+              title: Text("Error"),
+              content: Text("You have to make changes to save team."),
+              actions: [
+                FlatButton(
+                  child: Text("OK"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
+        } else {
+          // Saving functions will be here.
+        }
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(team.teamName),
@@ -136,7 +181,7 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
           IconButton(
             icon: Icon(Icons.save),
             onPressed: () {
-              print("save button clicked.");
+              _validate();
             },
           ),
         ],
@@ -159,6 +204,15 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                       deviceWidth: deviceWidth,
                       labelText: "Scout name",
                       initialValue: team.scoutName,
+                      validator: (value) {
+                        if (value.length == 0) {
+                          return "Scout name shouldn't be empty.";
+                        }
+                        return null;
+                      },
+                      onSaved: (newValue) {
+                        _scoutName = newValue;
+                      },
                     ),
                     CircleAvatar(
                       backgroundImage: MemoryImage(
@@ -175,11 +229,31 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                       deviceWidth: deviceWidth,
                       labelText: "Team name",
                       initialValue: team.teamName,
+                      validator: (value) {
+                        if (value.length == 0) {
+                          return "Team name shouldn't be empty.";
+                        }
+                        return null;
+                      },
+                      onSaved: (newValue) {
+                        _teamName = newValue;
+                      },
                     ),
                     CustomTextInput(
                       deviceWidth: deviceWidth,
                       labelText: "Team number",
                       initialValue: "${team.teamNo}",
+                      validator: (value) {
+                        if (value.length == 0) {
+                          return "Team number shouldn't be empty.";
+                        } else if (int.parse(value) is int == false) {
+                          return "Team number should be integer.";
+                        }
+                        return null;
+                      },
+                      onSaved: (newValue) {
+                        _teamNumber = int.parse(newValue);
+                      },
                     ),
                   ],
                 ),
@@ -205,6 +279,17 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                       deviceWidth: deviceWidth,
                       labelText: "Max balls",
                       initialValue: "${team.maxBalls}",
+                      validator: (value) {
+                        if (value.length == 0) {
+                          return "Max balls shouldn't be empty.";
+                        } else if (int.parse(value) is int == false) {
+                          return "Max balls should be integer.";
+                        }
+                        return null;
+                      },
+                      onSaved: (newValue) {
+                        _maxBalls = int.parse(newValue);
+                      },
                     ),
                   ],
                 ),

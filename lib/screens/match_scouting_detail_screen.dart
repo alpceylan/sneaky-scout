@@ -90,7 +90,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
             _teamName == team.teamName &&
             _teamNumber == team.teamNo &&
             _newMatchInt == _matchInt &&
-            _matchNumber == "${team.matchNo}" &&
+            _matchNumber == team.matchNo &&
             _robotColor == team.color &&
             _powercellCount == team.powerCellCount &&
             _newAutonomous == _autonomous &&
@@ -242,7 +242,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                     CustomTextInput(
                       deviceWidth: deviceWidth,
                       labelText: "Match number",
-                      initialValue: "${team.matchNo}",
+                      initialValue: team.matchNo,
                       validator: (value) {
                         if (value.length == 0) {
                           return "Match number shouldn't be empty.";
