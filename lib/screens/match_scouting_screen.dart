@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:material_segmented_control/material_segmented_control.dart';
+
+// Services
+import '../services/match_scouting_service.dart';
 
 // Screens
 import './match_scouting_detail_screen.dart';
@@ -6,8 +10,22 @@ import './match_scouting_detail_screen.dart';
 // Models
 import '../models/match_scouting_team.dart';
 
-class MatchScoutingScreen extends StatelessWidget {
+class MatchScoutingScreen extends StatefulWidget {
   var teamMode = false;
+
+  @override
+  _MatchScoutingScreenState createState() => _MatchScoutingScreenState();
+}
+
+class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
+  MatchScoutingService matchScoutingService = MatchScoutingService();
+
+  int _currentSelection = 0;
+  List<MatchScoutingTeam> teamList = [];
+
+  getTeams() {
+    matchScoutingService.getTeams();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,16 +125,41 @@ class MatchScoutingScreen extends StatelessWidget {
       );
     }
 
+    Map<int, Widget> _children = {
+      0: Text('      Local      '),
+      1: Text('      Team       '),
+    };
+
     return Container(
       child: Column(
         children: [
-          ListView.builder(
-            shrinkWrap: true,
-            itemBuilder: (ctx, i) {
-              return _createMatchScoutingListTile(mstList[i]);
-            },
-            itemCount: mstList.length,
+          SizedBox(
+            height: deviceHeight * 0.02,
           ),
+          MaterialSegmentedControl(
+            children: _children,
+            selectionIndex: _currentSelection,
+            borderColor: Colors.grey,
+            selectedColor: Colors.blue,
+            unselectedColor: Colors.white,
+            borderRadius: 8.0,
+            onSegmentChosen: (index) {
+              setState(() {
+                _currentSelection = index;
+              });
+            },
+          ),
+          _currentSelection == 0
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  itemBuilder: (ctx, i) {
+                    return _createMatchScoutingListTile(mstList[i]);
+                  },
+                  itemCount: mstList.length,
+                )
+              : Center(
+                  child: Text("Hi"),
+                ),
         ],
       ),
     );
