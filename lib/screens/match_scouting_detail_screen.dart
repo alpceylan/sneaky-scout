@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // Models
-import '../models/matchScoutingTeam.dart';
+import '../models/match_scouting_team.dart';
 
 // Widgets
 import '../widgets/custom_text_input.dart';

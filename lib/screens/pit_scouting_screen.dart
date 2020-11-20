@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../screens/pit_scouting_detail_screen.dart';
 
 // Models
-import '../models/pitScoutingTeam.dart';
+import '../models/pit_scouting_team.dart';
 
 class PitScoutingScreen extends StatelessWidget {
   var teamMode = false;

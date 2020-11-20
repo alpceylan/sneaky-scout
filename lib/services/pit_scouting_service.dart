@@ -2,7 +2,7 @@
 import '../database/our_db.dart';
 
 // Models
-import '../models/pitScoutingTeam.dart';
+import '../models/pit_scouting_team.dart';
 
 class PitScoutingService {
   OurDatabase _ourDatabase = OurDatabase();

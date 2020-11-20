@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 // Models
-import '../models/pitScoutingTeam.dart';
+import '../models/pit_scouting_team.dart';
 
 // Widgets
 import '../widgets/custom_text_input.dart';

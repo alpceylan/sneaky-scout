@@ -2,7 +2,7 @@
 import '../database/our_db.dart';
 
 // Models
-import '../models/matchScoutingTeam.dart';
+import '../models/match_scouting_team.dart';
 
 class MatchScoutingService {
   OurDatabase _ourDatabase = OurDatabase();

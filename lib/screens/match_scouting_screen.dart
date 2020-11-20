@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import './match_scouting_detail_screen.dart';
 
 // Models
-import '../models/matchScoutingTeam.dart';
+import '../models/match_scouting_team.dart';
 
 class MatchScoutingScreen extends StatelessWidget {
   var teamMode = false;
