@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+// Services
+import '../services/match_scouting_service.dart';
+
 // Models
 import '../models/match_scouting_team.dart';
 
@@ -17,17 +20,21 @@ class MatchScoutingDetailScreen extends StatefulWidget {
 class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  final MatchScoutingService matchScoutingService = MatchScoutingService();
+
   int _matchInt;
   bool _autonomous;
   bool _imageProcessing;
   int _autonomousStartingPointInt;
   bool _defense;
+  int _powercellLocationInt;
 
   int _newMatchInt;
   bool _newAutonomous;
   bool _newImageProcessing;
   int _newAutonomousStartingPointInt;
   bool _newDefense;
+  int _newPowercellLocationInt;
 
   String _scoutName;
   String _teamName;
@@ -76,14 +83,78 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
 
     if (_defense == null) _defense = team.defense;
 
+    if (_powercellLocationInt == null) {
+      if (team.powerCellLocation == PowerCellLocation.Inner) {
+        _powercellLocationInt = 1;
+      } else if (team.powerCellLocation == PowerCellLocation.Lower) {
+        _powercellLocationInt = 2;
+      } else {
+        _powercellLocationInt = 3;
+      }
+    }
+
     if (_newMatchInt == null) _newMatchInt = _matchInt;
     if (_newAutonomous == null) _newAutonomous = _autonomous;
     if (_newImageProcessing == null) _newImageProcessing = _imageProcessing;
     if (_newAutonomousStartingPointInt == null)
       _newAutonomousStartingPointInt = _autonomousStartingPointInt;
     if (_newDefense == null) _newDefense = _defense;
+    if (_newPowercellLocationInt == null)
+      _newPowercellLocationInt = _powercellLocationInt;
 
-    _validate() {
+    Future _save() async {
+      Match matchType;
+      AutonomousStartingPoint autonomousStartingPoint;
+      PowerCellLocation powerCellLocation;
+
+      if (_newMatchInt == 1) {
+        matchType = Match.Practice;
+      } else if (_newMatchInt == 2) {
+        matchType = Match.Playoff;
+      } else {
+        matchType = Match.Qual;
+      }
+
+      if (_newAutonomousStartingPointInt == 1) {
+        autonomousStartingPoint = AutonomousStartingPoint.Left;
+      } else if (_newAutonomousStartingPointInt == 2) {
+        autonomousStartingPoint = AutonomousStartingPoint.Middle;
+      } else {
+        autonomousStartingPoint = AutonomousStartingPoint.Right;
+      }
+
+      if (_newPowercellLocationInt == 1) {
+        powerCellLocation = PowerCellLocation.Inner;
+      } else if (_newPowercellLocationInt == 2) {
+        powerCellLocation = PowerCellLocation.Lower;
+      } else {
+        powerCellLocation = PowerCellLocation.Outer;
+      }
+
+      MatchScoutingTeam newTeam = MatchScoutingTeam(
+        scoutName: _scoutName,
+        teamName: _teamName,
+        teamNo: _teamNumber,
+        matchType: matchType,
+        matchNo: _matchNumber,
+        color: _robotColor,
+        powerCellCount: _powercellCount,
+        autonomous: _newAutonomous,
+        imageProcessing: _newImageProcessing,
+        autonomousStartingPoint: autonomousStartingPoint,
+        powerCellLocation: powerCellLocation,
+        defense: _newDefense,
+        finalScore: _finalScore,
+        defenseComment: _defenseComment,
+        foul: _foul,
+        techFoul: _techFoul,
+        comment: _comment,
+      );
+
+      await matchScoutingService.saveTeam(newTeam);
+    }
+
+    _validate() async {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
         if (_scoutName == team.scoutName &&
@@ -96,6 +167,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
             _newAutonomous == _autonomous &&
             _newImageProcessing == _imageProcessing &&
             _newAutonomousStartingPointInt == _autonomousStartingPointInt &&
+            _newPowercellLocationInt == _powercellLocationInt &&
             _newDefense == _defense &&
             _finalScore == team.finalScore &&
             _defenseComment == team.defenseComment &&
@@ -118,7 +190,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
             ),
           );
         } else {
-          // Saving functions will be here.
+          await _save();
         }
       }
     }
@@ -362,6 +434,46 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                           onChanged: (value) {
                             setState(() {
                               _newAutonomousStartingPointInt = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  height: deviceHeight * 0.05,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Powercell Location:"),
+                      Container(
+                        width: deviceWidth * 0.3,
+                        height: deviceHeight * 0.065,
+                        child: DropdownButton(
+                          isExpanded: true,
+                          style: TextStyle(
+                            fontSize: 17,
+                            color: Colors.black,
+                          ),
+                          value: _newPowercellLocationInt,
+                          items: [
+                            DropdownMenuItem(
+                              child: Text("Inner"),
+                              value: 1,
+                            ),
+                            DropdownMenuItem(
+                              child: Text("Lower"),
+                              value: 2,
+                            ),
+                            DropdownMenuItem(
+                              child: Text("Outer"),
+                              value: 3,
+                            ),
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              _newPowercellLocationInt = value;
                             });
                           },
                         ),

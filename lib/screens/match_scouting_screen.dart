@@ -23,72 +23,80 @@ class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
   int _currentSelection = 0;
   List<MatchScoutingTeam> teamList = [];
 
-  getTeams() {
-    matchScoutingService.getTeams();
+  var isLoading = false;
+
+  Future getTeams() async {
+    setState(() {
+      isLoading = true;
+    });
+    var teams = await matchScoutingService.getTeams();
+    teams.forEach((teamMap) {
+      Match matchType;
+      PowerCellLocation powerCellLocation;
+      AutonomousStartingPoint autonomousStartingPoint;
+
+      if (teamMap["matchType"] == "practice") {
+        matchType = Match.Practice;
+      } else if (teamMap["matchType"] == "playoff") {
+        matchType = Match.Playoff;
+      } else {
+        matchType = Match.Qual;
+      }
+
+      if (teamMap["powerCellLocation"] == "inner") {
+        powerCellLocation = PowerCellLocation.Inner;
+      } else if (teamMap["powerCellLocation"] == "lower") {
+        powerCellLocation = PowerCellLocation.Lower;
+      } else {
+        powerCellLocation = PowerCellLocation.Outer;
+      }
+
+      if (teamMap["autonomousStartingPoint"] == "left") {
+        autonomousStartingPoint = AutonomousStartingPoint.Left;
+      } else if (teamMap["autonomousStartingPoint"] == "middle") {
+        autonomousStartingPoint = AutonomousStartingPoint.Middle;
+      } else {
+        autonomousStartingPoint = AutonomousStartingPoint.Right;
+      }
+
+      var team = MatchScoutingTeam(
+        status: teamMap["status"] == 'synced' ? Status.Synced : Status.Unsynced,
+        scoutName: teamMap["scoutName"],
+        teamName: teamMap["teamName"],
+        teamNo: teamMap["teamNo"],
+        matchType: matchType,
+        matchNo: teamMap["matchNo"],
+        color: teamMap["color"],
+        powerCellCount: teamMap["powerCellCount"],
+        powerCellLocation: powerCellLocation,
+        autonomous: teamMap["autonomous"] == 1 ? true : false,
+        autonomousStartingPoint: autonomousStartingPoint,
+        comment: teamMap["comment"],
+        defense: teamMap["defense"] == 1 ? true : false,
+        defenseComment: teamMap["defenseComment"],
+        foul: teamMap["foul"],
+        techFoul: teamMap["techFoul"],
+        imageProcessing: teamMap["imageProcessing"] == 1 ? true : false,
+        finalScore: teamMap["finalScore"],
+      );
+
+      teamList.add(team);
+    });
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    getTeams();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
-
-    final List<MatchScoutingTeam> mstList = [
-      MatchScoutingTeam(
-          scoutName: "my first scout",
-          teamName: "turkish frc team",
-          teamNo: 7285,
-          matchType: Match.Practice,
-          matchNo: "03",
-          color: "orange",
-          powerCellCount: 3,
-          powerCellLocation: PowerCellLocation.Inner,
-          autonomous: true,
-          autonomousStartingPoint: AutonomousStartingPoint.Middle,
-          defense: true,
-          defenseComment: "it was fantastic!",
-          foul: 3,
-          techFoul: 4,
-          imageProcessing: true,
-          finalScore: 11,
-          comment: "lets follow this team"),
-      MatchScoutingTeam(
-          status: Status.Synced,
-          scoutName: "my second scout",
-          teamName: "polish frc team",
-          teamNo: 7490,
-          matchType: Match.Qual,
-          matchNo: "10",
-          color: "red",
-          powerCellCount: 5,
-          powerCellLocation: PowerCellLocation.Inner,
-          autonomous: true,
-          autonomousStartingPoint: AutonomousStartingPoint.Left,
-          defense: true,
-          defenseComment: "it was fantastic!",
-          foul: 3,
-          techFoul: 4,
-          imageProcessing: true,
-          finalScore: 11,
-          comment: "lets follow this team"),
-      MatchScoutingTeam(
-          scoutName: "my third scout",
-          teamName: "lebanese frc team",
-          teamNo: 7490,
-          matchType: Match.Qual,
-          matchNo: "15",
-          color: "blue",
-          powerCellCount: 2,
-          powerCellLocation: PowerCellLocation.Inner,
-          autonomous: true,
-          autonomousStartingPoint: AutonomousStartingPoint.Middle,
-          defense: true,
-          defenseComment: "it was great!",
-          foul: 3,
-          techFoul: 4,
-          imageProcessing: true,
-          finalScore: 15,
-          comment: "lets follow this team"),
-    ]; // fake data
 
     Widget _createMatchScoutingListTile(MatchScoutingTeam team) {
       return GestureDetector(
@@ -131,37 +139,41 @@ class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
     };
 
     return Container(
-      child: Column(
-        children: [
-          SizedBox(
-            height: deviceHeight * 0.02,
-          ),
-          MaterialSegmentedControl(
-            children: _children,
-            selectionIndex: _currentSelection,
-            borderColor: Colors.grey,
-            selectedColor: Colors.blue,
-            unselectedColor: Colors.white,
-            borderRadius: 8.0,
-            onSegmentChosen: (index) {
-              setState(() {
-                _currentSelection = index;
-              });
-            },
-          ),
-          _currentSelection == 0
-              ? ListView.builder(
-                  shrinkWrap: true,
-                  itemBuilder: (ctx, i) {
-                    return _createMatchScoutingListTile(mstList[i]);
-                  },
-                  itemCount: mstList.length,
-                )
-              : Center(
-                  child: Text("Hi"),
+      child: isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Column(
+              children: [
+                SizedBox(
+                  height: deviceHeight * 0.02,
                 ),
-        ],
-      ),
+                MaterialSegmentedControl(
+                  children: _children,
+                  selectionIndex: _currentSelection,
+                  borderColor: Colors.grey,
+                  selectedColor: Colors.blue,
+                  unselectedColor: Colors.white,
+                  borderRadius: 8.0,
+                  onSegmentChosen: (index) {
+                    setState(() {
+                      _currentSelection = index;
+                    });
+                  },
+                ),
+                _currentSelection == 0
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        itemBuilder: (ctx, i) {
+                          return _createMatchScoutingListTile(teamList[i]);
+                        },
+                        itemCount: teamList.length,
+                      )
+                    : Center(
+                        child: Text("Hi"),
+                      ),
+              ],
+            ),
     );
   }
 }
