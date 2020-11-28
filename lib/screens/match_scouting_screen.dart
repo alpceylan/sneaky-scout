@@ -31,55 +31,7 @@ class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
     });
     var teams = await matchScoutingService.getTeams();
     teams.forEach((teamMap) {
-      Match matchType;
-      PowerCellLocation powerCellLocation;
-      AutonomousStartingPoint autonomousStartingPoint;
-
-      if (teamMap["matchType"] == "practice") {
-        matchType = Match.Practice;
-      } else if (teamMap["matchType"] == "playoff") {
-        matchType = Match.Playoff;
-      } else {
-        matchType = Match.Qual;
-      }
-
-      if (teamMap["powerCellLocation"] == "inner") {
-        powerCellLocation = PowerCellLocation.Inner;
-      } else if (teamMap["powerCellLocation"] == "lower") {
-        powerCellLocation = PowerCellLocation.Lower;
-      } else {
-        powerCellLocation = PowerCellLocation.Outer;
-      }
-
-      if (teamMap["autonomousStartingPoint"] == "left") {
-        autonomousStartingPoint = AutonomousStartingPoint.Left;
-      } else if (teamMap["autonomousStartingPoint"] == "middle") {
-        autonomousStartingPoint = AutonomousStartingPoint.Middle;
-      } else {
-        autonomousStartingPoint = AutonomousStartingPoint.Right;
-      }
-
-      var team = MatchScoutingTeam(
-        status: teamMap["status"] == 'synced' ? Status.Synced : Status.Unsynced,
-        scoutName: teamMap["scoutName"],
-        teamName: teamMap["teamName"],
-        teamNo: teamMap["teamNo"],
-        matchType: matchType,
-        matchNo: teamMap["matchNo"],
-        color: teamMap["color"],
-        powerCellCount: teamMap["powerCellCount"],
-        powerCellLocation: powerCellLocation,
-        autonomous: teamMap["autonomous"] == 1 ? true : false,
-        autonomousStartingPoint: autonomousStartingPoint,
-        comment: teamMap["comment"],
-        defense: teamMap["defense"] == 1 ? true : false,
-        defenseComment: teamMap["defenseComment"],
-        foul: teamMap["foul"],
-        techFoul: teamMap["techFoul"],
-        imageProcessing: teamMap["imageProcessing"] == 1 ? true : false,
-        finalScore: teamMap["finalScore"],
-      );
-
+      var team = MatchScoutingTeam().unmapTeam(teamMap);
       teamList.add(team);
     });
     setState(() {

@@ -67,23 +67,23 @@ class PitScoutingTeam {
 
   PitScoutingTeam({
     this.status = Status.Unsynced,
-    @required this.scoutName,
-    @required this.teamName,
-    @required this.teamNo,
+    this.scoutName,
+    this.teamName,
+    this.teamNo,
     this.imageUrl = "",
     this.imageString = "",
-    @required this.chassisType,
-    @required this.climbing,
+    this.chassisType,
+    this.climbing,
     this.climbingComment = "",
-    @required this.imageProcessing,
+    this.imageProcessing,
     this.imageProcessingType,
-    @required this.shooterType,
-    @required this.hoodType,
-    @required this.intake,
+    this.shooterType,
+    this.hoodType,
+    this.intake,
     this.intakeType,
-    @required this.funnelType,
-    @required this.maxBalls,
-    @required this.autonomous,
+    this.funnelType,
+    this.maxBalls,
+    this.autonomous,
     this.autonomousComment = "",
     this.extra = "",
     this.comment = "",
@@ -163,7 +163,7 @@ class PitScoutingTeam {
     return null;
   }
 
-  Map<String, dynamic> teamMap() {
+  Map<String, dynamic> mapTeam() {
     Map<String, dynamic> _map = {
       // USER ID Property will be added here after Firebase integration.
       "status": statusString,
@@ -190,5 +190,92 @@ class PitScoutingTeam {
     };
 
     return _map;
+  }
+
+  PitScoutingTeam unmapTeam(Map<String, dynamic> teamMap) {
+    Status status;
+    Chassis chassisType;
+    ImageProcessing imageProcessingType;
+    Shooter shooterType;
+    Hood hoodType;
+    Intake intakeType;
+    Funnel funnelType;
+
+    status = teamMap["status"] == "unsynced" ? Status.Unsynced : Status.Synced;
+
+    if (teamMap["chassisType"] == "x") {
+      chassisType = Chassis.X;
+    }
+    if (teamMap["chassisType"] == "y") {
+      chassisType = Chassis.Y;
+    } else {
+      chassisType = Chassis.Z;
+    }
+
+    imageProcessingType = teamMap["imageProcessingType"] == "custom"
+        ? ImageProcessing.Custom
+        : ImageProcessing.Limelight;
+
+    if (teamMap["shooterType"] == "lowGoal") {
+      shooterType = Shooter.LowGoal;
+    }
+    if (teamMap["shooterType"] == "oneWheel") {
+      shooterType = Shooter.OneWheel;
+    } else {
+      shooterType = Shooter.TwoWheel;
+    }
+
+    if (teamMap["hoodType"] == "x") {
+      hoodType = Hood.X;
+    }
+    if (teamMap["hoodType"] == "y") {
+      hoodType = Hood.Y;
+    } else {
+      hoodType = Hood.Z;
+    }
+
+    if (teamMap["intakeType"] == "x") {
+      intakeType = Intake.X;
+    }
+    if (teamMap["intakeType"] == "y") {
+      intakeType = Intake.Y;
+    } else {
+      intakeType = Intake.Z;
+    }
+
+    if (teamMap["funnelType"] == "x") {
+      funnelType = Funnel.X;
+    }
+    if (teamMap["funnelType"] == "y") {
+      funnelType = Funnel.Y;
+    } else {
+      funnelType = Funnel.Z;
+    }
+
+    var team = PitScoutingTeam(
+      status: status,
+      scoutName: teamMap["scoutName"],
+      teamName: teamMap["teamName"],
+      teamNo: teamMap["teamNo"],
+      imageUrl: teamMap["imageUrl"],
+      imageString: teamMap["imageString"],
+      chassisType: chassisType,
+      climbing: teamMap["climbing"] == 1 ? true : false,
+      climbingComment: teamMap["climbingComment"],
+      imageProcessing: teamMap["imageProcessing"] == 1 ? true : false,
+      imageProcessingType: imageProcessingType,
+      shooterType: shooterType,
+      hoodType: hoodType,
+      intake: teamMap["intake"] == 1 ? true : false,
+      intakeType: intakeType,
+      funnelType: funnelType,
+      maxBalls: teamMap["maxBalls"],
+      autonomous: teamMap["autonomous"] == 1 ? true : false,
+      autonomousComment: teamMap["autonomousComment"],
+      extra: teamMap["extra"],
+      comment: teamMap["comment"],
+    );
+
+    return team;
   }
 }

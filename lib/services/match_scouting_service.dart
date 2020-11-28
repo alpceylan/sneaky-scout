@@ -8,7 +8,7 @@ class MatchScoutingService {
   OurDatabase _ourDatabase = OurDatabase();
 
   Future<int> saveTeam(MatchScoutingTeam team) async {
-    return await _ourDatabase.save('matchScouting', team.teamMap());
+    return await _ourDatabase.save('matchScouting', team.mapTeam());
   }
 
   Future<List<Map<String, dynamic>>> getTeams() async {
@@ -20,7 +20,7 @@ class MatchScoutingService {
   }
 
   Future<int> updateTeam(MatchScoutingTeam team) async {
-    return await _ourDatabase.update('matchScouting', team.teamMap());
+    return await _ourDatabase.update('matchScouting', team.mapTeam());
   }
 
   Future<void> deleteTeam(dynamic teamId) async {

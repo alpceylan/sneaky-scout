@@ -45,23 +45,23 @@ class MatchScoutingTeam {
 
   MatchScoutingTeam({
     this.status = Status.Unsynced,
-    @required this.scoutName,
-    @required this.teamName,
-    @required this.teamNo,
-    @required this.matchType,
-    @required this.matchNo,
-    @required this.color,
-    @required this.powerCellCount,
-    @required this.powerCellLocation,
-    @required this.autonomous,
+    this.scoutName,
+    this.teamName,
+    this.teamNo,
+    this.matchType,
+    this.matchNo,
+    this.color,
+    this.powerCellCount,
+    this.powerCellLocation,
+    this.autonomous,
     this.autonomousStartingPoint,
     this.comment = "",
-    @required this.defense,
+    this.defense,
     this.defenseComment = "",
-    @required this.foul,
-    @required this.techFoul,
-    @required this.imageProcessing,
-    @required this.finalScore,
+    this.foul,
+    this.techFoul,
+    this.imageProcessing,
+    this.finalScore,
   });
 
   String get statusString {
@@ -104,7 +104,7 @@ class MatchScoutingTeam {
     return null;
   }
 
-  Map<String, dynamic> teamMap() {
+  Map<String, dynamic> mapTeam() {
     Map<String, dynamic> _map = {
       // Firebase User kullanılmaya başlandığında buraya user id eklenecek.
       "status": statusString,
@@ -128,5 +128,58 @@ class MatchScoutingTeam {
     };
 
     return _map;
+  }
+
+  MatchScoutingTeam unmapTeam(Map<String, dynamic> teamMap) {
+    Match matchType;
+    PowerCellLocation powerCellLocation;
+    AutonomousStartingPoint autonomousStartingPoint;
+
+    if (teamMap["matchType"] == "practice") {
+      matchType = Match.Practice;
+    } else if (teamMap["matchType"] == "playoff") {
+      matchType = Match.Playoff;
+    } else {
+      matchType = Match.Qual;
+    }
+
+    if (teamMap["powerCellLocation"] == "inner") {
+      powerCellLocation = PowerCellLocation.Inner;
+    } else if (teamMap["powerCellLocation"] == "lower") {
+      powerCellLocation = PowerCellLocation.Lower;
+    } else {
+      powerCellLocation = PowerCellLocation.Outer;
+    }
+
+    if (teamMap["autonomousStartingPoint"] == "left") {
+      autonomousStartingPoint = AutonomousStartingPoint.Left;
+    } else if (teamMap["autonomousStartingPoint"] == "middle") {
+      autonomousStartingPoint = AutonomousStartingPoint.Middle;
+    } else {
+      autonomousStartingPoint = AutonomousStartingPoint.Right;
+    }
+
+    var team = MatchScoutingTeam(
+      status: teamMap["status"] == 'synced' ? Status.Synced : Status.Unsynced,
+      scoutName: teamMap["scoutName"],
+      teamName: teamMap["teamName"],
+      teamNo: teamMap["teamNo"],
+      matchType: matchType,
+      matchNo: teamMap["matchNo"],
+      color: teamMap["color"],
+      powerCellCount: teamMap["powerCellCount"],
+      powerCellLocation: powerCellLocation,
+      autonomous: teamMap["autonomous"] == 1 ? true : false,
+      autonomousStartingPoint: autonomousStartingPoint,
+      comment: teamMap["comment"],
+      defense: teamMap["defense"] == 1 ? true : false,
+      defenseComment: teamMap["defenseComment"],
+      foul: teamMap["foul"],
+      techFoul: teamMap["techFoul"],
+      imageProcessing: teamMap["imageProcessing"] == 1 ? true : false,
+      finalScore: teamMap["finalScore"],
+    );
+
+    return team;
   }
 }
