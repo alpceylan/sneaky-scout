@@ -86,8 +86,8 @@ class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
     }
 
     Map<int, Widget> _children = {
-      0: Text('      Local      '),
-      1: Text('      Team       '),
+      0: Text('      New      '),
+      1: Text('      Saved       '),
     };
 
     return Container(
@@ -113,7 +113,7 @@ class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
                     });
                   },
                 ),
-                _currentSelection == 0
+                _currentSelection == 1
                     ? ListView.builder(
                         shrinkWrap: true,
                         itemBuilder: (ctx, i) {

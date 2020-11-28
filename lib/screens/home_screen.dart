@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // Screens
 import './match_scouting_screen.dart';
 import './pit_scouting_screen.dart';
+import './team_scouts_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
@@ -31,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       AppBar(
-        title: Text("Pit"),
+        title: Text("Pit Scouting"),
         actions: [
           !PitScoutingScreen().teamMode
               ? IconButton(
@@ -44,17 +45,14 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       AppBar(
-        title: Text("Team"),
-      ),
-      AppBar(
-        title: Text("Profile"),
+        title: Text("Team Scouts"),
       ),
     ];
 
     List<Widget> screens = [
       MatchScoutingScreen(),
       PitScoutingScreen(),
-      Center(child: Text("Profile")),
+      TeamScreen(),
     ];
 
     return Scaffold(
@@ -77,9 +75,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.person,
+              Icons.group,
             ),
-            label: "Profile",
+            label: "Team Scouts",
           ),
         ],
         onTap: (index) {
