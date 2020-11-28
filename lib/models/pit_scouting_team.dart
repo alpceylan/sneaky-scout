@@ -110,7 +110,7 @@ class PitScoutingTeam {
       case ImageProcessing.Custom:
         return "custom";
       case ImageProcessing.Limelight:
-        return "unsynced";
+        return "limelight";
     }
     return null;
   }

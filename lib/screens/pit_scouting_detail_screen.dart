@@ -4,6 +4,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+// Services
+import '../services/pit_scouting_service.dart';
+
 // Models
 import '../models/pit_scouting_team.dart';
 
@@ -20,6 +23,9 @@ class PitScoutingDetailScreen extends StatefulWidget {
 
 class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  final PitScoutingService pitScoutingService = PitScoutingService();
+
   final ImagePicker picker = ImagePicker();
 
   bool _climbing;
@@ -140,6 +146,104 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
     if (_newChassisTypeInt == null) _newChassisTypeInt = _chassisTypeInt;
     if (_newImageString == null) _newImageString = _imageString;
 
+    Future _save() async {
+      Chassis chassisType;
+      ImageProcessing imageProcessingType;
+      Shooter shooterType;
+      Hood hoodType;
+      Intake intakeType;
+      Funnel funnelType;
+
+      if (chassisType == null) {
+        if (_newChassisTypeInt == 1) {
+          chassisType = Chassis.X;
+        }
+        if (_newChassisTypeInt == 2) {
+          chassisType = Chassis.Y;
+        } else {
+          chassisType = Chassis.Z;
+        }
+      }
+
+      if (imageProcessingType == null) {
+        if (_newImageProcessingTypeInt == 1) {
+          imageProcessingType = ImageProcessing.Custom;
+        }
+        if (_newImageProcessingTypeInt == 2) {
+          imageProcessingType = ImageProcessing.Limelight;
+        }
+      }
+
+      if (shooterType == null) {
+        if (_newShooterTypeInt == 1) {
+          shooterType = Shooter.LowGoal;
+        }
+        if (_newShooterTypeInt == 2) {
+          shooterType = Shooter.OneWheel;
+        } else {
+          shooterType = Shooter.TwoWheel;
+        }
+      }
+
+      if (hoodType == null) {
+        if (_newHoodTypeInt == 1) {
+          hoodType = Hood.X;
+        }
+        if (_newHoodTypeInt == 2) {
+          hoodType = Hood.Y;
+        } else {
+          hoodType = Hood.Z;
+        }
+      }
+
+      if (intakeType == null) {
+        if (_newIntakeTypeInt == 1) {
+          intakeType = Intake.X;
+        }
+        if (_newIntakeTypeInt == 2) {
+          intakeType = Intake.Y;
+        } else {
+          intakeType = Intake.Z;
+        }
+      }
+
+      if (funnelType == null) {
+        if (_newFunnelTypeInt == 1) {
+          funnelType = Funnel.X;
+        }
+        if (_newFunnelTypeInt == 2) {
+          funnelType = Funnel.Y;
+        } else {
+          funnelType = Funnel.Z;
+        }
+      }
+
+      PitScoutingTeam newTeam = PitScoutingTeam(
+        scoutName: _scoutName,
+        teamName: _teamName,
+        teamNo: _teamNumber,
+        imageUrl: team.imageUrl,
+        imageString: _newImageString,
+        chassisType: chassisType,
+        climbing: _newClimbing,
+        climbingComment: _climbingComment,
+        imageProcessing: _newImageProcessing,
+        imageProcessingType: imageProcessingType,
+        shooterType: shooterType,
+        hoodType: hoodType,
+        intake: _newIntake,
+        intakeType: intakeType,
+        funnelType: funnelType,
+        maxBalls: _maxBalls,
+        autonomous: _newAutonomous,
+        autonomousComment: _autonomousComment,
+        extra: _extra,
+        comment: _comment,
+      );
+
+      await pitScoutingService.saveTeam(newTeam);
+    }
+
     _validate() {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
@@ -178,7 +282,7 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
             ),
           );
         } else {
-          // Saving functions will be here.
+          _save();
         }
       }
     }
