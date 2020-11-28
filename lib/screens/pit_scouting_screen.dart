@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:material_segmented_control/material_segmented_control.dart';
 
 // Services
 import '../services/pit_scouting_service.dart';
@@ -23,6 +24,7 @@ class _PitScoutingScreenState extends State<PitScoutingScreen> {
 
   var isLoading = false;
 
+  int _currentSelection = 0;
   final List<PitScoutingTeam> teamList = [
     PitScoutingTeam(
       scoutName: "takım 1",
@@ -135,6 +137,11 @@ class _PitScoutingScreenState extends State<PitScoutingScreen> {
       );
     }
 
+    Map<int, Widget> _children = {
+      0: Text('      Local      '),
+      1: Text('      Team       '),
+    };
+
     return Container(
       child: isLoading
           ? Center(
@@ -142,13 +149,33 @@ class _PitScoutingScreenState extends State<PitScoutingScreen> {
             )
           : Column(
               children: [
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemBuilder: (ctx, i) {
-                    return _createMatchScoutingListTile(teamList[i]);
-                  },
-                  itemCount: teamList.length,
+                SizedBox(
+                  height: deviceHeight * 0.02,
                 ),
+                MaterialSegmentedControl(
+                  children: _children,
+                  selectionIndex: _currentSelection,
+                  borderColor: Colors.grey,
+                  selectedColor: Colors.blue,
+                  unselectedColor: Colors.white,
+                  borderRadius: 8.0,
+                  onSegmentChosen: (index) {
+                    setState(() {
+                      _currentSelection = index;
+                    });
+                  },
+                ),
+                _currentSelection == 0
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        itemBuilder: (ctx, i) {
+                          return _createMatchScoutingListTile(teamList[i]);
+                        },
+                        itemCount: teamList.length,
+                      )
+                    : Center(
+                        child: Text("Hi"),
+                      ),
               ],
             ),
     );
