@@ -21,6 +21,46 @@ class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
   MatchScoutingService matchScoutingService = MatchScoutingService();
 
   int _currentSelection = 0;
+  List<MatchScoutingTeam> newTeamList = [
+    MatchScoutingTeam(
+      scoutName: "alp",
+      teamName: "Sneaky Snakes",
+      teamNo: 7200,
+      matchType: Match.Practice,
+      matchNo: "46",
+      color: "orange",
+      powerCellCount: 15,
+      autonomous: true,
+      imageProcessing: false,
+      autonomousStartingPoint: AutonomousStartingPoint.Left,
+      powerCellLocation: PowerCellLocation.Inner,
+      defense: true,
+      finalScore: 17,
+      defenseComment: "fake",
+      foul: 2,
+      techFoul: 13,
+      comment: "very good data",
+    ),
+    MatchScoutingTeam(
+      scoutName: "ceylan",
+      teamName: "Sneaky Tigers",
+      teamNo: 1532,
+      matchType: Match.Qual,
+      matchNo: "23",
+      color: "blue",
+      powerCellCount: 7,
+      autonomous: true,
+      imageProcessing: true,
+      autonomousStartingPoint: AutonomousStartingPoint.Middle,
+      powerCellLocation: PowerCellLocation.Inner,
+      defense: false,
+      finalScore: 13,
+      defenseComment: "so good data",
+      foul: 2,
+      techFoul: 14,
+      comment: "very very good data",
+    ),
+  ];
   List<MatchScoutingTeam> teamList = [];
 
   var isLoading = false;
@@ -50,7 +90,7 @@ class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
 
-    Widget _createMatchScoutingListTile(MatchScoutingTeam team) {
+    Widget _createMatchScoutingListTile(MatchScoutingTeam team, bool isNew) {
       return GestureDetector(
         onTap: () {
           Navigator.of(context).pushNamed(
@@ -65,7 +105,7 @@ class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                team.status == Status.Synced ? "Synced" : "Unsynced",
+                !isNew ? team.status == Status.Synced ? "Synced" : "Unsynced" : "New",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(
@@ -73,9 +113,9 @@ class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
               ),
               CircleAvatar(
                 backgroundColor:
-                    team.status == Status.Synced ? Colors.green : Colors.red,
+                    !isNew ? team.status == Status.Synced ? Colors.green : Colors.red : Colors.blue[800],
                 child: Icon(
-                  team.status == Status.Synced ? Icons.done : Icons.close,
+                  !isNew ? team.status == Status.Synced ? Icons.done : Icons.close : Icons.new_releases,
                   color: Colors.white,
                 ),
               ),
@@ -117,13 +157,17 @@ class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
                     ? ListView.builder(
                         shrinkWrap: true,
                         itemBuilder: (ctx, i) {
-                          return _createMatchScoutingListTile(teamList[i]);
+                          return _createMatchScoutingListTile(teamList[i], false);
                         },
                         itemCount: teamList.length,
                       )
-                    : Center(
-                        child: Text("Hi"),
-                      ),
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        itemBuilder: (ctx, i) {
+                          return _createMatchScoutingListTile(newTeamList[i], true);
+                        },
+                        itemCount: newTeamList.length,
+                      )
               ],
             ),
     );
