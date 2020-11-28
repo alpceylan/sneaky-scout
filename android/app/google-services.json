@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "51676519002",
+    "firebase_url": "https://sneakyscout-4dc71.firebaseio.com",
+    "project_id": "sneakyscout-4dc71",
+    "storage_bucket": "sneakyscout-4dc71.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:51676519002:android:3a91dcd46680695281d663",
+        "android_client_info": {
+          "package_name": "com.team7285.sneakyscout"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "51676519002-pmfin0tat5rpbe38ut26tg214ji7qi66.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDq-sF9Ww4Kn0IW3_M8PIfYbzjt8UV7FT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "51676519002-pmfin0tat5rpbe38ut26tg214ji7qi66.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "51676519002-jl5853irt9e8jcftapho1bilq0krq2pr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.team7285.sneakyscout"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
