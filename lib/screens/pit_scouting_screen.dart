@@ -178,21 +178,34 @@ class _PitScoutingScreenState extends State<PitScoutingScreen> {
                   },
                 ),
                 _currentSelection == 1
-                    ? ListView.builder(
-                        shrinkWrap: true,
-                        itemBuilder: (ctx, i) {
-                          return _createPitScoutingListTile(teamList[i], false);
-                        },
-                        itemCount: teamList.length,
-                      )
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        itemBuilder: (ctx, i) {
-                          return _createPitScoutingListTile(
-                              newTeamList[i], true);
-                        },
-                        itemCount: newTeamList.length,
-                      )
+                    ? teamList.length == 0
+                        ? Container(
+                            height: deviceHeight * 0.6,
+                            alignment: Alignment.center,
+                            child: Text("There are no saved teams."),
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemBuilder: (ctx, i) {
+                              return _createPitScoutingListTile(
+                                  teamList[i], false);
+                            },
+                            itemCount: teamList.length,
+                          )
+                    : newTeamList.length == 0
+                        ? Container(
+                            height: deviceHeight * 0.6,
+                            alignment: Alignment.center,
+                            child: Text("There are no new teams."),
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemBuilder: (ctx, i) {
+                              return _createPitScoutingListTile(
+                                  newTeamList[i], true);
+                            },
+                            itemCount: newTeamList.length,
+                          ),
               ],
             ),
     );

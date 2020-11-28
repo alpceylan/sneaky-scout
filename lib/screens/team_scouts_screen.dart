@@ -88,24 +88,36 @@ class _TeamScreenState extends State<TeamScreen> {
             },
           ),
           _currentSelection == 0
-              ? ListView.builder(
-                  shrinkWrap: true,
-                  itemBuilder: (ctx, i) {
-                    return _createMatchScoutingListTile(
-                      matchScoutingTeamList[i],
-                    );
-                  },
-                  itemCount: matchScoutingTeamList.length,
-                )
-              : ListView.builder(
-                  shrinkWrap: true,
-                  itemBuilder: (ctx, i) {
-                    return _createPitScoutingListTile(
-                      pitScoutingTeamList[i],
-                    );
-                  },
-                  itemCount: pitScoutingTeamList.length,
-                ),
+              ? matchScoutingTeamList.length == 0
+                  ? Container(
+                      height: deviceHeight * 0.6,
+                      alignment: Alignment.center,
+                      child: Text("There are no match scouting teams."),
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemBuilder: (ctx, i) {
+                        return _createMatchScoutingListTile(
+                          matchScoutingTeamList[i],
+                        );
+                      },
+                      itemCount: matchScoutingTeamList.length,
+                    )
+              : pitScoutingTeamList.length == 0
+                  ? Container(
+                      height: deviceHeight * 0.6,
+                      alignment: Alignment.center,
+                      child: Text("There are no pit scouting teams."),
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      itemBuilder: (ctx, i) {
+                        return _createPitScoutingListTile(
+                          pitScoutingTeamList[i],
+                        );
+                      },
+                      itemCount: pitScoutingTeamList.length,
+                    ),
         ],
       ),
     );

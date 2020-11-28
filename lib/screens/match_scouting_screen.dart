@@ -105,17 +105,28 @@ class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                !isNew ? team.status == Status.Synced ? "Synced" : "Unsynced" : "New",
+                !isNew
+                    ? team.status == Status.Synced
+                        ? "Synced"
+                        : "Unsynced"
+                    : "New",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 width: deviceWidth * 0.03,
               ),
               CircleAvatar(
-                backgroundColor:
-                    !isNew ? team.status == Status.Synced ? Colors.green : Colors.red : Colors.blue[800],
+                backgroundColor: !isNew
+                    ? team.status == Status.Synced
+                        ? Colors.green
+                        : Colors.red
+                    : Colors.blue[800],
                 child: Icon(
-                  !isNew ? team.status == Status.Synced ? Icons.done : Icons.close : Icons.new_releases,
+                  !isNew
+                      ? team.status == Status.Synced
+                          ? Icons.done
+                          : Icons.close
+                      : Icons.new_releases,
                   color: Colors.white,
                 ),
               ),
@@ -154,20 +165,34 @@ class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
                   },
                 ),
                 _currentSelection == 1
-                    ? ListView.builder(
-                        shrinkWrap: true,
-                        itemBuilder: (ctx, i) {
-                          return _createMatchScoutingListTile(teamList[i], false);
-                        },
-                        itemCount: teamList.length,
-                      )
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        itemBuilder: (ctx, i) {
-                          return _createMatchScoutingListTile(newTeamList[i], true);
-                        },
-                        itemCount: newTeamList.length,
-                      )
+                    ? teamList.length == 0
+                        ? Container(
+                            height: deviceHeight * 0.6,
+                            alignment: Alignment.center,
+                            child: Text("There are no saved teams."),
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemBuilder: (ctx, i) {
+                              return _createMatchScoutingListTile(
+                                  teamList[i], false);
+                            },
+                            itemCount: teamList.length,
+                          )
+                    : newTeamList.length == 0
+                        ? Container(
+                            height: deviceHeight * 0.6,
+                            alignment: Alignment.center,
+                            child: Text("There are no new teams."),
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemBuilder: (ctx, i) {
+                              return _createMatchScoutingListTile(
+                                  newTeamList[i], true);
+                            },
+                            itemCount: newTeamList.length,
+                          ),
               ],
             ),
     );
