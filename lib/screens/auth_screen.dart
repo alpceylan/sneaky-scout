@@ -1,15 +1,28 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
+// Services
+import '../services/authentication_service.dart';
+
+// Screens
+import '../screens/root_screen.dart';
+
 class AuthScreen extends StatefulWidget {
+  static const routeName = '/auth';
+
   @override
   _AuthScreenState createState() => _AuthScreenState();
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final RoundedLoadingButtonController _btnController =
       RoundedLoadingButtonController();
+
+  AuthenticationService _authService = AuthenticationService();
 
   bool isLogin = true;
 
@@ -26,12 +39,40 @@ class _AuthScreenState extends State<AuthScreen> {
     _validate() async {
       if (_formKey.currentState.validate()) {
         _formKey.currentState.save();
-        print(_name ?? "qq");
-        print(_teamNumber ?? "qq");
-        print(_mail);
-        print(_password);
-        // Authentication service will be here.
-        _btnController.success();
+        try {
+          if (isLogin) {
+            await _authService.login(
+              _mail,
+              _password,
+            );
+          } else {
+            await _authService.signup(
+              _name,
+              _teamNumber,
+              _mail,
+              _password,
+            );
+          }
+
+          _btnController.success();
+          Navigator.of(context).pushReplacementNamed(
+            RootScreen.routeName,
+          );
+        } on FirebaseAuthException catch (error) {
+          _scaffoldKey.currentState.showSnackBar(
+            SnackBar(
+              content: Text(error.message),
+              action: SnackBarAction(
+                label: 'Close',
+                onPressed: () {},
+              ),
+            ),
+          );
+        } catch (error) {
+          print(error);
+        }
+
+        _btnController.reset();
       } else {
         print("validation failed");
         _btnController.reset();
@@ -69,6 +110,7 @@ class _AuthScreenState extends State<AuthScreen> {
     }
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text("Sneaky Scout"),
       ),

@@ -18,7 +18,12 @@ class AuthenticationService {
     );
   }
 
-  Future<void> signup(String username, String email, String password) async {
+  Future<void> signup(
+    String username,
+    int teamNumber,
+    String email,
+    String password,
+  ) async {
     UserCredential result = await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
@@ -27,6 +32,7 @@ class AuthenticationService {
     await _firestore.collection('users').add({
       'userId': result.user.uid,
       'username': username,
+      'teamNumber': teamNumber,
       'email': email,
       'createdDate': DateTime.now().toString(),
     });
