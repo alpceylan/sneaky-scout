@@ -70,6 +70,7 @@ class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
       isLoading = true;
     });
     var teams = await matchScoutingService.getTeams();
+    teamList = [];
     teams.forEach((teamMap) {
       var team = MatchScoutingTeam().unmapTeam(teamMap);
       teamList.add(team);

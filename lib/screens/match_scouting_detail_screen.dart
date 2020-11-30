@@ -50,8 +50,8 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final MatchScoutingTeam team =
-        ModalRoute.of(context).settings.arguments as MatchScoutingTeam;
+    final MatchScoutingTeam team = ModalRoute.of(context).settings.arguments as MatchScoutingTeam;
+    final bool isNew = team.id == "" ? true : false;
 
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
@@ -132,6 +132,8 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
       }
 
       MatchScoutingTeam newTeam = MatchScoutingTeam(
+        id: team.id,
+        status: team.status,
         scoutName: _scoutName,
         teamName: _teamName,
         teamNo: _teamNumber,
@@ -151,7 +153,11 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
         comment: _comment,
       );
 
-      await matchScoutingService.saveTeam(newTeam);
+      if (isNew) {
+        await matchScoutingService.saveTeam(newTeam);
+      } else {
+        await matchScoutingService.updateTeam(newTeam);
+      }
     }
 
     _validate() async {

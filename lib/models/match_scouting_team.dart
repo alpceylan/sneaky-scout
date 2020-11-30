@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:uuid/uuid.dart';
 
 // Services
 import '../services/authentication_service.dart';
@@ -27,6 +28,7 @@ enum AutonomousStartingPoint {
 }
 
 class MatchScoutingTeam {
+  final String id;
   final Status status;
   final String userId;
   final String scoutName;
@@ -48,6 +50,7 @@ class MatchScoutingTeam {
   final int finalScore;
 
   MatchScoutingTeam({
+    this.id = "",
     this.status = Status.Unsynced,
     this.userId = "",
     this.scoutName,
@@ -68,6 +71,12 @@ class MatchScoutingTeam {
     this.imageProcessing,
     this.finalScore,
   });
+
+  String get idString {
+    Uuid uuid = Uuid();
+
+    return uuid.v4();
+  }
 
   String get statusString {
     return status == Status.Synced ? "synced" : "unsynced";
@@ -118,6 +127,7 @@ class MatchScoutingTeam {
 
   Future<Map<String, dynamic>> mapTeam() async {
     Map<String, dynamic> _map = {
+      "id": idString,
       "status": statusString,
       "userId": await getUserId(),
       "scoutName": scoutName,
@@ -172,6 +182,7 @@ class MatchScoutingTeam {
     }
 
     var team = MatchScoutingTeam(
+      id: teamMap["id"],
       status: teamMap["status"] == 'synced' ? Status.Synced : Status.Unsynced,
       userId: teamMap["userId"],
       scoutName: teamMap["scoutName"],

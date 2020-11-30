@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:uuid/uuid.dart';
 
 // Services
 import '../services/authentication_service.dart';
@@ -44,6 +45,7 @@ enum Funnel {
 }
 
 class PitScoutingTeam {
+  final String id;
   final Status status;
   final String userId;
   final String scoutName;
@@ -70,6 +72,7 @@ class PitScoutingTeam {
   final String comment;
 
   PitScoutingTeam({
+    this.id = "",
     this.status = Status.Unsynced,
     this.userId = "",
     this.scoutName,
@@ -93,6 +96,12 @@ class PitScoutingTeam {
     this.extra = "",
     this.comment = "",
   });
+
+  String get idString {
+    Uuid uuid = Uuid();
+
+    return uuid.v4();
+  }
 
   String get statusString {
     return status == Status.Synced ? "synced" : "unsynced";
@@ -177,6 +186,7 @@ class PitScoutingTeam {
 
   Future<Map<String, dynamic>> mapTeam() async {
     Map<String, dynamic> _map = {
+      "id": idString,
       "status": statusString,
       "userId": await getUserId(),
       "scoutName": scoutName,
@@ -265,6 +275,7 @@ class PitScoutingTeam {
     }
 
     var team = PitScoutingTeam(
+      id: teamMap["id"],
       status: status,
       userId: teamMap["userId"],
       scoutName: teamMap["scoutName"],
