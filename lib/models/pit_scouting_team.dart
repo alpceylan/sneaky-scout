@@ -1,3 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
+// Services
+import '../services/authentication_service.dart';
+
 enum Status {
   Unsynced,
   Synced,
@@ -40,6 +45,7 @@ enum Funnel {
 
 class PitScoutingTeam {
   final Status status;
+  final String userId;
   final String scoutName;
   final String teamName;
   final int teamNo;
@@ -65,6 +71,7 @@ class PitScoutingTeam {
 
   PitScoutingTeam({
     this.status = Status.Unsynced,
+    this.userId = "",
     this.scoutName,
     this.teamName,
     this.teamNo,
@@ -89,6 +96,13 @@ class PitScoutingTeam {
 
   String get statusString {
     return status == Status.Synced ? "synced" : "unsynced";
+  }
+
+  Future<String> getUserId() async {
+    AuthenticationService _authService = AuthenticationService();
+    User user = await _authService.getUser();
+
+    return user.uid;
   }
 
   String get chassisTypeString {
@@ -161,10 +175,10 @@ class PitScoutingTeam {
     return null;
   }
 
-  Map<String, dynamic> mapTeam() {
+  Future<Map<String, dynamic>> mapTeam() async {
     Map<String, dynamic> _map = {
-      // USER ID Property will be added here after Firebase integration.
       "status": statusString,
+      "userId": await getUserId(),
       "scoutName": scoutName,
       "teamName": teamName,
       "teamNo": teamNo,
@@ -252,6 +266,7 @@ class PitScoutingTeam {
 
     var team = PitScoutingTeam(
       status: status,
+      userId: teamMap["userId"],
       scoutName: teamMap["scoutName"],
       teamName: teamMap["teamName"],
       teamNo: teamMap["teamNo"],
