@@ -19,7 +19,7 @@ class AuthenticationService {
   }
 
   Future<void> signup(
-    String username,
+    String name,
     int teamNumber,
     String email,
     String password,
@@ -31,7 +31,7 @@ class AuthenticationService {
 
     await _firestore.collection('users').add({
       'userId': result.user.uid,
-      'username': username,
+      'name': name,
       'teamNumber': teamNumber,
       'email': email,
       'createdDate': DateTime.now().toString(),

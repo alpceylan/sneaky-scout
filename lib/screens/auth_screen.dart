@@ -36,43 +36,47 @@ class _AuthScreenState extends State<AuthScreen> {
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
 
-    _validate() async {
-      if (_formKey.currentState.validate()) {
-        _formKey.currentState.save();
-        try {
-          if (isLogin) {
-            await _authService.login(
-              _mail,
-              _password,
-            );
-          } else {
-            await _authService.signup(
-              _name,
-              _teamNumber,
-              _mail,
-              _password,
-            );
-          }
-
-          _btnController.success();
-          Navigator.of(context).pushReplacementNamed(
-            RootScreen.routeName,
+    Future<void> _save() async {
+      try {
+        if (isLogin) {
+          await _authService.login(
+            _mail,
+            _password,
           );
-        } on FirebaseAuthException catch (error) {
-          _scaffoldKey.currentState.showSnackBar(
-            SnackBar(
-              content: Text(error.message),
-              action: SnackBarAction(
-                label: 'Close',
-                onPressed: () {},
-              ),
-            ),
+        } else {
+          await _authService.signup(
+            _name,
+            _teamNumber,
+            _mail.toLowerCase(),
+            _password,
           );
-        } catch (error) {
-          print(error);
         }
 
+        _btnController.success();
+        Navigator.of(context).pushReplacementNamed(
+          RootScreen.routeName,
+        );
+      } on FirebaseAuthException catch (error) {
+        _scaffoldKey.currentState.showSnackBar(
+          SnackBar(
+            content: Text(error.message),
+            action: SnackBarAction(
+              label: 'Close',
+              onPressed: () {},
+            ),
+          ),
+        );
         _btnController.reset();
+      } catch (error) {
+        print(error);
+        _btnController.reset();
+      }
+    }
+
+    Future<void> _validate() async {
+      if (_formKey.currentState.validate()) {
+        _formKey.currentState.save();
+        await _save();
       } else {
         print("validation failed");
         _btnController.reset();
@@ -217,7 +221,9 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                   ),
                   controller: _btnController,
-                  onPressed: _validate,
+                  onPressed: () async {
+                    await _validate();
+                  },
                 ),
                 SizedBox(
                   height: deviceHeight * 0.035,
