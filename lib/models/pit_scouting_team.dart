@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:uuid/uuid.dart';
 
 // Services
 import '../services/authentication_service.dart';
@@ -45,7 +44,7 @@ enum Funnel {
 }
 
 class PitScoutingTeam {
-  final String id;
+  final int id;
   final Status status;
   final String userId;
   final String scoutName;
@@ -72,7 +71,7 @@ class PitScoutingTeam {
   final String comment;
 
   PitScoutingTeam({
-    this.id = "",
+    this.id,
     this.status = Status.Unsynced,
     this.userId = "",
     this.scoutName,
@@ -96,12 +95,6 @@ class PitScoutingTeam {
     this.extra = "",
     this.comment = "",
   });
-
-  String get idString {
-    Uuid uuid = Uuid();
-
-    return uuid.v4();
-  }
 
   String get statusString {
     return status == Status.Synced ? "synced" : "unsynced";
@@ -185,31 +178,59 @@ class PitScoutingTeam {
   }
 
   Future<Map<String, dynamic>> mapTeam() async {
-    Map<String, dynamic> _map = {
-      "id": idString,
-      "status": statusString,
-      "userId": await getUserId(),
-      "scoutName": scoutName,
-      "teamName": teamName,
-      "teamNo": teamNo,
-      "imageUrl": imageUrl,
-      "imageString": imageString,
-      "chassisType": chassisTypeString,
-      "climbing": climbing ? 1 : 0,
-      "climbingComment": climbingComment,
-      "imageProcessing": imageProcessing ? 1 : 0,
-      "imageProcessingType": imageProcessingTypeString,
-      "shooterType": shooterTypeString,
-      "hoodType": hoodTypeString,
-      "intake": intake ? 1 : 0,
-      "intakeType": intakeTypeString,
-      "funnelType": funnelTypeString,
-      "maxBalls": maxBalls,
-      "autonomous": autonomous ? 1 : 0,
-      "autonomousComment": autonomousComment,
-      "extra": extra,
-      "comment": comment,
-    };
+    Map<String, dynamic> _map;
+    if (id == null) {
+      _map = {
+        "status": statusString,
+        "userId": await getUserId(),
+        "scoutName": scoutName,
+        "teamName": teamName,
+        "teamNo": teamNo,
+        "imageUrl": imageUrl,
+        "imageString": imageString,
+        "chassisType": chassisTypeString,
+        "climbing": climbing ? 1 : 0,
+        "climbingComment": climbingComment,
+        "imageProcessing": imageProcessing ? 1 : 0,
+        "imageProcessingType": imageProcessingTypeString,
+        "shooterType": shooterTypeString,
+        "hoodType": hoodTypeString,
+        "intake": intake ? 1 : 0,
+        "intakeType": intakeTypeString,
+        "funnelType": funnelTypeString,
+        "maxBalls": maxBalls,
+        "autonomous": autonomous ? 1 : 0,
+        "autonomousComment": autonomousComment,
+        "extra": extra,
+        "comment": comment,
+      };
+    } else {
+      _map = {
+        "id": id,
+        "status": statusString,
+        "userId": await getUserId(),
+        "scoutName": scoutName,
+        "teamName": teamName,
+        "teamNo": teamNo,
+        "imageUrl": imageUrl,
+        "imageString": imageString,
+        "chassisType": chassisTypeString,
+        "climbing": climbing ? 1 : 0,
+        "climbingComment": climbingComment,
+        "imageProcessing": imageProcessing ? 1 : 0,
+        "imageProcessingType": imageProcessingTypeString,
+        "shooterType": shooterTypeString,
+        "hoodType": hoodTypeString,
+        "intake": intake ? 1 : 0,
+        "intakeType": intakeTypeString,
+        "funnelType": funnelTypeString,
+        "maxBalls": maxBalls,
+        "autonomous": autonomous ? 1 : 0,
+        "autonomousComment": autonomousComment,
+        "extra": extra,
+        "comment": comment,
+      };
+    }
 
     return _map;
   }

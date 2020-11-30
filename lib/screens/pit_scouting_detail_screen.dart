@@ -65,7 +65,7 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
   Widget build(BuildContext context) {
     final PitScoutingTeam team =
         ModalRoute.of(context).settings.arguments as PitScoutingTeam;
-    final bool isNew = team.id == "" ? true : false;
+    final bool isNew = team.id == null ? true : false;
 
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;

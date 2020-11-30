@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:uuid/uuid.dart';
 
 // Services
 import '../services/authentication_service.dart';
@@ -28,7 +27,7 @@ enum AutonomousStartingPoint {
 }
 
 class MatchScoutingTeam {
-  final String id;
+  final int id;
   final Status status;
   final String userId;
   final String scoutName;
@@ -50,7 +49,7 @@ class MatchScoutingTeam {
   final int finalScore;
 
   MatchScoutingTeam({
-    this.id = "",
+    this.id,
     this.status = Status.Unsynced,
     this.userId = "",
     this.scoutName,
@@ -71,12 +70,6 @@ class MatchScoutingTeam {
     this.imageProcessing,
     this.finalScore,
   });
-
-  String get idString {
-    Uuid uuid = Uuid();
-
-    return uuid.v4();
-  }
 
   String get statusString {
     return status == Status.Synced ? "synced" : "unsynced";
@@ -126,28 +119,53 @@ class MatchScoutingTeam {
   }
 
   Future<Map<String, dynamic>> mapTeam() async {
-    Map<String, dynamic> _map = {
-      "id": idString,
-      "status": statusString,
-      "userId": await getUserId(),
-      "scoutName": scoutName,
-      "teamName": teamName,
-      "teamNo": teamNo,
-      "matchType": matchTypeString,
-      "matchNo": matchNo,
-      "color": color,
-      "powerCellCount": powerCellCount,
-      "powerCellLocation": powerCellLocationString,
-      "autonomous": autonomous ? 1 : 0,
-      "autonomousStartingPoint": autonomousStartingPointString,
-      "comment": comment,
-      "defense": defense ? 1 : 0,
-      "defenseComment": defenseComment,
-      "foul": foul,
-      "techFoul": techFoul,
-      "imageProcessing": imageProcessing ? 1 : 0,
-      "finalScore": finalScore,
-    };
+    Map<String, dynamic> _map;
+    if (id == null) {
+      _map = {
+        "status": statusString,
+        "userId": await getUserId(),
+        "scoutName": scoutName,
+        "teamName": teamName,
+        "teamNo": teamNo,
+        "matchType": matchTypeString,
+        "matchNo": matchNo,
+        "color": color,
+        "powerCellCount": powerCellCount,
+        "powerCellLocation": powerCellLocationString,
+        "autonomous": autonomous ? 1 : 0,
+        "autonomousStartingPoint": autonomousStartingPointString,
+        "comment": comment,
+        "defense": defense ? 1 : 0,
+        "defenseComment": defenseComment,
+        "foul": foul,
+        "techFoul": techFoul,
+        "imageProcessing": imageProcessing ? 1 : 0,
+        "finalScore": finalScore,
+      };
+    } else {
+      _map = {
+        "id": id,
+        "status": statusString,
+        "userId": await getUserId(),
+        "scoutName": scoutName,
+        "teamName": teamName,
+        "teamNo": teamNo,
+        "matchType": matchTypeString,
+        "matchNo": matchNo,
+        "color": color,
+        "powerCellCount": powerCellCount,
+        "powerCellLocation": powerCellLocationString,
+        "autonomous": autonomous ? 1 : 0,
+        "autonomousStartingPoint": autonomousStartingPointString,
+        "comment": comment,
+        "defense": defense ? 1 : 0,
+        "defenseComment": defenseComment,
+        "foul": foul,
+        "techFoul": techFoul,
+        "imageProcessing": imageProcessing ? 1 : 0,
+        "finalScore": finalScore,
+      };
+    }
 
     return _map;
   }

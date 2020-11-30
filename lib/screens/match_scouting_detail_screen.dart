@@ -51,7 +51,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final MatchScoutingTeam team = ModalRoute.of(context).settings.arguments as MatchScoutingTeam;
-    final bool isNew = team.id == "" ? true : false;
+    final bool isNew = team.id == null ? true : false;
 
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
