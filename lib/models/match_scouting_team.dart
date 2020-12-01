@@ -118,7 +118,34 @@ class MatchScoutingTeam {
     return null;
   }
 
-  Future<Map<String, dynamic>> mapTeam() async {
+  MatchScoutingTeam changeStatus(Status newStatus) {
+    var newTeam = MatchScoutingTeam(
+      id: id,
+      status: newStatus,
+      userId: userId,
+      scoutName: scoutName,
+      teamName: teamName,
+      teamNo: teamNo,
+      matchType: matchType,
+      matchNo: matchNo,
+      color: color,
+      powerCellCount: powerCellCount,
+      powerCellLocation: powerCellLocation,
+      autonomous: autonomous,
+      autonomousStartingPoint: autonomousStartingPoint,
+      comment: comment,
+      defense: defense,
+      defenseComment: defenseComment,
+      foul: foul,
+      techFoul: techFoul,
+      imageProcessing: imageProcessing,
+      finalScore: finalScore,
+    );
+
+    return newTeam;
+  }
+
+  Future<Map<String, dynamic>> mapTeam(bool isOnline) async {
     Map<String, dynamic> _map;
     if (id == null) {
       _map = {
@@ -132,14 +159,14 @@ class MatchScoutingTeam {
         "color": color,
         "powerCellCount": powerCellCount,
         "powerCellLocation": powerCellLocationString,
-        "autonomous": autonomous ? 1 : 0,
+        "autonomous": isOnline ? autonomous : autonomous ? 1 : 0,
         "autonomousStartingPoint": autonomousStartingPointString,
         "comment": comment,
-        "defense": defense ? 1 : 0,
+        "defense": isOnline ? defense : defense ? 1 : 0,
         "defenseComment": defenseComment,
         "foul": foul,
         "techFoul": techFoul,
-        "imageProcessing": imageProcessing ? 1 : 0,
+        "imageProcessing": isOnline ? imageProcessing : imageProcessing ? 1 : 0,
         "finalScore": finalScore,
       };
     } else {
@@ -155,14 +182,14 @@ class MatchScoutingTeam {
         "color": color,
         "powerCellCount": powerCellCount,
         "powerCellLocation": powerCellLocationString,
-        "autonomous": autonomous ? 1 : 0,
+        "autonomous": isOnline ? autonomous : autonomous ? 1 : 0,
         "autonomousStartingPoint": autonomousStartingPointString,
         "comment": comment,
-        "defense": defense ? 1 : 0,
+        "defense": isOnline ? defense : defense ? 1 : 0,
         "defenseComment": defenseComment,
         "foul": foul,
         "techFoul": techFoul,
-        "imageProcessing": imageProcessing ? 1 : 0,
+        "imageProcessing": isOnline ? imageProcessing : imageProcessing ? 1 : 0,
         "finalScore": finalScore,
       };
     }
@@ -170,7 +197,7 @@ class MatchScoutingTeam {
     return _map;
   }
 
-  MatchScoutingTeam unmapTeam(Map<String, dynamic> teamMap) {
+  MatchScoutingTeam unmapTeam(Map<String, dynamic> teamMap, bool isOnline) {
     Match matchType;
     PowerCellLocation powerCellLocation;
     AutonomousStartingPoint autonomousStartingPoint;
@@ -211,14 +238,14 @@ class MatchScoutingTeam {
       color: teamMap["color"],
       powerCellCount: teamMap["powerCellCount"],
       powerCellLocation: powerCellLocation,
-      autonomous: teamMap["autonomous"] == 1 ? true : false,
+      autonomous: isOnline ? teamMap["autonomous"] : teamMap["autonomous"] == 1 ? true : false,
       autonomousStartingPoint: autonomousStartingPoint,
       comment: teamMap["comment"],
-      defense: teamMap["defense"] == 1 ? true : false,
+      defense: isOnline ? teamMap["defense"] : teamMap["defense"] == 1 ? true : false,
       defenseComment: teamMap["defenseComment"],
       foul: teamMap["foul"],
       techFoul: teamMap["techFoul"],
-      imageProcessing: teamMap["imageProcessing"] == 1 ? true : false,
+      imageProcessing: isOnline ? teamMap["imageProcessing"] : teamMap["imageProcessing"] == 1 ? true : false,
       finalScore: teamMap["finalScore"],
     );
 

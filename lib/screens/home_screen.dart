@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 
+// Services
+import '../services/online_match_scouting_service.dart';
+import '../services/match_scouting_service.dart';
+
 // Screens
 import './match_scouting_screen.dart';
 import './pit_scouting_screen.dart';
 import './team_scouts_screen.dart';
+
+// Models
+import '../models/match_scouting_team.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
@@ -13,6 +20,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  OnlineMatchScoutingService _onlineMatchScoutingService = OnlineMatchScoutingService();
+  MatchScoutingService _matchScoutingService = MatchScoutingService();
+
   int currentIndex = 0;
 
   @override
@@ -21,14 +31,16 @@ class _HomeScreenState extends State<HomeScreen> {
       AppBar(
         title: Text("Match Scouting"),
         actions: [
-          !MatchScoutingScreen().teamMode
-              ? IconButton(
-                  icon: Icon(Icons.sync),
-                  onPressed: () {
-                    print("sync button clicked.");
-                  },
-                )
-              : null
+          IconButton(
+            icon: Icon(Icons.sync),
+            onPressed: () async {
+              List<Map<String, dynamic>> teams = await _matchScoutingService.getTeams();
+              teams.forEach((teamMap) async {
+                var team = MatchScoutingTeam().unmapTeam(teamMap, false);
+                await _onlineMatchScoutingService.saveTeam(team);
+              });
+            },
+          )
         ],
       ),
       AppBar(

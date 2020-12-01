@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 // Services
 import './authentication_service.dart';
+import './match_scouting_service.dart';
 
 // Models
 import '../models/match_scouting_team.dart';
@@ -10,9 +11,12 @@ import '../models/match_scouting_team.dart';
 class OnlineMatchScoutingService {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   AuthenticationService _authService = AuthenticationService();
+  MatchScoutingService _matchScoutingService = MatchScoutingService();
 
   Future<void> saveTeam(MatchScoutingTeam team) async {
     User currentUser = await _authService.getUser();
+
+    var newTeam = team.changeStatus(Status.Synced);
 
     await _firestore
         .collection('match_scouting')
@@ -20,8 +24,10 @@ class OnlineMatchScoutingService {
         .collection('scouts')
         .doc("${team.id}")
         .set(
-          await team.mapTeam(),
+          await newTeam.mapTeam(true),
         );
+
+    await _matchScoutingService.updateTeam(newTeam);
   }
 
   Future<void> updateTeam(MatchScoutingTeam team, int id) async {
@@ -33,7 +39,7 @@ class OnlineMatchScoutingService {
         .collection('scouts')
         .doc("$id")
         .update(
-          await team.mapTeam(),
+          await team.mapTeam(true),
         );
   }
 

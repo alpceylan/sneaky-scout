@@ -11,8 +11,6 @@ import './match_scouting_detail_screen.dart';
 import '../models/match_scouting_team.dart';
 
 class MatchScoutingScreen extends StatefulWidget {
-  var teamMode = false;
-
   @override
   _MatchScoutingScreenState createState() => _MatchScoutingScreenState();
 }
@@ -72,7 +70,7 @@ class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
     var teams = await matchScoutingService.getTeams();
     teamList = [];
     teams.forEach((teamMap) {
-      var team = MatchScoutingTeam().unmapTeam(teamMap);
+      var team = MatchScoutingTeam().unmapTeam(teamMap, false);
       teamList.add(team);
     });
     setState(() {
