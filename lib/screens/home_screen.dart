@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 // Services
 import '../services/online_match_scouting_service.dart';
 import '../services/match_scouting_service.dart';
+import '../services/online_pit_scouting_service.dart';
+import '../services/pit_scouting_service.dart';
 
 // Screens
 import './match_scouting_screen.dart';
@@ -11,6 +13,7 @@ import './team_scouts_screen.dart';
 
 // Models
 import '../models/match_scouting_team.dart';
+import '../models/pit_scouting_team.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
@@ -20,8 +23,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  OnlineMatchScoutingService _onlineMatchScoutingService = OnlineMatchScoutingService();
+  OnlineMatchScoutingService _onlineMatchScoutingService =
+      OnlineMatchScoutingService();
   MatchScoutingService _matchScoutingService = MatchScoutingService();
+  OnlinePitScoutingService _onlinePitScoutingService =
+      OnlinePitScoutingService();
+  PitScoutingService _pitScoutingService = PitScoutingService();
 
   int currentIndex = 0;
 
@@ -34,7 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: Icon(Icons.sync),
             onPressed: () async {
-              List<Map<String, dynamic>> teams = await _matchScoutingService.getTeams();
+              List<Map<String, dynamic>> teams =
+                  await _matchScoutingService.getTeams();
               teams.forEach((teamMap) async {
                 var team = MatchScoutingTeam().unmapTeam(teamMap, false);
                 await _onlineMatchScoutingService.saveTeam(team);
@@ -46,14 +54,17 @@ class _HomeScreenState extends State<HomeScreen> {
       AppBar(
         title: Text("Pit Scouting"),
         actions: [
-          !PitScoutingScreen().teamMode
-              ? IconButton(
-                  icon: Icon(Icons.sync),
-                  onPressed: () {
-                    print("sync button clicked.");
-                  },
-                )
-              : null
+          IconButton(
+            icon: Icon(Icons.sync),
+            onPressed: () async {
+              List<Map<String, dynamic>> teams =
+                  await _pitScoutingService.getTeams();
+              teams.forEach((teamMap) async {
+                var team = PitScoutingTeam().unmapTeam(teamMap, false);
+                await _onlinePitScoutingService.saveTeam(team);
+              });
+            },
+          )
         ],
       ),
       AppBar(

@@ -13,8 +13,6 @@ import '../screens/pit_scouting_detail_screen.dart';
 import '../models/pit_scouting_team.dart';
 
 class PitScoutingScreen extends StatefulWidget {
-  var teamMode = false;
-
   @override
   _PitScoutingScreenState createState() => _PitScoutingScreenState();
 }
@@ -80,7 +78,7 @@ class _PitScoutingScreenState extends State<PitScoutingScreen> {
     var teams = await pitScoutingService.getTeams();
     teamList = [];
     teams.forEach((teamMap) {
-      var team = PitScoutingTeam().unmapTeam(teamMap);
+      var team = PitScoutingTeam().unmapTeam(teamMap, false);
       teamList.add(team);
     });
     setState(() {

@@ -177,7 +177,37 @@ class PitScoutingTeam {
     return null;
   }
 
-  Future<Map<String, dynamic>> mapTeam() async {
+  PitScoutingTeam changeStatus(Status newStatus) {
+    var newTeam = PitScoutingTeam(
+      id: id,
+      status: newStatus,
+      userId: userId,
+      scoutName: scoutName,
+      teamName: teamName,
+      teamNo: teamNo,
+      imageUrl: imageUrl,
+      imageString: imageString,
+      chassisType: chassisType,
+      climbing: climbing,
+      climbingComment: climbingComment,
+      imageProcessing: imageProcessing,
+      imageProcessingType: imageProcessingType,
+      shooterType: shooterType,
+      hoodType: hoodType,
+      intake: intake,
+      intakeType: intakeType,
+      funnelType: funnelType,
+      maxBalls: maxBalls,
+      autonomous: autonomous,
+      autonomousComment: autonomousComment,
+      extra: extra,
+      comment: comment,
+    );
+
+    return newTeam;
+  }
+
+  Future<Map<String, dynamic>> mapTeam(bool isOnline) async {
     Map<String, dynamic> _map;
     if (id == null) {
       _map = {
@@ -189,17 +219,17 @@ class PitScoutingTeam {
         "imageUrl": imageUrl,
         "imageString": imageString,
         "chassisType": chassisTypeString,
-        "climbing": climbing ? 1 : 0,
+        "climbing": isOnline ? climbing : climbing ? 1 : 0,
         "climbingComment": climbingComment,
-        "imageProcessing": imageProcessing ? 1 : 0,
+        "imageProcessing": isOnline ? imageProcessing : imageProcessing ? 1 : 0,
         "imageProcessingType": imageProcessingTypeString,
         "shooterType": shooterTypeString,
         "hoodType": hoodTypeString,
-        "intake": intake ? 1 : 0,
+        "intake": isOnline ? intake : intake ? 1 : 0,
         "intakeType": intakeTypeString,
         "funnelType": funnelTypeString,
         "maxBalls": maxBalls,
-        "autonomous": autonomous ? 1 : 0,
+        "autonomous": isOnline ? autonomous : autonomous ? 1 : 0,
         "autonomousComment": autonomousComment,
         "extra": extra,
         "comment": comment,
@@ -215,17 +245,17 @@ class PitScoutingTeam {
         "imageUrl": imageUrl,
         "imageString": imageString,
         "chassisType": chassisTypeString,
-        "climbing": climbing ? 1 : 0,
+        "climbing": isOnline ? climbing : climbing ? 1 : 0,
         "climbingComment": climbingComment,
-        "imageProcessing": imageProcessing ? 1 : 0,
+        "imageProcessing": isOnline ? imageProcessing : imageProcessing ? 1 : 0,
         "imageProcessingType": imageProcessingTypeString,
         "shooterType": shooterTypeString,
         "hoodType": hoodTypeString,
-        "intake": intake ? 1 : 0,
+        "intake": isOnline ? intake : intake ? 1 : 0,
         "intakeType": intakeTypeString,
         "funnelType": funnelTypeString,
         "maxBalls": maxBalls,
-        "autonomous": autonomous ? 1 : 0,
+        "autonomous": isOnline ? autonomous : autonomous ? 1 : 0,
         "autonomousComment": autonomousComment,
         "extra": extra,
         "comment": comment,
@@ -235,7 +265,7 @@ class PitScoutingTeam {
     return _map;
   }
 
-  PitScoutingTeam unmapTeam(Map<String, dynamic> teamMap) {
+  PitScoutingTeam unmapTeam(Map<String, dynamic> teamMap, bool isOnline) {
     Status status;
     Chassis chassisType;
     ImageProcessing imageProcessingType;
@@ -305,17 +335,17 @@ class PitScoutingTeam {
       imageUrl: teamMap["imageUrl"],
       imageString: teamMap["imageString"],
       chassisType: chassisType,
-      climbing: teamMap["climbing"] == 1 ? true : false,
+      climbing: isOnline ? teamMap["climbing"] : teamMap["climbing"] == 1 ? true : false,
       climbingComment: teamMap["climbingComment"],
-      imageProcessing: teamMap["imageProcessing"] == 1 ? true : false,
+      imageProcessing: isOnline ? teamMap["imageProcessing"] : teamMap["imageProcessing"] == 1 ? true : false,
       imageProcessingType: imageProcessingType,
       shooterType: shooterType,
       hoodType: hoodType,
-      intake: teamMap["intake"] == 1 ? true : false,
+      intake: isOnline ? teamMap["intake"] : teamMap["intake"] == 1 ? true : false,
       intakeType: intakeType,
       funnelType: funnelType,
       maxBalls: teamMap["maxBalls"],
-      autonomous: teamMap["autonomous"] == 1 ? true : false,
+      autonomous: isOnline ? teamMap["autonomous"] : teamMap["autonomous"] == 1 ? true : false,
       autonomousComment: teamMap["autonomousComment"],
       extra: teamMap["extra"],
       comment: teamMap["comment"],
