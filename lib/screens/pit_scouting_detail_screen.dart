@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 
 // Services
 import '../services/pit_scouting_service.dart';
+import '../services/blue_alliance_service.dart';
 
 // Models
 import '../models/pit_scouting_team.dart';
@@ -25,6 +26,7 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final PitScoutingService pitScoutingService = PitScoutingService();
+  final BlueAllianceService blueAllianceService = BlueAllianceService();
 
   final ImagePicker picker = ImagePicker();
 
@@ -819,6 +821,18 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                   onSaved: (newValue) {
                     _comment = newValue;
                   },
+                ),
+                SizedBox(
+                  height: deviceHeight * 0.02,
+                ),
+                FlatButton(
+                  onPressed: () async {
+                    await blueAllianceService.goTeamPage(_teamNumber ?? team.teamNo);
+                  },
+                  child: Text("Go to Team's Blue Alliance Page"),
+                  minWidth: double.infinity,
+                  color: Colors.blue,
+                  textColor: Colors.white,
                 ),
               ],
             ),

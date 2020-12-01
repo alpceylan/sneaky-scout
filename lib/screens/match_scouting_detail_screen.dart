@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 // Services
 import '../services/match_scouting_service.dart';
+import '../services/blue_alliance_service.dart';
 
 // Models
 import '../models/match_scouting_team.dart';
@@ -21,6 +22,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final MatchScoutingService matchScoutingService = MatchScoutingService();
+  final BlueAllianceService blueAllianceService = BlueAllianceService();
 
   int _matchInt;
   bool _autonomous;
@@ -50,7 +52,8 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final MatchScoutingTeam team = ModalRoute.of(context).settings.arguments as MatchScoutingTeam;
+    final MatchScoutingTeam team =
+        ModalRoute.of(context).settings.arguments as MatchScoutingTeam;
     final bool isNew = team.id == null ? true : false;
 
     final deviceHeight = MediaQuery.of(context).size.height;
@@ -615,6 +618,18 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                   onSaved: (newValue) {
                     _comment = newValue;
                   },
+                ),
+                SizedBox(
+                  height: deviceHeight * 0.02,
+                ),
+                FlatButton(
+                  onPressed: () async {
+                    await blueAllianceService.goTeamPage(_teamNumber ?? team.teamNo);
+                  },
+                  child: Text("Go to Team's Blue Alliance Page"),
+                  minWidth: double.infinity,
+                  color: Colors.blue,
+                  textColor: Colors.white,
                 ),
               ],
             ),
