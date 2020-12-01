@@ -13,7 +13,7 @@ import './team_scouts_screen.dart';
 
 // Models
 import '../models/match_scouting_team.dart';
-import '../models/pit_scouting_team.dart';
+import '../models/pit_scouting_team.dart' as ps;
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
@@ -45,7 +45,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   await _matchScoutingService.getTeams();
               teams.forEach((teamMap) async {
                 var team = MatchScoutingTeam().unmapTeam(teamMap, false);
-                await _onlineMatchScoutingService.saveTeam(team);
+                if (team.status != Status.Synced) {
+                  await _onlineMatchScoutingService.saveTeam(team);
+                }
               });
             },
           )
@@ -60,8 +62,10 @@ class _HomeScreenState extends State<HomeScreen> {
               List<Map<String, dynamic>> teams =
                   await _pitScoutingService.getTeams();
               teams.forEach((teamMap) async {
-                var team = PitScoutingTeam().unmapTeam(teamMap, false);
-                await _onlinePitScoutingService.saveTeam(team);
+                var team = ps.PitScoutingTeam().unmapTeam(teamMap, false);
+                if (team.status != ps.Status.Synced) {
+                  await _onlinePitScoutingService.saveTeam(team);
+                }
               });
             },
           )
