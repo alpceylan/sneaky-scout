@@ -300,6 +300,8 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
       final pickedFile = await picker.getImage(
         source: ImageSource.camera,
         imageQuality: 50,
+        maxWidth: 400,
+        maxHeight: 400,
       );
 
       setState(() {
@@ -315,6 +317,8 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
       final pickedFile = await picker.getImage(
         source: ImageSource.gallery,
         imageQuality: 50,
+        maxWidth: 400,
+        maxHeight: 400,
       );
 
       setState(() {

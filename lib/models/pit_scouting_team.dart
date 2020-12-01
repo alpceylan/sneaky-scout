@@ -207,7 +207,7 @@ class PitScoutingTeam {
     return newTeam;
   }
 
-  Future<Map<String, dynamic>> mapTeam(bool isOnline) async {
+  Future<Map<String, dynamic>> mapTeam(bool isOnline, String newImageUrl) async {
     Map<String, dynamic> _map;
     if (id == null) {
       _map = {
@@ -216,7 +216,7 @@ class PitScoutingTeam {
         "scoutName": scoutName,
         "teamName": teamName,
         "teamNo": teamNo,
-        "imageUrl": imageUrl,
+        "imageUrl": newImageUrl != "" ? newImageUrl : imageUrl,
         "imageString": imageString,
         "chassisType": chassisTypeString,
         "climbing": isOnline ? climbing : climbing ? 1 : 0,
@@ -242,7 +242,7 @@ class PitScoutingTeam {
         "scoutName": scoutName,
         "teamName": teamName,
         "teamNo": teamNo,
-        "imageUrl": imageUrl,
+        "imageUrl": newImageUrl != "" ? newImageUrl : imageUrl,
         "imageString": imageString,
         "chassisType": chassisTypeString,
         "climbing": isOnline ? climbing : climbing ? 1 : 0,
