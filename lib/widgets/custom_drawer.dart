@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // Services
 import '../services/authentication_service.dart';
@@ -13,6 +14,14 @@ class CustomDrawer extends StatelessWidget {
 
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
+
+    Future<void> goToLink(String url) async {
+      if (await canLaunch(url)) {
+        await launch(url);
+      } else {
+        throw "Could not launch $url";
+      }
+    }
 
     return Drawer(
       child: Column(
@@ -31,22 +40,22 @@ class CustomDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.whatshot),
             title: Text("About Sneaky Snakes"),
-            onTap: () {
-              print("sneaky snakes");
+            onTap: () async {
+              await goToLink("http://www.team7285.com/about/#whoarewe");
             },
           ),
           ListTile(
             leading: Icon(Icons.code),
             title: Text("Check app repo"),
-            onTap: () {
-              print("Check app repo");
+            onTap: () async {
+              await goToLink("https://github.com/alpceylan/sneaky-scout");
             },
           ),
           ListTile(
             leading: Icon(Icons.question_answer),
             title: Text("Go to Community Discord"),
-            onTap: () {
-              print("go to community discord");
+            onTap: () async {
+              await goToLink("https://discord.gg/ebu74U5qeF");
             },
           ),
           ListTile(
@@ -88,18 +97,18 @@ class CustomDrawer extends StatelessWidget {
             leading: Icon(Icons.text_snippet),
             title: Text("Get Started"),
             onTap: () {
-              print("go to community discord");
+              print("empty for now");
             },
           ),
           ListTile(
             leading: Icon(Icons.help),
             title: Text("How to use"),
             onTap: () {
-              print("go to community discord");
+              print("empty for now");
             },
           ),
           SizedBox(
-            height: deviceHeight * 0.1,
+            height: deviceHeight * 0.13,
           ),
         ],
       ),
