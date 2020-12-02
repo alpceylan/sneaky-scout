@@ -145,62 +145,65 @@ class _TeamScreenState extends State<TeamScreen> {
         ? Center(
             child: CircularProgressIndicator(),
           )
-        : RefreshIndicator(
-            onRefresh: () async {
-              await getTeams();
-            },
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: deviceHeight * 0.02,
-                  ),
-                  MaterialSegmentedControl(
-                    children: _children,
-                    selectionIndex: _currentSelection,
-                    borderColor: Colors.grey,
-                    selectedColor: Colors.blue,
-                    unselectedColor: Colors.white,
-                    borderRadius: 8.0,
-                    onSegmentChosen: (index) {
-                      setState(() {
-                        _currentSelection = index;
-                      });
-                    },
-                  ),
-                  _currentSelection == 0
-                      ? matchScoutingTeamList.length == 0
-                          ? Container(
-                              height: deviceHeight * 0.6,
-                              alignment: Alignment.center,
-                              child: Text("There are no match scouting teams."),
-                            )
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              itemBuilder: (ctx, i) {
-                                return _createMatchScoutingListTile(
-                                  matchScoutingTeamList[i],
-                                );
-                              },
-                              itemCount: matchScoutingTeamList.length,
-                            )
-                      : pitScoutingTeamList.length == 0
-                          ? Container(
-                              height: deviceHeight * 0.6,
-                              alignment: Alignment.center,
-                              child: Text("There are no pit scouting teams."),
-                            )
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              itemBuilder: (ctx, i) {
-                                return _createPitScoutingListTile(
-                                  pitScoutingTeamList[i],
-                                );
-                              },
-                              itemCount: pitScoutingTeamList.length,
-                            ),
-                ],
+        : SingleChildScrollView(
+            child: RefreshIndicator(
+              onRefresh: () async {
+                await getTeams();
+              },
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: deviceHeight * 0.02,
+                    ),
+                    MaterialSegmentedControl(
+                      children: _children,
+                      selectionIndex: _currentSelection,
+                      borderColor: Colors.grey,
+                      selectedColor: Colors.blue,
+                      unselectedColor: Colors.white,
+                      borderRadius: 8.0,
+                      onSegmentChosen: (index) {
+                        setState(() {
+                          _currentSelection = index;
+                        });
+                      },
+                    ),
+                    _currentSelection == 0
+                        ? matchScoutingTeamList.length == 0
+                            ? Container(
+                                height: deviceHeight * 0.6,
+                                alignment: Alignment.center,
+                                child:
+                                    Text("There are no match scouting teams."),
+                              )
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                itemBuilder: (ctx, i) {
+                                  return _createMatchScoutingListTile(
+                                    matchScoutingTeamList[i],
+                                  );
+                                },
+                                itemCount: matchScoutingTeamList.length,
+                              )
+                        : pitScoutingTeamList.length == 0
+                            ? Container(
+                                height: deviceHeight * 0.6,
+                                alignment: Alignment.center,
+                                child: Text("There are no pit scouting teams."),
+                              )
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                itemBuilder: (ctx, i) {
+                                  return _createPitScoutingListTile(
+                                    pitScoutingTeamList[i],
+                                  );
+                                },
+                                itemCount: pitScoutingTeamList.length,
+                              ),
+                  ],
+                ),
               ),
             ),
           );
