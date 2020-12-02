@@ -5,7 +5,7 @@ class AuthenticationService {
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<User> getUser() async {
+  User getUser() {
     User currentUser = _firebaseAuth.currentUser;
 
     return currentUser;
@@ -27,6 +27,10 @@ class AuthenticationService {
     UserCredential result = await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
+    );
+
+    result.user.updateProfile(
+      displayName: name,
     );
 
     await _firestore.collection('users').add({

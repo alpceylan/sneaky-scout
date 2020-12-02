@@ -19,20 +19,6 @@ class _RootScreenState extends State<RootScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: _authService.getUser(),
-      builder: (ctx, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Container(
-            alignment: Alignment.center,
-            child: CircularProgressIndicator(),
-          );
-        }
-        if (snapshot.data != null) {
-          return HomeScreen();
-        }
-        return AuthScreen();
-      },
-    );
+    return _authService.getUser() != null ? HomeScreen() : AuthScreen();
   }
 }

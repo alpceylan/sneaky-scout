@@ -15,6 +15,9 @@ import './team_scouts_screen.dart';
 import '../models/match_scouting_team.dart';
 import '../models/pit_scouting_team.dart' as ps;
 
+// Widgets
+import '../widgets/custom_drawer.dart';
+
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
 
@@ -85,6 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: appBars[currentIndex],
       body: screens[currentIndex],
+      drawer: CustomDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         items: [
