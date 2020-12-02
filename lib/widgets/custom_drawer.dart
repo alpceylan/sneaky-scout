@@ -11,9 +11,11 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     AuthenticationService _authService = AuthenticationService();
 
+    final deviceHeight = MediaQuery.of(context).size.height;
+    final deviceWidth = MediaQuery.of(context).size.width;
+
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
+      child: Column(
         children: [
           UserAccountsDrawerHeader(
             accountName: Text(
@@ -22,6 +24,9 @@ class CustomDrawer extends StatelessWidget {
             accountEmail: Text(
               _authService.getUser().email,
             ),
+          ),
+          SizedBox(
+            height: deviceHeight * 0.03,
           ),
           ListTile(
             leading: Icon(Icons.whatshot),
@@ -52,6 +57,49 @@ class CustomDrawer extends StatelessWidget {
 
               Navigator.of(context).pushReplacementNamed(RootScreen.routeName);
             },
+          ),
+          Spacer(),
+          Divider(
+            endIndent: 10,
+            indent: 10,
+            color: Colors.grey[350],
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              top: deviceHeight * 0.012,
+              left: deviceWidth * 0.06,
+              bottom: deviceHeight * 0.003,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  "DOCUMENTATION",
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.text_snippet),
+            title: Text("Get Started"),
+            onTap: () {
+              print("go to community discord");
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.help),
+            title: Text("How to use"),
+            onTap: () {
+              print("go to community discord");
+            },
+          ),
+          SizedBox(
+            height: deviceHeight * 0.1,
           ),
         ],
       ),
