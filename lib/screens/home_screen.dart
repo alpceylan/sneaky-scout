@@ -62,10 +62,9 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: Icon(Icons.sync),
             onPressed: () async {
-              List<Map<String, dynamic>> teams =
+              List<ps.PitScoutingTeam> teamList =
                   await _pitScoutingService.getTeams();
-              teams.forEach((teamMap) async {
-                var team = ps.PitScoutingTeam().unmapTeam(teamMap, false);
+              teamList.forEach((team) async {
                 if (team.status != ps.Status.Synced) {
                   await _onlinePitScoutingService.saveTeam(team);
                 }

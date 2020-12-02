@@ -16,7 +16,7 @@ class OnlinePitScoutingService {
   PitScoutingService _pitScoutingService = PitScoutingService();
 
   Future<void> saveTeam(PitScoutingTeam team) async {
-    User currentUser = await _authService.getUser();
+    User currentUser = _authService.getUser();
 
     var newTeam = team.changeStatus(Status.Synced);
 

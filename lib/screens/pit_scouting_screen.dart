@@ -75,12 +75,7 @@ class _PitScoutingScreenState extends State<PitScoutingScreen> {
     setState(() {
       isLoading = true;
     });
-    var teams = await pitScoutingService.getTeams();
-    teamList = [];
-    teams.forEach((teamMap) {
-      var team = PitScoutingTeam().unmapTeam(teamMap, false);
-      teamList.add(team);
-    });
+    teamList = await pitScoutingService.getTeams();
     setState(() {
       isLoading = false;
     });
