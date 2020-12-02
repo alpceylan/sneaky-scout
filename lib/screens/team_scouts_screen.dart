@@ -44,7 +44,9 @@ class _TeamScreenState extends State<TeamScreen> {
         await _matchScoutingService.getTeams();
     matchScouts.forEach((teamMap) {
       var team = ms.MatchScoutingTeam().unmapTeam(teamMap, false);
-      matchScoutingTeamList.add(team);
+      if (team.status == ms.Status.Synced) {
+        matchScoutingTeamList.add(team);
+      }
     });
     List<ms.MatchScoutingTeam> onlineMatchScouts =
         await _onlineMatchScoutingService.getTeams();
@@ -62,7 +64,9 @@ class _TeamScreenState extends State<TeamScreen> {
     List<Map<String, dynamic>> pitScouts = await _pitScoutingService.getTeams();
     pitScouts.forEach((teamMap) {
       var team = PitScoutingTeam().unmapTeam(teamMap, false);
-      pitScoutingTeamList.add(team);
+      if (team.status == Status.Synced) {
+        pitScoutingTeamList.add(team);
+      }
     });
     List<PitScoutingTeam> onlinePitScouts =
         await _onlinePitScoutingService.getTeams();
@@ -99,26 +103,6 @@ class _TeamScreenState extends State<TeamScreen> {
         child: ListTile(
           title: Text(team.scoutName),
           subtitle: Text("${team.teamNo} - ${team.teamName}"),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                team.status == ms.Status.Synced ? "Synced" : "Unsynced",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                width: deviceWidth * 0.03,
-              ),
-              CircleAvatar(
-                backgroundColor:
-                    team.status == ms.Status.Synced ? Colors.green : Colors.red,
-                child: Icon(
-                  team.status == ms.Status.Synced ? Icons.done : Icons.close,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
         ),
       );
     }
@@ -139,26 +123,6 @@ class _TeamScreenState extends State<TeamScreen> {
           ),
           title: Text(team.scoutName),
           subtitle: Text("${team.teamNo} - ${team.teamName}"),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                team.status == Status.Synced ? "Synced" : "Unsynced",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                width: deviceWidth * 0.03,
-              ),
-              CircleAvatar(
-                backgroundColor:
-                    team.status == Status.Synced ? Colors.green : Colors.red,
-                child: Icon(
-                  team.status == Status.Synced ? Icons.done : Icons.close,
-                  color: Colors.white,
-                ),
-              ),
-            ],
-          ),
         ),
       );
     }
