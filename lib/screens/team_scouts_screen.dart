@@ -3,6 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:material_segmented_control/material_segmented_control.dart';
 
+// Services
+import '../services/match_scouting_service.dart';
+import '../services/online_match_scouting_service.dart';
+import '../services/pit_scouting_service.dart';
+import '../services/online_pit_scouting_service.dart';
+
 // Screens
 import './pit_scouting_detail_screen.dart';
 import './match_scouting_detail_screen.dart';
@@ -17,15 +23,70 @@ class TeamScreen extends StatefulWidget {
 }
 
 class _TeamScreenState extends State<TeamScreen> {
+  MatchScoutingService _matchScoutingService = MatchScoutingService();
+  OnlineMatchScoutingService _onlineMatchScoutingService =
+      OnlineMatchScoutingService();
+  PitScoutingService _pitScoutingService = PitScoutingService();
+  OnlinePitScoutingService _onlinePitScoutingService =
+      OnlinePitScoutingService();
+
   int _currentSelection = 0;
+
+  List<ms.MatchScoutingTeam> matchScoutingTeamList = [];
+  List<PitScoutingTeam> pitScoutingTeamList = [];
+
+  Future<void> getTeams() async {
+    matchScoutingTeamList = [];
+    pitScoutingTeamList = [];
+
+    // Match Scouting
+    List<Map<String, dynamic>> matchScouts =
+        await _matchScoutingService.getTeams();
+    matchScouts.forEach((teamMap) {
+      var team = ms.MatchScoutingTeam().unmapTeam(teamMap, false);
+      matchScoutingTeamList.add(team);
+    });
+    List<ms.MatchScoutingTeam> onlineMatchScouts =
+        await _onlineMatchScoutingService.getTeams();
+    onlineMatchScouts.forEach((newTeam) {
+      var teamExist = matchScoutingTeamList.firstWhere(
+        (team) => team.id == newTeam.id,
+        orElse: () => null,
+      );
+      if (teamExist == null) {
+        matchScoutingTeamList.add(newTeam);
+      }
+    });
+
+    // Pit Scouting
+    List<Map<String, dynamic>> pitScouts = await _pitScoutingService.getTeams();
+    pitScouts.forEach((teamMap) {
+      var team = PitScoutingTeam().unmapTeam(teamMap, false);
+      pitScoutingTeamList.add(team);
+    });
+    List<PitScoutingTeam> onlinePitScouts =
+        await _onlinePitScoutingService.getTeams();
+    onlinePitScouts.forEach((newTeam) {
+      var teamExist = pitScoutingTeamList.firstWhere(
+        (team) => team.id == newTeam.id,
+        orElse: () => null,
+      );
+      if (teamExist == null) {
+        pitScoutingTeamList.add(newTeam);
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    getTeams();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
-
-    List<ms.MatchScoutingTeam> matchScoutingTeamList = [];
-    List<PitScoutingTeam> pitScoutingTeamList = [];
 
     Widget _createMatchScoutingListTile(ms.MatchScoutingTeam team) {
       return GestureDetector(
@@ -38,6 +99,26 @@ class _TeamScreenState extends State<TeamScreen> {
         child: ListTile(
           title: Text(team.scoutName),
           subtitle: Text("${team.teamNo} - ${team.teamName}"),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                team.status == ms.Status.Synced ? "Synced" : "Unsynced",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                width: deviceWidth * 0.03,
+              ),
+              CircleAvatar(
+                backgroundColor:
+                    team.status == ms.Status.Synced ? Colors.green : Colors.red,
+                child: Icon(
+                  team.status == ms.Status.Synced ? Icons.done : Icons.close,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -58,6 +139,26 @@ class _TeamScreenState extends State<TeamScreen> {
           ),
           title: Text(team.scoutName),
           subtitle: Text("${team.teamNo} - ${team.teamName}"),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                team.status == Status.Synced ? "Synced" : "Unsynced",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                width: deviceWidth * 0.03,
+              ),
+              CircleAvatar(
+                backgroundColor:
+                    team.status == Status.Synced ? Colors.green : Colors.red,
+                child: Icon(
+                  team.status == Status.Synced ? Icons.done : Icons.close,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }

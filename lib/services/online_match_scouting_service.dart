@@ -10,60 +10,41 @@ import '../models/match_scouting_team.dart';
 
 class OnlineMatchScoutingService {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  AuthenticationService _authService = AuthenticationService();
   MatchScoutingService _matchScoutingService = MatchScoutingService();
 
   Future<void> saveTeam(MatchScoutingTeam team) async {
-    User currentUser = await _authService.getUser();
-
     var newTeam = team.changeStatus(Status.Synced);
 
     await _firestore
         .collection('match_scouting')
-        .doc(currentUser.uid)
-        .collection('scouts')
-        .doc("${team.id}")
-        .set(
-          await newTeam.mapTeam(true),
-        );
+        .add(await newTeam.mapTeam(true));
 
     await _matchScoutingService.updateTeam(newTeam);
   }
 
   Future<void> updateTeam(MatchScoutingTeam team, int id) async {
-    User currentUser = await _authService.getUser();
-
-    await _firestore
-        .collection('match_scouting')
-        .doc(currentUser.uid)
-        .collection('scouts')
-        .doc("$id")
-        .update(
+    await _firestore.collection('match_scouting').doc("$id").update(
           await team.mapTeam(true),
         );
   }
 
-  Future<List<DocumentSnapshot>> getTeams() async {
-    User currentUser = await _authService.getUser();
+  Future<List<MatchScoutingTeam>> getTeams() async {
+    List<MatchScoutingTeam> teams = [];
 
     QuerySnapshot result = await _firestore
         .collection('match_scouting')
-        .doc(currentUser.uid)
-        .collection('scouts')
         .orderBy('id', descending: false)
         .get();
 
-    return result.docs;
+    result.docs.forEach((teamMap) {
+      var team = MatchScoutingTeam().unmapTeam(teamMap.data(), true);
+      teams.add(team);
+    });
+
+    return teams;
   }
 
-  Future<void> deleteNote(int id) async {
-    User currentUser = await _authService.getUser();
-
-    await _firestore
-        .collection('match_scouting')
-        .doc(currentUser.uid)
-        .collection('scouts')
-        .doc("$id")
-        .delete();
+  Future<void> deleteTeam(int id) async {
+    await _firestore.collection('match_scouting').doc("$id").delete();
   }
 }

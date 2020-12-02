@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -23,10 +20,11 @@ class OnlinePitScoutingService {
 
     var newTeam = team.changeStatus(Status.Synced);
 
-    final ref = _storage
-        .ref()
-        .child('images')
-        .child(DateTime.now().toIso8601String() + currentUser.uid + "${newTeam.id}" + '.jpg');
+    final ref = _storage.ref().child('images').child(
+        DateTime.now().toIso8601String() +
+            currentUser.uid +
+            "${newTeam.id}" +
+            '.jpg');
 
     await ref.putString(
       newTeam.imageString,
@@ -34,12 +32,7 @@ class OnlinePitScoutingService {
       metadata: SettableMetadata(contentType: "image/jpg"),
     );
 
-    await _firestore
-        .collection('pit_scouting')
-        .doc(currentUser.uid)
-        .collection('scouts')
-        .doc("${team.id}")
-        .set(
+    await _firestore.collection('pit_scouting').add(
           await newTeam.mapTeam(true, await ref.getDownloadURL()),
         );
 
@@ -47,39 +40,28 @@ class OnlinePitScoutingService {
   }
 
   Future<void> updateTeam(PitScoutingTeam team, int id) async {
-    User currentUser = await _authService.getUser();
-
-    await _firestore
-        .collection('pit_scouting')
-        .doc(currentUser.uid)
-        .collection('scouts')
-        .doc("$id")
-        .update(
+    await _firestore.collection('pit_scouting').doc("$id").update(
           await team.mapTeam(true, ""),
         );
   }
 
-  Future<List<DocumentSnapshot>> getTeams() async {
-    User currentUser = await _authService.getUser();
+  Future<List<PitScoutingTeam>> getTeams() async {
+    List<PitScoutingTeam> teams = [];
 
     QuerySnapshot result = await _firestore
         .collection('pit_scouting')
-        .doc(currentUser.uid)
-        .collection('scouts')
         .orderBy('id', descending: false)
         .get();
 
-    return result.docs;
+    result.docs.forEach((teamMap) {
+      var team = PitScoutingTeam().unmapTeam(teamMap.data(), true);
+      teams.add(team);
+    });
+
+    return teams;
   }
 
-  Future<void> deleteNote(int id) async {
-    User currentUser = await _authService.getUser();
-
-    await _firestore
-        .collection('pit_scouting')
-        .doc(currentUser.uid)
-        .collection('scouts')
-        .doc("$id")
-        .delete();
+  Future<void> deleteTeam(int id) async {
+    await _firestore.collection('pit_scouting').doc("$id").delete();
   }
 }
