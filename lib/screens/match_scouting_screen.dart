@@ -140,60 +140,65 @@ class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
       1: Text('      Saved       '),
     };
 
-    return Container(
-      child: isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : Column(
-              children: [
-                SizedBox(
-                  height: deviceHeight * 0.02,
-                ),
-                MaterialSegmentedControl(
-                  children: _children,
-                  selectionIndex: _currentSelection,
-                  borderColor: Colors.grey,
-                  selectedColor: Colors.blue,
-                  unselectedColor: Colors.white,
-                  borderRadius: 8.0,
-                  onSegmentChosen: (index) {
-                    setState(() {
-                      _currentSelection = index;
-                    });
-                  },
-                ),
-                _currentSelection == 1
-                    ? teamList.length == 0
-                        ? Container(
-                            height: deviceHeight * 0.6,
-                            alignment: Alignment.center,
-                            child: Text("There are no saved teams."),
-                          )
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            itemBuilder: (ctx, i) {
-                              return _createMatchScoutingListTile(
-                                  teamList[i], false);
-                            },
-                            itemCount: teamList.length,
-                          )
-                    : newTeamList.length == 0
-                        ? Container(
-                            height: deviceHeight * 0.6,
-                            alignment: Alignment.center,
-                            child: Text("There are no new teams."),
-                          )
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            itemBuilder: (ctx, i) {
-                              return _createMatchScoutingListTile(
-                                  newTeamList[i], true);
-                            },
-                            itemCount: newTeamList.length,
-                          ),
-              ],
+    return isLoading
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : RefreshIndicator(
+            onRefresh: () async {
+              await getTeams();
+            },
+            child: Container(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: deviceHeight * 0.02,
+                  ),
+                  MaterialSegmentedControl(
+                    children: _children,
+                    selectionIndex: _currentSelection,
+                    borderColor: Colors.grey,
+                    selectedColor: Colors.blue,
+                    unselectedColor: Colors.white,
+                    borderRadius: 8.0,
+                    onSegmentChosen: (index) {
+                      setState(() {
+                        _currentSelection = index;
+                      });
+                    },
+                  ),
+                  _currentSelection == 1
+                      ? teamList.length == 0
+                          ? Container(
+                              height: deviceHeight * 0.6,
+                              alignment: Alignment.center,
+                              child: Text("There are no saved teams."),
+                            )
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              itemBuilder: (ctx, i) {
+                                return _createMatchScoutingListTile(
+                                    teamList[i], false);
+                              },
+                              itemCount: teamList.length,
+                            )
+                      : newTeamList.length == 0
+                          ? Container(
+                              height: deviceHeight * 0.6,
+                              alignment: Alignment.center,
+                              child: Text("There are no new teams."),
+                            )
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              itemBuilder: (ctx, i) {
+                                return _createMatchScoutingListTile(
+                                    newTeamList[i], true);
+                              },
+                              itemCount: newTeamList.length,
+                            ),
+                ],
+              ),
             ),
-    );
+          );
   }
 }
