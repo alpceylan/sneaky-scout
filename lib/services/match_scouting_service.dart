@@ -21,7 +21,7 @@ class MatchScoutingService {
     var teams = await _ourDatabase.getAll('matchScouting');
     teams.forEach((teamMap) {
       var team = MatchScoutingTeam().unmapTeam(teamMap, false);
-      if (team.userId == _authService.getUser().uid) {
+      if (team.userId == _authService.currentUser.uid) {
         teamList.add(team);
       }
     });

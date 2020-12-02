@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:image_picker/image_picker.dart';
 
 // Services
 import '../services/authentication_service.dart';
@@ -12,6 +15,8 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     AuthenticationService _authService = AuthenticationService();
 
+    ImagePicker picker = ImagePicker();
+
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
 
@@ -23,15 +28,88 @@ class CustomDrawer extends StatelessWidget {
       }
     }
 
+    Future _getImageFromCamera() async {
+      final pickedFile = await picker.getImage(
+        source: ImageSource.camera,
+        imageQuality: 50,
+        maxWidth: 400,
+        maxHeight: 400,
+      );
+
+      File image = File(pickedFile.path);
+      await _authService.updateCurrentUserProfilePicture(image);
+    }
+
+    Future _getImageFromGallery() async {
+      final pickedFile = await picker.getImage(
+        source: ImageSource.gallery,
+        imageQuality: 50,
+        maxWidth: 400,
+        maxHeight: 400,
+      );
+
+      File image = File(pickedFile.path);
+      await _authService.updateCurrentUserProfilePicture(image);
+    }
+
+    void _showPicker(BuildContext ctx) {
+      showModalBottomSheet(
+        context: ctx,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: Wrap(
+                children: [
+                  ListTile(
+                      leading: Icon(
+                        Icons.photo_library,
+                      ),
+                      title: Text('Photo Library'),
+                      onTap: () {
+                        _getImageFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  ListTile(
+                    leading: Icon(
+                      Icons.photo_camera,
+                    ),
+                    title: Text('Camera'),
+                    onTap: () {
+                      _getImageFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    }
+
     return Drawer(
       child: Column(
         children: [
           UserAccountsDrawerHeader(
+            currentAccountPicture: GestureDetector(
+              onTap: () {
+                _showPicker(context);
+              },
+              child: CircleAvatar(
+                backgroundImage: _authService.currentUser.photoURL != null
+                    ? NetworkImage(
+                        _authService.currentUser.photoURL,
+                      )
+                    : AssetImage(
+                        "assets/images/default_profile_photo.png",
+                      ),
+              ),
+            ),
             accountName: Text(
-              _authService.getUser().displayName,
+              _authService.currentUser.displayName,
             ),
             accountEmail: Text(
-              _authService.getUser().email,
+              _authService.currentUser.email,
             ),
           ),
           SizedBox(

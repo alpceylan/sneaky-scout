@@ -8,6 +8,7 @@ import '../services/match_scouting_service.dart';
 import '../services/online_match_scouting_service.dart';
 import '../services/pit_scouting_service.dart';
 import '../services/online_pit_scouting_service.dart';
+import '../services/authentication_service.dart';
 
 // Screens
 import './pit_scouting_detail_screen.dart';
@@ -16,6 +17,7 @@ import './match_scouting_detail_screen.dart';
 // Models
 import '../models/pit_scouting_team.dart';
 import '../models/match_scouting_team.dart' as ms;
+import '../models/custom_user.dart';
 
 class TeamScreen extends StatefulWidget {
   @override
@@ -29,12 +31,14 @@ class _TeamScreenState extends State<TeamScreen> {
   PitScoutingService _pitScoutingService = PitScoutingService();
   OnlinePitScoutingService _onlinePitScoutingService =
       OnlinePitScoutingService();
+  AuthenticationService _authService = AuthenticationService();
 
   int _currentSelection = 0;
   var isLoading = false;
 
   List<ms.MatchScoutingTeam> matchScoutingTeamList = [];
   List<PitScoutingTeam> pitScoutingTeamList = [];
+  List<CustomUser> userList = [];
 
   Future<void> getTeams() async {
     setState(() {
@@ -43,6 +47,7 @@ class _TeamScreenState extends State<TeamScreen> {
 
     matchScoutingTeamList = [];
     pitScoutingTeamList = [];
+    userList = [];
 
     // Match Scouting
     List<ms.MatchScoutingTeam> msTeamList =
@@ -83,6 +88,9 @@ class _TeamScreenState extends State<TeamScreen> {
       }
     });
 
+    // User
+    userList = await _authService.getUsers();
+
     setState(() {
       isLoading = false;
     });
@@ -100,6 +108,10 @@ class _TeamScreenState extends State<TeamScreen> {
     final deviceWidth = MediaQuery.of(context).size.width;
 
     Widget _createMatchScoutingListTile(ms.MatchScoutingTeam team) {
+      CustomUser user = userList.firstWhere(
+        (user) => user.userId == team.userId,
+      );
+
       return GestureDetector(
         onTap: () {
           Navigator.of(context).pushNamed(
@@ -110,11 +122,76 @@ class _TeamScreenState extends State<TeamScreen> {
         child: ListTile(
           title: Text(team.scoutName),
           subtitle: Text("${team.teamNo} - ${team.teamName}"),
+          trailing: user.userId == _authService.currentUser.uid
+              ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      team.status == ms.Status.Synced ? "Synced" : "Unsynced",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      width: deviceWidth * 0.03,
+                    ),
+                    CircleAvatar(
+                      backgroundColor: team.status == ms.Status.Synced
+                          ? Colors.green
+                          : Colors.red,
+                      child: Icon(
+                        team.status == ms.Status.Synced
+                            ? Icons.done
+                            : Icons.close,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          user.name,
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                            fontSize: 12,
+                          ),
+                        ),
+                        Text(
+                          "${user.teamNumber}",
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                            fontSize: 10,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: deviceWidth * 0.025,
+                    ),
+                    CircleAvatar(
+                      backgroundImage: user.photoUrl != null
+                          ? NetworkImage(
+                              user.photoUrl,
+                            )
+                          : AssetImage(
+                              "assets/images/default_profile_photo.png",
+                            ),
+                    ),
+                  ],
+                ),
         ),
       );
     }
 
     Widget _createPitScoutingListTile(PitScoutingTeam team) {
+      CustomUser user = userList.firstWhere(
+        (user) => user.userId == team.userId,
+      );
+
       return GestureDetector(
         onTap: () {
           Navigator.of(context).pushNamed(
@@ -130,6 +207,65 @@ class _TeamScreenState extends State<TeamScreen> {
           ),
           title: Text(team.scoutName),
           subtitle: Text("${team.teamNo} - ${team.teamName}"),
+          trailing: user.userId == _authService.currentUser.uid
+              ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      team.status == Status.Synced ? "Synced" : "Unsynced",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      width: deviceWidth * 0.03,
+                    ),
+                    CircleAvatar(
+                      backgroundColor: team.status == Status.Synced
+                          ? Colors.green
+                          : Colors.red,
+                      child: Icon(
+                        team.status == Status.Synced ? Icons.done : Icons.close,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                )
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          user.name,
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                            fontSize: 12,
+                          ),
+                        ),
+                        Text(
+                          "${user.teamNumber}",
+                          style: TextStyle(
+                            color: Colors.grey[700],
+                            fontSize: 11,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: deviceWidth * 0.025,
+                    ),
+                    CircleAvatar(
+                      backgroundImage: user.photoUrl != null
+                          ? NetworkImage(
+                              user.photoUrl,
+                            )
+                          : AssetImage(
+                              "assets/images/default_profile_photo.png",
+                            ),
+                    ),
+                  ],
+                ),
         ),
       );
     }

@@ -22,7 +22,7 @@ class PitScoutingService {
     var teams = await _ourDatabase.getAll('pitScouting');
     teams.forEach((teamMap) {
       var team = PitScoutingTeam().unmapTeam(teamMap, false);
-      if (team.userId == _authService.getUser().uid) {
+      if (team.userId == _authService.currentUser.uid) {
         teamList.add(team);
       }
     });

@@ -19,6 +19,6 @@ class _RootScreenState extends State<RootScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return _authService.getUser() != null ? HomeScreen() : AuthScreen();
+    return _authService.currentUser != null ? HomeScreen() : AuthScreen();
   }
 }

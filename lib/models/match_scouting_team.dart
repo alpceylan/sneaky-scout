@@ -77,7 +77,7 @@ class MatchScoutingTeam {
 
   Future<String> getUserId() async {
     AuthenticationService _authService = AuthenticationService();
-    User user = await _authService.getUser();
+    User user = _authService.currentUser;
 
     return user.uid;
   }

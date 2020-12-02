@@ -330,7 +330,7 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
       });
     }
 
-    _showPicker(BuildContext ctx) {
+    void _showPicker(BuildContext ctx) {
       showModalBottomSheet(
         context: ctx,
         builder: (BuildContext bc) {
@@ -831,7 +831,8 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                 ),
                 FlatButton(
                   onPressed: () async {
-                    await blueAllianceService.goTeamPage(_teamNumber ?? team.teamNo);
+                    await blueAllianceService
+                        .goTeamPage(_teamNumber ?? team.teamNo);
                   },
                   child: Text("Go to Team's Blue Alliance Page"),
                   minWidth: double.infinity,

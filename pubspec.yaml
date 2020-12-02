@@ -33,6 +33,7 @@ flutter:
 
   assets:
     - assets/images/robot.jpg
+    - assets/images/default_profile_photo.png
 
   # fonts:
   #   - family: Schyler
