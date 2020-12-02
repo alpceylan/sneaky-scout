@@ -45,10 +45,9 @@ class _TeamScreenState extends State<TeamScreen> {
     pitScoutingTeamList = [];
 
     // Match Scouting
-    List<Map<String, dynamic>> matchScouts =
+    List<ms.MatchScoutingTeam> msTeamList =
         await _matchScoutingService.getTeams();
-    matchScouts.forEach((teamMap) {
-      var team = ms.MatchScoutingTeam().unmapTeam(teamMap, false);
+    msTeamList.forEach((team) {
       if (team.status == ms.Status.Synced) {
         matchScoutingTeamList.add(team);
       }
@@ -66,8 +65,8 @@ class _TeamScreenState extends State<TeamScreen> {
     });
 
     // Pit Scouting
-    List<PitScoutingTeam> teamList = await _pitScoutingService.getTeams();
-    teamList.forEach((team) {
+    List<PitScoutingTeam> psTeamList = await _pitScoutingService.getTeams();
+    psTeamList.forEach((team) {
       if (team.status == Status.Synced) {
         pitScoutingTeamList.add(team);
       }

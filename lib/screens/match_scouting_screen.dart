@@ -67,12 +67,7 @@ class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
     setState(() {
       isLoading = true;
     });
-    var teams = await matchScoutingService.getTeams();
-    teamList = [];
-    teams.forEach((teamMap) {
-      var team = MatchScoutingTeam().unmapTeam(teamMap, false);
-      teamList.add(team);
-    });
+    teamList = await matchScoutingService.getTeams();
     setState(() {
       isLoading = false;
     });
