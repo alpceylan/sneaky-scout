@@ -63,11 +63,8 @@ class AuthenticationService {
   }
 
   Future<void> updateCurrentUserProfilePicture(File image) async {
-    Reference ref = _storage.ref().child('profile_photos').child(
-          DateTime.now().toIso8601String() +
-              currentUser.uid +
-              "${image.path}" +
-              '.jpg',
+    Reference ref = _storage.ref().child(
+          'profile_photos/${DateTime.now().toIso8601String()}${currentUser.uid}',
         );
 
     UploadTask uploadTask = ref.putFile(image);
