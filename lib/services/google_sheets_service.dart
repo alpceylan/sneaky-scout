@@ -1,5 +1,8 @@
 import 'package:gsheets/gsheets.dart';
 
+// Models
+import '../models/match_scouting_team.dart';
+
 class GoogleSheetsService {
   static const _credentials = r'''
     {
@@ -19,8 +22,25 @@ class GoogleSheetsService {
 
   GSheets gsheets = GSheets(_credentials);
 
-  Future syncMatchScouts() async {
+  Future syncMatchScout(MatchScoutingTeam team) async {
     Spreadsheet ss = await gsheets.spreadsheet(_spreadsheetId);
     Worksheet sheet = ss.worksheetByTitle("match_scouting");
+
+    var rowNumber = 0;
+
+    List<Map<String, String>> sheetsListMap = await sheet.values.map.allRows();
+
+    for (int i = 0; i < sheetsListMap.length; i++) {
+      if (sheetsListMap[i]["status"] != "") {
+        rowNumber = i;
+        break;
+      }
+    }
+    rowNumber += 3;
+
+    sheet.values.insertRow(
+      rowNumber,
+      team.mapTeamForSheet(),
+    );
   }
 }

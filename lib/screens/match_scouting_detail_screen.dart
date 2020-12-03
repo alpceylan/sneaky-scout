@@ -320,19 +320,19 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                         items: [
                           DropdownMenuItem(
                             child: Text(
-                              matchTypeStrings[_newMatchInt],
+                              matchTypeStrings[1],
                             ),
                             value: 1,
                           ),
                           DropdownMenuItem(
                             child: Text(
-                              matchTypeStrings[_newMatchInt],
+                              matchTypeStrings[2],
                             ),
                             value: 2,
                           ),
                           DropdownMenuItem(
                             child: Text(
-                              matchTypeStrings[_newMatchInt],
+                              matchTypeStrings[3],
                             ),
                             value: 3,
                           ),

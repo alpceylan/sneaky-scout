@@ -1,5 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
-
 // Services
 import '../services/authentication_service.dart';
 
@@ -27,6 +25,8 @@ enum AutonomousStartingPoint {
 }
 
 class MatchScoutingTeam {
+  AuthenticationService _authService = AuthenticationService();
+
   final int id;
   final Status status;
   final String userId;
@@ -73,13 +73,6 @@ class MatchScoutingTeam {
 
   String get statusString {
     return status == Status.Synced ? "synced" : "unsynced";
-  }
-
-  Future<String> getUserId() async {
-    AuthenticationService _authService = AuthenticationService();
-    User user = _authService.currentUser;
-
-    return user.uid;
   }
 
   String get matchTypeString {
@@ -150,7 +143,7 @@ class MatchScoutingTeam {
     if (id == null) {
       _map = {
         "status": statusString,
-        "userId": await getUserId(),
+        "userId": _authService.currentUser.uid,
         "scoutName": scoutName,
         "teamName": teamName,
         "teamNo": teamNo,
@@ -185,7 +178,7 @@ class MatchScoutingTeam {
       _map = {
         "id": id,
         "status": statusString,
-        "userId": await getUserId(),
+        "userId": _authService.currentUser.uid,
         "scoutName": scoutName,
         "teamName": teamName,
         "teamNo": teamNo,
@@ -286,5 +279,30 @@ class MatchScoutingTeam {
     );
 
     return team;
+  }
+
+  List<dynamic> mapTeamForSheet() {
+    return [
+      statusString,
+      _authService.currentUser.uid,
+      scoutName,
+      teamName,
+      teamNo,
+      matchTypeString,
+      matchNo,
+      color,
+      powerCellCount,
+      powerCellLocationString,
+      autonomous,
+      autonomousStartingPointString,
+      comment,
+      defense,
+      defenseComment,
+      foul,
+      techFoul,
+      imageProcessing,
+      finalScore,
+      id,
+    ];
   }
 }
