@@ -35,6 +35,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int currentIndex = 0;
 
+  void _addNewTeam() {
+    if (currentIndex == 0) {
+      print("match");
+    } else if (currentIndex == 1) {
+      print("pit");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> appBars = [
@@ -87,6 +95,17 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: appBars[currentIndex],
       body: screens[currentIndex],
       drawer: CustomDrawer(),
+      floatingActionButton: currentIndex == 0 || currentIndex == 1
+          ? FloatingActionButton.extended(
+              onPressed: _addNewTeam,
+              icon: Icon(
+                Icons.add,
+              ),
+              label: Text(
+                "Add new team",
+              ),
+            )
+          : null,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         items: [
