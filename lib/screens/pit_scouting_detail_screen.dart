@@ -302,6 +302,22 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
               ],
             ),
           );
+        } else if (_newImageString == "") {
+          showDialog(
+            context: context,
+            child: AlertDialog(
+              title: Text("Error"),
+              content: Text("You have to upload a image to save team."),
+              actions: [
+                FlatButton(
+                  child: Text("OK"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
         } else {
           _save();
         }

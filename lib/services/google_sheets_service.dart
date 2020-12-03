@@ -22,25 +22,16 @@ class GoogleSheetsService {
 
   GSheets gsheets = GSheets(_credentials);
 
-  Future syncMatchScout(MatchScoutingTeam team) async {
+  Future<void> syncMatchScouts(List<MatchScoutingTeam> teams) async {
     Spreadsheet ss = await gsheets.spreadsheet(_spreadsheetId);
     Worksheet sheet = ss.worksheetByTitle("match_scouting");
 
-    var rowNumber = 0;
+    List<List<dynamic>> mappedTeams = [];
 
-    List<Map<String, String>> sheetsListMap = await sheet.values.map.allRows();
+    teams.forEach((team) {
+      mappedTeams.add(team.mapTeamForSheet());
+    });
 
-    for (int i = 0; i < sheetsListMap.length; i++) {
-      if (sheetsListMap[i]["status"] != "") {
-        rowNumber = i;
-        break;
-      }
-    }
-    rowNumber += 3;
-
-    sheet.values.insertRow(
-      rowNumber,
-      team.mapTeamForSheet(),
-    );
+    await sheet.values.appendRows(mappedTeams);
   }
 }

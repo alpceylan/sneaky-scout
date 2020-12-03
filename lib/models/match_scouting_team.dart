@@ -283,7 +283,7 @@ class MatchScoutingTeam {
 
   List<dynamic> mapTeamForSheet() {
     return [
-      statusString,
+      "synced",
       _authService.currentUser.uid,
       scoutName,
       teamName,
@@ -302,7 +302,6 @@ class MatchScoutingTeam {
       techFoul,
       imageProcessing,
       finalScore,
-      id,
     ];
   }
 }

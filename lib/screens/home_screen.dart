@@ -5,6 +5,7 @@ import '../services/online_match_scouting_service.dart';
 import '../services/match_scouting_service.dart';
 import '../services/online_pit_scouting_service.dart';
 import '../services/pit_scouting_service.dart';
+import '../services/google_sheets_service.dart';
 
 // Screens
 import './match_scouting_screen.dart';
@@ -34,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   OnlinePitScoutingService _onlinePitScoutingService =
       OnlinePitScoutingService();
   PitScoutingService _pitScoutingService = PitScoutingService();
+  GoogleSheetsService _sheetsService = GoogleSheetsService();
 
   int currentIndex = 0;
 
@@ -82,6 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   await _onlineMatchScoutingService.saveTeam(team);
                 }
               });
+              await _sheetsService.syncMatchScouts(teams);
             },
           )
         ],
@@ -92,9 +95,9 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: Icon(Icons.sync),
             onPressed: () async {
-              List<ps.PitScoutingTeam> teamList =
+              List<ps.PitScoutingTeam> teams =
                   await _pitScoutingService.getTeams();
-              teamList.forEach((team) async {
+              teams.forEach((team) async {
                 if (team.status != ps.Status.Synced) {
                   await _onlinePitScoutingService.saveTeam(team);
                 }
