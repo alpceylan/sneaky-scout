@@ -57,7 +57,9 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
     final MatchScoutingTeam team =
         ModalRoute.of(context).settings.arguments as MatchScoutingTeam;
     final bool isNew = team.id == null ? true : false;
-    final bool isCurrentUser = team.userId == authService.currentUser.uid;
+    final bool isCurrentUser = team.scoutName == ""
+        ? true
+        : team.userId == authService.currentUser.uid;
 
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
@@ -461,22 +463,19 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                           items: [
                             DropdownMenuItem(
                               child: Text(
-                                autonomousStartingPointStrings[
-                                    _newAutonomousStartingPointInt],
+                                autonomousStartingPointStrings[1],
                               ),
                               value: 1,
                             ),
                             DropdownMenuItem(
                               child: Text(
-                                autonomousStartingPointStrings[
-                                    _newAutonomousStartingPointInt],
+                                autonomousStartingPointStrings[2],
                               ),
                               value: 2,
                             ),
                             DropdownMenuItem(
                               child: Text(
-                                autonomousStartingPointStrings[
-                                    _newAutonomousStartingPointInt],
+                                autonomousStartingPointStrings[3],
                               ),
                               value: 3,
                             ),
@@ -516,22 +515,19 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                           items: [
                             DropdownMenuItem(
                               child: Text(
-                                powercellLocationStrings[
-                                    _newPowercellLocationInt],
+                                powercellLocationStrings[1],
                               ),
                               value: 1,
                             ),
                             DropdownMenuItem(
                               child: Text(
-                                powercellLocationStrings[
-                                    _newPowercellLocationInt],
+                                powercellLocationStrings[2],
                               ),
                               value: 2,
                             ),
                             DropdownMenuItem(
                               child: Text(
-                                powercellLocationStrings[
-                                    _newPowercellLocationInt],
+                                powercellLocationStrings[3],
                               ),
                               value: 3,
                             ),

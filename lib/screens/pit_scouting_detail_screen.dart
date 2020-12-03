@@ -70,7 +70,9 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
     final PitScoutingTeam team =
         ModalRoute.of(context).settings.arguments as PitScoutingTeam;
     final bool isNew = team.id == null ? true : false;
-    final bool isCurrentUser = team.userId == authService.currentUser.uid;
+    final bool isCurrentUser = team.scoutName == ""
+        ? true
+        : team.userId == authService.currentUser.uid;
 
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
@@ -581,19 +583,19 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                         items: [
                           DropdownMenuItem(
                             child: Text(
-                              shooterTypeStrings[_newShooterTypeInt],
+                              shooterTypeStrings[1],
                             ),
                             value: 1,
                           ),
                           DropdownMenuItem(
                             child: Text(
-                              shooterTypeStrings[_newShooterTypeInt],
+                              shooterTypeStrings[2],
                             ),
                             value: 2,
                           ),
                           DropdownMenuItem(
                             child: Text(
-                              shooterTypeStrings[_newShooterTypeInt],
+                              shooterTypeStrings[3],
                             ),
                             value: 3,
                           ),
@@ -632,15 +634,13 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                           items: [
                             DropdownMenuItem(
                               child: Text(
-                                imageProcessingTypeStrings[
-                                    _newImageProcessingTypeInt],
+                                imageProcessingTypeStrings[1],
                               ),
                               value: 1,
                             ),
                             DropdownMenuItem(
                               child: Text(
-                                imageProcessingTypeStrings[
-                                    _newImageProcessingTypeInt],
+                                imageProcessingTypeStrings[2],
                               ),
                               value: 2,
                             ),
@@ -692,19 +692,19 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                         items: [
                           DropdownMenuItem(
                             child: Text(
-                              hoodTypeStrings[_newHoodTypeInt],
+                              hoodTypeStrings[1],
                             ),
                             value: 1,
                           ),
                           DropdownMenuItem(
                             child: Text(
-                              hoodTypeStrings[_newHoodTypeInt],
+                              hoodTypeStrings[2],
                             ),
                             value: 2,
                           ),
                           DropdownMenuItem(
                             child: Text(
-                              hoodTypeStrings[_newHoodTypeInt],
+                              hoodTypeStrings[3],
                             ),
                             value: 3,
                           ),
@@ -743,19 +743,19 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                           items: [
                             DropdownMenuItem(
                               child: Text(
-                                intakeTypeStrings[_newIntakeTypeInt],
+                                intakeTypeStrings[1],
                               ),
                               value: 1,
                             ),
                             DropdownMenuItem(
                               child: Text(
-                                intakeTypeStrings[_newIntakeTypeInt],
+                                intakeTypeStrings[2],
                               ),
                               value: 2,
                             ),
                             DropdownMenuItem(
                               child: Text(
-                                intakeTypeStrings[_newIntakeTypeInt],
+                                intakeTypeStrings[3],
                               ),
                               value: 3,
                             ),
@@ -808,19 +808,19 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                         items: [
                           DropdownMenuItem(
                             child: Text(
-                              chassisTypeStrings[_newChassisTypeInt],
+                              chassisTypeStrings[1],
                             ),
                             value: 1,
                           ),
                           DropdownMenuItem(
                             child: Text(
-                              chassisTypeStrings[_newChassisTypeInt],
+                              chassisTypeStrings[2],
                             ),
                             value: 2,
                           ),
                           DropdownMenuItem(
                             child: Text(
-                              chassisTypeStrings[_newChassisTypeInt],
+                              chassisTypeStrings[3],
                             ),
                             value: 3,
                           ),
