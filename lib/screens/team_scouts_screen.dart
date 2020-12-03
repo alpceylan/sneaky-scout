@@ -79,11 +79,15 @@ class _TeamScreenState extends State<TeamScreen> {
     List<PitScoutingTeam> onlinePitScouts =
         await _onlinePitScoutingService.getTeams();
     onlinePitScouts.forEach((newTeam) {
-      var teamExist = pitScoutingTeamList.firstWhere(
-        (team) => team.id == newTeam.id,
-        orElse: () => null,
-      );
-      if (teamExist == null) {
+      if (pitScoutingTeamList.length > 0) {
+        var teamExist = pitScoutingTeamList.firstWhere(
+          (team) => team.teamNo == newTeam.teamNo,
+          orElse: () => null,
+        );
+        if (teamExist == null) {
+          pitScoutingTeamList.add(newTeam);
+        }
+      } else {
         pitScoutingTeamList.add(newTeam);
       }
     });
