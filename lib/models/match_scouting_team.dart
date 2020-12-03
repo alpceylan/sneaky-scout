@@ -52,23 +52,23 @@ class MatchScoutingTeam {
     this.id,
     this.status = Status.Unsynced,
     this.userId = "",
-    this.scoutName,
-    this.teamName,
-    this.teamNo,
+    this.scoutName = "",
+    this.teamName = "",
+    this.teamNo = 0,
     this.matchType,
-    this.matchNo,
-    this.color,
-    this.powerCellCount,
+    this.matchNo = "",
+    this.color = "",
+    this.powerCellCount = 0,
     this.powerCellLocation,
-    this.autonomous,
+    this.autonomous = false,
     this.autonomousStartingPoint,
     this.comment = "",
-    this.defense,
+    this.defense = false,
     this.defenseComment = "",
-    this.foul,
-    this.techFoul,
-    this.imageProcessing,
-    this.finalScore,
+    this.foul = 0,
+    this.techFoul = 0,
+    this.imageProcessing = false,
+    this.finalScore = 0,
   });
 
   String get statusString {
@@ -159,14 +159,26 @@ class MatchScoutingTeam {
         "color": color,
         "powerCellCount": powerCellCount,
         "powerCellLocation": powerCellLocationString,
-        "autonomous": isOnline ? autonomous : autonomous ? 1 : 0,
+        "autonomous": isOnline
+            ? autonomous
+            : autonomous
+                ? 1
+                : 0,
         "autonomousStartingPoint": autonomousStartingPointString,
         "comment": comment,
-        "defense": isOnline ? defense : defense ? 1 : 0,
+        "defense": isOnline
+            ? defense
+            : defense
+                ? 1
+                : 0,
         "defenseComment": defenseComment,
         "foul": foul,
         "techFoul": techFoul,
-        "imageProcessing": isOnline ? imageProcessing : imageProcessing ? 1 : 0,
+        "imageProcessing": isOnline
+            ? imageProcessing
+            : imageProcessing
+                ? 1
+                : 0,
         "finalScore": finalScore,
       };
     } else {
@@ -182,14 +194,26 @@ class MatchScoutingTeam {
         "color": color,
         "powerCellCount": powerCellCount,
         "powerCellLocation": powerCellLocationString,
-        "autonomous": isOnline ? autonomous : autonomous ? 1 : 0,
+        "autonomous": isOnline
+            ? autonomous
+            : autonomous
+                ? 1
+                : 0,
         "autonomousStartingPoint": autonomousStartingPointString,
         "comment": comment,
-        "defense": isOnline ? defense : defense ? 1 : 0,
+        "defense": isOnline
+            ? defense
+            : defense
+                ? 1
+                : 0,
         "defenseComment": defenseComment,
         "foul": foul,
         "techFoul": techFoul,
-        "imageProcessing": isOnline ? imageProcessing : imageProcessing ? 1 : 0,
+        "imageProcessing": isOnline
+            ? imageProcessing
+            : imageProcessing
+                ? 1
+                : 0,
         "finalScore": finalScore,
       };
     }
@@ -238,14 +262,26 @@ class MatchScoutingTeam {
       color: teamMap["color"],
       powerCellCount: teamMap["powerCellCount"],
       powerCellLocation: powerCellLocation,
-      autonomous: isOnline ? teamMap["autonomous"] : teamMap["autonomous"] == 1 ? true : false,
+      autonomous: isOnline
+          ? teamMap["autonomous"]
+          : teamMap["autonomous"] == 1
+              ? true
+              : false,
       autonomousStartingPoint: autonomousStartingPoint,
       comment: teamMap["comment"],
-      defense: isOnline ? teamMap["defense"] : teamMap["defense"] == 1 ? true : false,
+      defense: isOnline
+          ? teamMap["defense"]
+          : teamMap["defense"] == 1
+              ? true
+              : false,
       defenseComment: teamMap["defenseComment"],
       foul: teamMap["foul"],
       techFoul: teamMap["techFoul"],
-      imageProcessing: isOnline ? teamMap["imageProcessing"] : teamMap["imageProcessing"] == 1 ? true : false,
+      imageProcessing: isOnline
+          ? teamMap["imageProcessing"]
+          : teamMap["imageProcessing"] == 1
+              ? true
+              : false,
       finalScore: teamMap["finalScore"],
     );
 

@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 // Services
 import '../services/pit_scouting_service.dart';
 import '../services/blue_alliance_service.dart';
+import '../services/authentication_service.dart';
 
 // Models
 import '../models/pit_scouting_team.dart';
@@ -27,6 +28,7 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
 
   final PitScoutingService pitScoutingService = PitScoutingService();
   final BlueAllianceService blueAllianceService = BlueAllianceService();
+  final AuthenticationService authService = AuthenticationService();
 
   final ImagePicker picker = ImagePicker();
 
@@ -68,6 +70,7 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
     final PitScoutingTeam team =
         ModalRoute.of(context).settings.arguments as PitScoutingTeam;
     final bool isNew = team.id == null ? true : false;
+    final bool isCurrentUser = team.userId == authService.currentUser.uid;
 
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
@@ -249,9 +252,16 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
       if (isNew) {
         await pitScoutingService.saveTeam(newTeam);
       } else {
-        await pitScoutingService.updateTeam(newTeam);
+        var updatedTeam = newTeam.changeStatus(Status.Unsynced);
+        await pitScoutingService.updateTeam(updatedTeam);
       }
     }
+
+    var imageProcessingTypeStrings = {1: "Custom", 2: "Limelight"};
+    var shooterTypeStrings = {1: "Lowgoal", 2: "One Wheel", 3: "Two Wheel"};
+    var hoodTypeStrings = {1: "Hood X", 2: "Hood Y", 3: "Hood Z"};
+    var intakeTypeStrings = {1: "Intake X", 2: "Intake Y", 3: "Intake Z"};
+    var chassisTypeStrings = {1: "Chassis X", 2: "Chassis Y", 3: "Chassis Z"};
 
     _validate() {
       if (_formKey.currentState.validate()) {
@@ -367,14 +377,17 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(team.teamName),
+        title: Text(
+          team.teamName != "" ? team.teamName : "New Team",
+        ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.save),
-            onPressed: () {
-              _validate();
-            },
-          ),
+          if (isCurrentUser)
+            IconButton(
+              icon: Icon(Icons.save),
+              onPressed: () {
+                _validate();
+              },
+            ),
         ],
       ),
       body: SingleChildScrollView(
@@ -395,6 +408,7 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                       deviceWidth: deviceWidth,
                       labelText: "Scout name",
                       initialValue: team.scoutName,
+                      enabled: isCurrentUser,
                       validator: (value) {
                         if (value.length == 0) {
                           return "Scout name shouldn't be empty.";
@@ -406,15 +420,21 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                       },
                     ),
                     GestureDetector(
-                      onTap: () {
-                        _showPicker(context);
-                      },
+                      onTap: isCurrentUser
+                          ? () {
+                              _showPicker(context);
+                            }
+                          : null,
                       child: CircleAvatar(
                         backgroundImage: team.imageUrl != ""
                             ? NetworkImage(team.imageUrl)
-                            : MemoryImage(
-                                base64Decode(_newImageString),
-                              ),
+                            : _newImageString != ""
+                                ? MemoryImage(
+                                    base64Decode(_newImageString),
+                                  )
+                                : AssetImage(
+                                    "assets/images/robot.png",
+                                  ),
                         minRadius: deviceWidth * 0.09,
                       ),
                     ),
@@ -427,6 +447,7 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                       deviceWidth: deviceWidth,
                       labelText: "Team name",
                       initialValue: team.teamName,
+                      enabled: isCurrentUser,
                       validator: (value) {
                         if (value.length == 0) {
                           return "Team name shouldn't be empty.";
@@ -441,6 +462,7 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                       deviceWidth: deviceWidth,
                       labelText: "Team number",
                       initialValue: "${team.teamNo}",
+                      enabled: isCurrentUser,
                       validator: (value) {
                         if (value.length == 0) {
                           return "Team number shouldn't be empty.";
@@ -465,11 +487,13 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                           value: _newClimbing,
                           activeTrackColor: Colors.lightBlueAccent,
                           activeColor: Colors.blue,
-                          onChanged: (value) {
-                            setState(() {
-                              _newClimbing = value;
-                            });
-                          },
+                          onChanged: isCurrentUser
+                              ? (value) {
+                                  setState(() {
+                                    _newClimbing = value;
+                                  });
+                                }
+                              : null,
                         ),
                       ],
                     ),
@@ -477,6 +501,7 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                       deviceWidth: deviceWidth,
                       labelText: "Max balls",
                       initialValue: "${team.maxBalls}",
+                      enabled: isCurrentUser,
                       validator: (value) {
                         if (value.length == 0) {
                           return "Max balls shouldn't be empty.";
@@ -508,6 +533,7 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                         ),
                       ),
                     ),
+                    enabled: isCurrentUser,
                     validator: (value) {
                       if (_newClimbing) {
                         if (value.length == 0) {
@@ -532,11 +558,13 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                           value: _newImageProcessing,
                           activeTrackColor: Colors.lightBlueAccent,
                           activeColor: Colors.blue,
-                          onChanged: (value) {
-                            setState(() {
-                              _newImageProcessing = value;
-                            });
-                          },
+                          onChanged: isCurrentUser
+                              ? (value) {
+                                  setState(() {
+                                    _newImageProcessing = value;
+                                  });
+                                }
+                              : null,
                         ),
                       ],
                     ),
@@ -552,21 +580,32 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                         value: _newShooterTypeInt,
                         items: [
                           DropdownMenuItem(
-                            child: Text("Low Goal"),
+                            child: Text(
+                              shooterTypeStrings[_newShooterTypeInt],
+                            ),
                             value: 1,
                           ),
                           DropdownMenuItem(
-                            child: Text("One Wheel"),
+                            child: Text(
+                              shooterTypeStrings[_newShooterTypeInt],
+                            ),
                             value: 2,
                           ),
                           DropdownMenuItem(
-                            child: Text("Two Wheel"),
+                            child: Text(
+                              shooterTypeStrings[_newShooterTypeInt],
+                            ),
                             value: 3,
                           ),
                         ],
-                        onChanged: (value) {
-                          _newShooterTypeInt = value;
-                        },
+                        disabledHint: Text(
+                          shooterTypeStrings[_newShooterTypeInt],
+                        ),
+                        onChanged: isCurrentUser
+                            ? (value) {
+                                _newShooterTypeInt = value;
+                              }
+                            : null,
                       ),
                     ),
                   ],
@@ -592,19 +631,29 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                           value: _newImageProcessingTypeInt,
                           items: [
                             DropdownMenuItem(
-                              child: Text("Custom"),
+                              child: Text(
+                                imageProcessingTypeStrings[
+                                    _newImageProcessingTypeInt],
+                              ),
                               value: 1,
                             ),
                             DropdownMenuItem(
-                              child: Text("Limelight"),
+                              child: Text(
+                                imageProcessingTypeStrings[
+                                    _newImageProcessingTypeInt],
+                              ),
                               value: 2,
                             ),
                           ],
-                          onChanged: (value) {
-                            setState(() {
-                              _newImageProcessingTypeInt = value;
-                            });
-                          },
+                          disabledHint: Text(imageProcessingTypeStrings[
+                              _newImageProcessingTypeInt]),
+                          onChanged: isCurrentUser
+                              ? (value) {
+                                  setState(() {
+                                    _newImageProcessingTypeInt = value;
+                                  });
+                                }
+                              : null,
                         ),
                       ),
                     ],
@@ -620,11 +669,13 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                           value: _newIntake,
                           activeTrackColor: Colors.lightBlueAccent,
                           activeColor: Colors.blue,
-                          onChanged: (value) {
-                            setState(() {
-                              _newIntake = value;
-                            });
-                          },
+                          onChanged: isCurrentUser
+                              ? (value) {
+                                  setState(() {
+                                    _newIntake = value;
+                                  });
+                                }
+                              : null,
                         ),
                       ],
                     ),
@@ -640,21 +691,32 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                         value: _newHoodTypeInt,
                         items: [
                           DropdownMenuItem(
-                            child: Text("Hood X"),
+                            child: Text(
+                              hoodTypeStrings[_newHoodTypeInt],
+                            ),
                             value: 1,
                           ),
                           DropdownMenuItem(
-                            child: Text("Hood Y"),
+                            child: Text(
+                              hoodTypeStrings[_newHoodTypeInt],
+                            ),
                             value: 2,
                           ),
                           DropdownMenuItem(
-                            child: Text("Hood Z"),
+                            child: Text(
+                              hoodTypeStrings[_newHoodTypeInt],
+                            ),
                             value: 3,
                           ),
                         ],
-                        onChanged: (value) {
-                          _newHoodTypeInt = value;
-                        },
+                        disabledHint: Text(
+                          hoodTypeStrings[_newHoodTypeInt],
+                        ),
+                        onChanged: isCurrentUser
+                            ? (value) {
+                                _newHoodTypeInt = value;
+                              }
+                            : null,
                       ),
                     ),
                   ],
@@ -680,23 +742,34 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                           value: _newIntakeTypeInt,
                           items: [
                             DropdownMenuItem(
-                              child: Text("Intake X"),
+                              child: Text(
+                                intakeTypeStrings[_newIntakeTypeInt],
+                              ),
                               value: 1,
                             ),
                             DropdownMenuItem(
-                              child: Text("Intake Y"),
+                              child: Text(
+                                intakeTypeStrings[_newIntakeTypeInt],
+                              ),
                               value: 2,
                             ),
                             DropdownMenuItem(
-                              child: Text("Intake Z"),
+                              child: Text(
+                                intakeTypeStrings[_newIntakeTypeInt],
+                              ),
                               value: 3,
                             ),
                           ],
-                          onChanged: (value) {
-                            setState(() {
-                              _newIntakeTypeInt = value;
-                            });
-                          },
+                          disabledHint: Text(
+                            intakeTypeStrings[_newIntakeTypeInt],
+                          ),
+                          onChanged: isCurrentUser
+                              ? (value) {
+                                  setState(() {
+                                    _newIntakeTypeInt = value;
+                                  });
+                                }
+                              : null,
                         ),
                       ),
                     ],
@@ -712,11 +785,13 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                           value: _newAutonomous,
                           activeTrackColor: Colors.lightBlueAccent,
                           activeColor: Colors.blue,
-                          onChanged: (value) {
-                            setState(() {
-                              _newAutonomous = value;
-                            });
-                          },
+                          onChanged: isCurrentUser
+                              ? (value) {
+                                  setState(() {
+                                    _newAutonomous = value;
+                                  });
+                                }
+                              : null,
                         ),
                       ],
                     ),
@@ -732,21 +807,32 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                         value: _newChassisTypeInt,
                         items: [
                           DropdownMenuItem(
-                            child: Text("Chassis X"),
+                            child: Text(
+                              chassisTypeStrings[_newChassisTypeInt],
+                            ),
                             value: 1,
                           ),
                           DropdownMenuItem(
-                            child: Text("Chassis Y"),
+                            child: Text(
+                              chassisTypeStrings[_newChassisTypeInt],
+                            ),
                             value: 2,
                           ),
                           DropdownMenuItem(
-                            child: Text("Chassis Z"),
+                            child: Text(
+                              chassisTypeStrings[_newChassisTypeInt],
+                            ),
                             value: 3,
                           ),
                         ],
-                        onChanged: (value) {
-                          _newChassisTypeInt = value;
-                        },
+                        disabledHint: Text(
+                          chassisTypeStrings[_newChassisTypeInt],
+                        ),
+                        onChanged: isCurrentUser
+                            ? (value) {
+                                _newChassisTypeInt = value;
+                              }
+                            : null,
                       ),
                     ),
                   ],
@@ -768,6 +854,7 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                         ),
                       ),
                     ),
+                    enabled: isCurrentUser,
                     validator: (value) {
                       if (_newClimbing) {
                         if (value.length == 0) {
@@ -794,6 +881,7 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                       ),
                     ),
                   ),
+                  enabled: isCurrentUser,
                   validator: (value) {
                     if (value.length == 0) {
                       return "Extra shouldn't be empty.";
@@ -816,6 +904,7 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                       ),
                     ),
                   ),
+                  enabled: isCurrentUser,
                   validator: (value) {
                     if (value.length == 0) {
                       return "Comment shouldn't be empty.";

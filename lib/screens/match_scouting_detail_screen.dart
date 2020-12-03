@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 // Services
 import '../services/match_scouting_service.dart';
 import '../services/blue_alliance_service.dart';
+import '../services/authentication_service.dart';
 
 // Models
 import '../models/match_scouting_team.dart';
@@ -23,6 +24,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
 
   final MatchScoutingService matchScoutingService = MatchScoutingService();
   final BlueAllianceService blueAllianceService = BlueAllianceService();
+  final AuthenticationService authService = AuthenticationService();
 
   int _matchInt;
   bool _autonomous;
@@ -55,6 +57,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
     final MatchScoutingTeam team =
         ModalRoute.of(context).settings.arguments as MatchScoutingTeam;
     final bool isNew = team.id == null ? true : false;
+    final bool isCurrentUser = team.userId == authService.currentUser.uid;
 
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
@@ -159,7 +162,8 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
       if (isNew) {
         await matchScoutingService.saveTeam(newTeam);
       } else {
-        await matchScoutingService.updateTeam(newTeam);
+        var updatedTeam = newTeam.changeStatus(Status.Unsynced);
+        await matchScoutingService.updateTeam(updatedTeam);
       }
     }
 
@@ -204,16 +208,23 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
       }
     }
 
+    var matchTypeStrings = {1: "Practice", 2: "Playoff", 3: "Qual"};
+    var autonomousStartingPointStrings = {1: "Left", 2: "Middle", 3: "Right"};
+    var powercellLocationStrings = {1: "Inner", 2: "Lower", 3: "Outer"};
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("${team.teamName}"),
+        title: Text(
+          team.teamName != "" ? team.teamName : "New Team",
+        ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.save),
-            onPressed: () {
-              _validate();
-            },
-          ),
+          if (isCurrentUser)
+            IconButton(
+              icon: Icon(Icons.save),
+              onPressed: () {
+                _validate();
+              },
+            ),
         ],
       ),
       body: SingleChildScrollView(
@@ -237,6 +248,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                           labelText: "Scout name",
                         ),
                         initialValue: team.scoutName,
+                        enabled: isCurrentUser,
                         validator: (value) {
                           if (value.length == 0) {
                             return "Scout name shouldn't be empty.";
@@ -258,6 +270,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                       labelText: "Team name",
                       initialValue: team.teamName,
                       keyboardType: TextInputType.name,
+                      enabled: isCurrentUser,
                       validator: (value) {
                         if (value.length == 0) {
                           return "Team name shouldn't be empty.";
@@ -273,6 +286,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                       labelText: "Team number",
                       initialValue: "${team.teamNo}",
                       keyboardType: TextInputType.number,
+                      enabled: isCurrentUser,
                       validator: (value) {
                         if (value.length == 0) {
                           return "Team number shouldn't be empty.";
@@ -303,27 +317,39 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                         value: _newMatchInt,
                         items: [
                           DropdownMenuItem(
-                            child: Text("Practice"),
+                            child: Text(
+                              matchTypeStrings[_newMatchInt],
+                            ),
                             value: 1,
                           ),
                           DropdownMenuItem(
-                            child: Text("Playoff"),
+                            child: Text(
+                              matchTypeStrings[_newMatchInt],
+                            ),
                             value: 2,
                           ),
                           DropdownMenuItem(
-                            child: Text("Qual"),
+                            child: Text(
+                              matchTypeStrings[_newMatchInt],
+                            ),
                             value: 3,
                           ),
                         ],
-                        onChanged: (value) {
-                          _newMatchInt = value;
-                        },
+                        disabledHint: Text(
+                          matchTypeStrings[_newMatchInt],
+                        ),
+                        onChanged: isCurrentUser
+                            ? (value) {
+                                _newMatchInt = value;
+                              }
+                            : null,
                       ),
                     ),
                     CustomTextInput(
                       deviceWidth: deviceWidth,
                       labelText: "Match number",
                       initialValue: team.matchNo,
+                      enabled: isCurrentUser,
                       validator: (value) {
                         if (value.length == 0) {
                           return "Match number shouldn't be empty.";
@@ -343,6 +369,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                       deviceWidth: deviceWidth,
                       labelText: "Robot color",
                       initialValue: team.color,
+                      enabled: isCurrentUser,
                       validator: (value) {
                         if (value.length == 0) {
                           return "Robot color shouldn't be empty.";
@@ -358,6 +385,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                       labelText: "Powercell count",
                       initialValue: "${team.powerCellCount}",
                       keyboardType: TextInputType.number,
+                      enabled: isCurrentUser,
                       validator: (value) {
                         if (value.length == 0) {
                           return "Powercell count shouldn't be empty.";
@@ -382,11 +410,13 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                           value: _newAutonomous,
                           activeTrackColor: Colors.lightBlueAccent,
                           activeColor: Colors.blue,
-                          onChanged: (value) {
-                            setState(() {
-                              _newAutonomous = value;
-                            });
-                          },
+                          onChanged: isCurrentUser
+                              ? (value) {
+                                  setState(() {
+                                    _newAutonomous = value;
+                                  });
+                                }
+                              : null,
                         ),
                       ],
                     ),
@@ -397,11 +427,13 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                           value: _newImageProcessing,
                           activeTrackColor: Colors.lightBlueAccent,
                           activeColor: Colors.blue,
-                          onChanged: (value) {
-                            setState(() {
-                              _newImageProcessing = value;
-                            });
-                          },
+                          onChanged: isCurrentUser
+                              ? (value) {
+                                  setState(() {
+                                    _newImageProcessing = value;
+                                  });
+                                }
+                              : null,
                         ),
                       ],
                     ),
@@ -428,23 +460,38 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                           value: _newAutonomousStartingPointInt,
                           items: [
                             DropdownMenuItem(
-                              child: Text("Left"),
+                              child: Text(
+                                autonomousStartingPointStrings[
+                                    _newAutonomousStartingPointInt],
+                              ),
                               value: 1,
                             ),
                             DropdownMenuItem(
-                              child: Text("Middle"),
+                              child: Text(
+                                autonomousStartingPointStrings[
+                                    _newAutonomousStartingPointInt],
+                              ),
                               value: 2,
                             ),
                             DropdownMenuItem(
-                              child: Text("Right"),
+                              child: Text(
+                                autonomousStartingPointStrings[
+                                    _newAutonomousStartingPointInt],
+                              ),
                               value: 3,
                             ),
                           ],
-                          onChanged: (value) {
-                            setState(() {
-                              _newAutonomousStartingPointInt = value;
-                            });
-                          },
+                          disabledHint: Text(
+                            autonomousStartingPointStrings[
+                                _newAutonomousStartingPointInt],
+                          ),
+                          onChanged: isCurrentUser
+                              ? (value) {
+                                  setState(() {
+                                    _newAutonomousStartingPointInt = value;
+                                  });
+                                }
+                              : null,
                         ),
                       ),
                     ],
@@ -468,23 +515,37 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                           value: _newPowercellLocationInt,
                           items: [
                             DropdownMenuItem(
-                              child: Text("Inner"),
+                              child: Text(
+                                powercellLocationStrings[
+                                    _newPowercellLocationInt],
+                              ),
                               value: 1,
                             ),
                             DropdownMenuItem(
-                              child: Text("Lower"),
+                              child: Text(
+                                powercellLocationStrings[
+                                    _newPowercellLocationInt],
+                              ),
                               value: 2,
                             ),
                             DropdownMenuItem(
-                              child: Text("Outer"),
+                              child: Text(
+                                powercellLocationStrings[
+                                    _newPowercellLocationInt],
+                              ),
                               value: 3,
                             ),
                           ],
-                          onChanged: (value) {
-                            setState(() {
-                              _newPowercellLocationInt = value;
-                            });
-                          },
+                          disabledHint: Text(
+                            powercellLocationStrings[_newPowercellLocationInt],
+                          ),
+                          onChanged: isCurrentUser
+                              ? (value) {
+                                  setState(() {
+                                    _newPowercellLocationInt = value;
+                                  });
+                                }
+                              : null,
                         ),
                       ),
                     ],
@@ -500,11 +561,13 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                           value: _newDefense,
                           activeTrackColor: Colors.lightBlueAccent,
                           activeColor: Colors.blue,
-                          onChanged: (value) {
-                            setState(() {
-                              _newDefense = value;
-                            });
-                          },
+                          onChanged: isCurrentUser
+                              ? (value) {
+                                  setState(() {
+                                    _newDefense = value;
+                                  });
+                                }
+                              : null,
                         ),
                       ],
                     ),
@@ -513,6 +576,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                       labelText: "Final Score",
                       initialValue: "${team.finalScore}",
                       keyboardType: TextInputType.number,
+                      enabled: isCurrentUser,
                       validator: (value) {
                         if (value.length == 0) {
                           return "Final score shouldn't be empty.";
@@ -544,6 +608,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                         ),
                       ),
                     ),
+                    enabled: isCurrentUser,
                     validator: (value) {
                       if (_newDefense) {
                         if (value.length == 0) {
@@ -566,6 +631,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                       labelText: "Foul",
                       initialValue: "${team.foul}",
                       keyboardType: TextInputType.number,
+                      enabled: isCurrentUser,
                       validator: (value) {
                         if (value.length == 0) {
                           return "Foul shouldn't be empty.";
@@ -583,6 +649,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                       labelText: "Tech Foul",
                       initialValue: "${team.techFoul}",
                       keyboardType: TextInputType.number,
+                      enabled: isCurrentUser,
                       validator: (value) {
                         if (value.length == 0) {
                           return "Tech foul shouldn't be empty.";
@@ -609,6 +676,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                       ),
                     ),
                   ),
+                  enabled: isCurrentUser,
                   validator: (value) {
                     if (value.length == 0) {
                       return "Comment shouldn't be empty.";
@@ -624,7 +692,8 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                 ),
                 FlatButton(
                   onPressed: () async {
-                    await blueAllianceService.goTeamPage(_teamNumber ?? team.teamNo);
+                    await blueAllianceService
+                        .goTeamPage(_teamNumber ?? team.teamNo);
                   },
                   child: Text("Go to Team's Blue Alliance Page"),
                   minWidth: double.infinity,

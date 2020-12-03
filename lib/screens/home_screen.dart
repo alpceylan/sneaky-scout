@@ -10,6 +10,8 @@ import '../services/pit_scouting_service.dart';
 import './match_scouting_screen.dart';
 import './pit_scouting_screen.dart';
 import './team_scouts_screen.dart';
+import './match_scouting_detail_screen.dart';
+import './pit_scouting_detail_screen.dart';
 
 // Models
 import '../models/match_scouting_team.dart';
@@ -37,9 +39,30 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _addNewTeam() {
     if (currentIndex == 0) {
-      print("match");
+      var team = MatchScoutingTeam();
+
+      Navigator.of(context).pushNamed(
+        MatchScoutingDetailScreen.routeName,
+        arguments: team,
+      );
     } else if (currentIndex == 1) {
-      print("pit");
+      var team = ps.PitScoutingTeam();
+
+      Navigator.of(context).pushNamed(
+        PitScoutingDetailScreen.routeName,
+        arguments: team,
+      );
+    }
+  }
+
+  String get floatingActionButtonLabel {
+    switch (currentIndex) {
+      case 0:
+        return "Add new match";
+      case 1:
+        return "Add new pit";
+      default:
+        return "";
     }
   }
 
@@ -102,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Icons.add,
               ),
               label: Text(
-                "Add new team",
+                floatingActionButtonLabel,
               ),
             )
           : null,

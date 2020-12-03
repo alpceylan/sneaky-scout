@@ -74,23 +74,23 @@ class PitScoutingTeam {
     this.id,
     this.status = Status.Unsynced,
     this.userId = "",
-    this.scoutName,
-    this.teamName,
-    this.teamNo,
+    this.scoutName = "",
+    this.teamName = "",
+    this.teamNo = 0,
     this.imageUrl = "",
     this.imageString = "",
     this.chassisType,
-    this.climbing,
+    this.climbing = false,
     this.climbingComment = "",
-    this.imageProcessing,
+    this.imageProcessing = false,
     this.imageProcessingType,
     this.shooterType,
     this.hoodType,
-    this.intake,
+    this.intake = false,
     this.intakeType,
     this.funnelType,
-    this.maxBalls,
-    this.autonomous,
+    this.maxBalls = 0,
+    this.autonomous = false,
     this.autonomousComment = "",
     this.extra = "",
     this.comment = "",
@@ -207,7 +207,8 @@ class PitScoutingTeam {
     return newTeam;
   }
 
-  Future<Map<String, dynamic>> mapTeam(bool isOnline, String newImageUrl) async {
+  Future<Map<String, dynamic>> mapTeam(
+      bool isOnline, String newImageUrl) async {
     Map<String, dynamic> _map;
     if (id == null) {
       _map = {
@@ -219,17 +220,33 @@ class PitScoutingTeam {
         "imageUrl": newImageUrl != "" ? newImageUrl : imageUrl,
         "imageString": imageString,
         "chassisType": chassisTypeString,
-        "climbing": isOnline ? climbing : climbing ? 1 : 0,
+        "climbing": isOnline
+            ? climbing
+            : climbing
+                ? 1
+                : 0,
         "climbingComment": climbingComment,
-        "imageProcessing": isOnline ? imageProcessing : imageProcessing ? 1 : 0,
+        "imageProcessing": isOnline
+            ? imageProcessing
+            : imageProcessing
+                ? 1
+                : 0,
         "imageProcessingType": imageProcessingTypeString,
         "shooterType": shooterTypeString,
         "hoodType": hoodTypeString,
-        "intake": isOnline ? intake : intake ? 1 : 0,
+        "intake": isOnline
+            ? intake
+            : intake
+                ? 1
+                : 0,
         "intakeType": intakeTypeString,
         "funnelType": funnelTypeString,
         "maxBalls": maxBalls,
-        "autonomous": isOnline ? autonomous : autonomous ? 1 : 0,
+        "autonomous": isOnline
+            ? autonomous
+            : autonomous
+                ? 1
+                : 0,
         "autonomousComment": autonomousComment,
         "extra": extra,
         "comment": comment,
@@ -245,17 +262,33 @@ class PitScoutingTeam {
         "imageUrl": newImageUrl != "" ? newImageUrl : imageUrl,
         "imageString": imageString,
         "chassisType": chassisTypeString,
-        "climbing": isOnline ? climbing : climbing ? 1 : 0,
+        "climbing": isOnline
+            ? climbing
+            : climbing
+                ? 1
+                : 0,
         "climbingComment": climbingComment,
-        "imageProcessing": isOnline ? imageProcessing : imageProcessing ? 1 : 0,
+        "imageProcessing": isOnline
+            ? imageProcessing
+            : imageProcessing
+                ? 1
+                : 0,
         "imageProcessingType": imageProcessingTypeString,
         "shooterType": shooterTypeString,
         "hoodType": hoodTypeString,
-        "intake": isOnline ? intake : intake ? 1 : 0,
+        "intake": isOnline
+            ? intake
+            : intake
+                ? 1
+                : 0,
         "intakeType": intakeTypeString,
         "funnelType": funnelTypeString,
         "maxBalls": maxBalls,
-        "autonomous": isOnline ? autonomous : autonomous ? 1 : 0,
+        "autonomous": isOnline
+            ? autonomous
+            : autonomous
+                ? 1
+                : 0,
         "autonomousComment": autonomousComment,
         "extra": extra,
         "comment": comment,
@@ -335,17 +368,33 @@ class PitScoutingTeam {
       imageUrl: teamMap["imageUrl"],
       imageString: teamMap["imageString"],
       chassisType: chassisType,
-      climbing: isOnline ? teamMap["climbing"] : teamMap["climbing"] == 1 ? true : false,
+      climbing: isOnline
+          ? teamMap["climbing"]
+          : teamMap["climbing"] == 1
+              ? true
+              : false,
       climbingComment: teamMap["climbingComment"],
-      imageProcessing: isOnline ? teamMap["imageProcessing"] : teamMap["imageProcessing"] == 1 ? true : false,
+      imageProcessing: isOnline
+          ? teamMap["imageProcessing"]
+          : teamMap["imageProcessing"] == 1
+              ? true
+              : false,
       imageProcessingType: imageProcessingType,
       shooterType: shooterType,
       hoodType: hoodType,
-      intake: isOnline ? teamMap["intake"] : teamMap["intake"] == 1 ? true : false,
+      intake: isOnline
+          ? teamMap["intake"]
+          : teamMap["intake"] == 1
+              ? true
+              : false,
       intakeType: intakeType,
       funnelType: funnelType,
       maxBalls: teamMap["maxBalls"],
-      autonomous: isOnline ? teamMap["autonomous"] : teamMap["autonomous"] == 1 ? true : false,
+      autonomous: isOnline
+          ? teamMap["autonomous"]
+          : teamMap["autonomous"] == 1
+              ? true
+              : false,
       autonomousComment: teamMap["autonomousComment"],
       extra: teamMap["extra"],
       comment: teamMap["comment"],
