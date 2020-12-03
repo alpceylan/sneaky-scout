@@ -5,6 +5,7 @@ import '../services/online_match_scouting_service.dart';
 import '../services/match_scouting_service.dart';
 import '../services/online_pit_scouting_service.dart';
 import '../services/pit_scouting_service.dart';
+import '../services/google_sheets_service.dart';
 
 // Screens
 import './match_scouting_screen.dart';
@@ -34,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   OnlinePitScoutingService _onlinePitScoutingService =
       OnlinePitScoutingService();
   PitScoutingService _pitScoutingService = PitScoutingService();
+  GoogleSheetsService _sheetsService = GoogleSheetsService();
 
   int currentIndex = 0;
 
@@ -75,6 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: Icon(Icons.sync),
             onPressed: () async {
+              await _sheetsService.syncMatchScouts();
               List<MatchScoutingTeam> teams =
                   await _matchScoutingService.getTeams();
               teams.forEach((team) async {
