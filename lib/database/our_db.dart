@@ -34,6 +34,12 @@ class OurDatabase {
     return await db.update(table, data, where: 'id=?', whereArgs: [data['id']]);
   }
 
+  Future<int> updateByTeamNo(String table, data) async {
+    Database db = await database;
+    return await db
+        .update(table, data, where: 'teamNo=?', whereArgs: [data['teamNo']]);
+  }
+
   Future<int> delete(String table, id) async {
     Database db = await database;
     return await db.rawDelete('DELETE FROM $table WHERE id = $id');

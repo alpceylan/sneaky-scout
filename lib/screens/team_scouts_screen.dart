@@ -8,6 +8,8 @@ import '../services/online_match_scouting_service.dart';
 import '../services/online_pit_scouting_service.dart';
 import '../services/authentication_service.dart';
 import '../services/google_sheets_service.dart';
+import '../services/match_scouting_service.dart';
+import '../services/pit_scouting_service.dart';
 
 // Screens
 import './pit_scouting_detail_screen.dart';
@@ -34,6 +36,8 @@ class _TeamScreenState extends State<TeamScreen> {
       OnlinePitScoutingService();
   AuthenticationService _authService = AuthenticationService();
   GoogleSheetsService _sheetsService = GoogleSheetsService();
+  MatchScoutingService _matchScoutingService = MatchScoutingService();
+  PitScoutingService _pitScoutingService = PitScoutingService();
 
   int _currentSelection = 0;
   var isLoading = false;
@@ -101,6 +105,9 @@ class _TeamScreenState extends State<TeamScreen> {
                 matchScoutingTeamList[index],
               );
               await _sheetsService.deleteScoutIfExists(team);
+              var newTeam = team.changeStatus(ms.Status.Unsynced);
+              await _matchScoutingService.updateTeamByNo(newTeam);
+
               matchScoutingTeamList.removeAt(index);
             },
             direction: DismissDirection.endToStart,
@@ -205,6 +212,9 @@ class _TeamScreenState extends State<TeamScreen> {
               await _onlinePitScoutingService.deleteTeam(
                 pitScoutingTeamList[index],
               );
+              var newTeam = team.changeStatus(Status.Unsynced);
+              await _pitScoutingService.updateTeamByNo(newTeam);
+
               pitScoutingTeamList.removeAt(index);
             },
             direction: DismissDirection.endToStart,

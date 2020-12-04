@@ -38,6 +38,11 @@ class MatchScoutingService {
         'matchScouting', await team.mapTeam(false));
   }
 
+  Future<int> updateTeamByNo(MatchScoutingTeam team) async {
+    return await _ourDatabase.updateByTeamNo(
+        'matchScouting', await team.mapTeam(false));
+  }
+
   Future<void> deleteTeam(dynamic teamId) async {
     await _ourDatabase.delete('matchScouting', teamId);
   }
