@@ -28,10 +28,35 @@ class GoogleSheetsService {
 
     List<List<dynamic>> mappedTeams = [];
 
-    teams.forEach((team) {
+    teams.forEach((team) async {
       mappedTeams.add(team.mapTeamForSheet());
+      await deleteScoutIfExists(team);
     });
 
-    await sheet.values.appendRows(mappedTeams);
+    if (mappedTeams.length <= 1) {
+      await sheet.values.appendRow(mappedTeams.first);
+    } else {
+      await sheet.values.appendRows(mappedTeams);
+    }
+  }
+
+  Future<void> deleteScoutIfExists(MatchScoutingTeam team) async {
+    Spreadsheet ss = await gsheets.spreadsheet(_spreadsheetId);
+    Worksheet sheet = ss.worksheetByTitle("match_scouting");
+
+    List<Map<String, String>> scoutsMap = await sheet.values.map.allRows();
+
+    var rowNumber = 0;
+
+    try {
+      for (int i = 0; i < scoutsMap.length; i++) {
+        if (int.parse(scoutsMap[i]["teamNo"]) == team.teamNo) {
+          rowNumber = i + 2;
+          break;
+        }
+      }
+
+      await sheet.deleteRow(rowNumber);
+    } catch (e) {}
   }
 }

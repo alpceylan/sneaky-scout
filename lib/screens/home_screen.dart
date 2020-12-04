@@ -79,12 +79,17 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () async {
               List<MatchScoutingTeam> teams =
                   await _matchScoutingService.getTeams();
-              teams.forEach((team) async {
+              List<MatchScoutingTeam> unsyncedTeams = [];
+
+              teams.forEach((team) {
                 if (team.status != Status.Synced) {
-                  await _onlineMatchScoutingService.saveTeam(team);
+                  unsyncedTeams.add(team);
                 }
               });
-              await _sheetsService.syncMatchScouts(teams);
+              unsyncedTeams.forEach((team) async {
+                await _onlineMatchScoutingService.saveTeam(team);
+              });
+              await _sheetsService.syncMatchScouts(unsyncedTeams);
             },
           )
         ],
