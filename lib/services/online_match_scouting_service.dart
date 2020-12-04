@@ -24,10 +24,7 @@ class OnlineMatchScoutingService {
   Future<List<MatchScoutingTeam>> getTeams() async {
     List<MatchScoutingTeam> teams = [];
 
-    QuerySnapshot result = await _firestore
-        .collection('match_scouting')
-        .orderBy('id', descending: false)
-        .get();
+    QuerySnapshot result = await _firestore.collection('match_scouting').get();
 
     result.docs.forEach((teamMap) {
       var team = MatchScoutingTeam().unmapTeam(teamMap.data(), true);
@@ -37,7 +34,10 @@ class OnlineMatchScoutingService {
     return teams;
   }
 
-  Future<void> deleteTeam(int id) async {
-    await _firestore.collection('match_scouting').doc("$id").delete();
+  Future<void> deleteTeam(MatchScoutingTeam team) async {
+    await _firestore
+        .collection('match_scouting')
+        .doc("${team.teamNo}")
+        .delete();
   }
 }
