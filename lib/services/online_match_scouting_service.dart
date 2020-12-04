@@ -15,15 +15,10 @@ class OnlineMatchScoutingService {
 
     await _firestore
         .collection('match_scouting')
-        .add(await newTeam.mapTeam(true));
+        .doc("${newTeam.teamNo}")
+        .set(await newTeam.mapTeam(true));
 
     await _matchScoutingService.updateTeam(newTeam);
-  }
-
-  Future<void> updateTeam(MatchScoutingTeam team, int id) async {
-    await _firestore.collection('match_scouting').doc("$id").update(
-          await team.mapTeam(true),
-        );
   }
 
   Future<List<MatchScoutingTeam>> getTeams() async {

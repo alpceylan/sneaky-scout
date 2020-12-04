@@ -32,17 +32,12 @@ class OnlinePitScoutingService {
       metadata: SettableMetadata(contentType: "image/jpg"),
     );
 
-    await _firestore.collection('pit_scouting').add(
-          await newTeam.mapTeam(true, await ref.getDownloadURL()),
-        );
+    await _firestore
+        .collection('pit_scouting')
+        .doc("${newTeam.teamNo}")
+        .set(await newTeam.mapTeam(true, await ref.getDownloadURL()));
 
     await _pitScoutingService.updateTeam(newTeam);
-  }
-
-  Future<void> updateTeam(PitScoutingTeam team, int id) async {
-    await _firestore.collection('pit_scouting').doc("$id").update(
-          await team.mapTeam(true, ""),
-        );
   }
 
   Future<List<PitScoutingTeam>> getTeams() async {
