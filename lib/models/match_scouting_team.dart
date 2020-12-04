@@ -140,7 +140,7 @@ class MatchScoutingTeam {
 
   Future<Map<String, dynamic>> mapTeam(bool isOnline) async {
     Map<String, dynamic> _map;
-    if (id == null) {
+    if (id == null || isOnline) {
       _map = {
         "status": statusString,
         "userId": _authService.currentUser.uid,

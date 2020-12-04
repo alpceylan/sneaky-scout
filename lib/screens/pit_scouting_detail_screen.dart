@@ -484,7 +484,7 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                       validator: (value) {
                         if (value.length == 0) {
                           return "Team number shouldn't be empty.";
-                        } else if (int.parse(value) is int == false) {
+                        } else if (int.tryParse(value) == null) {
                           return "Team number should be integer.";
                         }
                         return null;
@@ -523,7 +523,7 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                       validator: (value) {
                         if (value.length == 0) {
                           return "Max balls shouldn't be empty.";
-                        } else if (int.parse(value) is int == false) {
+                        } else if (int.tryParse(value) == null) {
                           return "Max balls should be integer.";
                         }
                         return null;

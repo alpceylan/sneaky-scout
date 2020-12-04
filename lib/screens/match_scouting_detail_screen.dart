@@ -292,7 +292,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                       validator: (value) {
                         if (value.length == 0) {
                           return "Team number shouldn't be empty.";
-                        } else if (int.parse(value) is int == false) {
+                        } else if (int.tryParse(value) == null) {
                           return "Team number should be integer.";
                         }
                         return null;
@@ -391,7 +391,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                       validator: (value) {
                         if (value.length == 0) {
                           return "Powercell count shouldn't be empty.";
-                        } else if (int.parse(value) is int == false) {
+                        } else if (int.tryParse(value) == null) {
                           return "Powercell count should be integer.";
                         }
                         return null;
@@ -576,7 +576,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                       validator: (value) {
                         if (value.length == 0) {
                           return "Final score shouldn't be empty.";
-                        } else if (int.parse(value) is int == false) {
+                        } else if (int.tryParse(value) == null) {
                           return "Final score should be integer.";
                         }
                         return null;
@@ -631,7 +631,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                       validator: (value) {
                         if (value.length == 0) {
                           return "Foul shouldn't be empty.";
-                        } else if (int.parse(value) is int == false) {
+                        } else if (int.tryParse(value) == null) {
                           return "Foul should be integer.";
                         }
                         return null;
@@ -649,7 +649,7 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                       validator: (value) {
                         if (value.length == 0) {
                           return "Tech foul shouldn't be empty.";
-                        } else if (int.parse(value) is int == false) {
+                        } else if (int.tryParse(value) == null) {
                           return "Tech foul should be integer.";
                         }
                         return null;
