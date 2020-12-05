@@ -29,21 +29,12 @@ class MatchScoutingService {
     return teamList;
   }
 
-  Future<List<Map<String, dynamic>>> getTeamById(dynamic teamId) async {
-    return await _ourDatabase.getById('matchScouting', teamId);
-  }
-
   Future<int> updateTeam(MatchScoutingTeam team) async {
     return await _ourDatabase.update(
         'matchScouting', await team.mapTeam(false));
   }
 
-  Future<int> updateTeamByNo(MatchScoutingTeam team) async {
-    return await _ourDatabase.updateByTeamNo(
-        'matchScouting', await team.mapTeam(false));
-  }
-
-  Future<void> deleteTeam(dynamic teamId) async {
-    await _ourDatabase.delete('matchScouting', teamId);
+  Future<void> deleteTeam(int teamNo) async {
+    await _ourDatabase.delete('matchScouting', teamNo);
   }
 }

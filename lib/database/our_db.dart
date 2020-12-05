@@ -24,25 +24,15 @@ class OurDatabase {
     return await db.query(table);
   }
 
-  Future<List<Map<String, dynamic>>> getById(String table, itemId) async {
-    Database db = await database;
-    return await db.query(table, where: 'id=?', whereArgs: [itemId]);
-  }
-
   Future<int> update(String table, data) async {
-    Database db = await database;
-    return await db.update(table, data, where: 'id=?', whereArgs: [data['id']]);
-  }
-
-  Future<int> updateByTeamNo(String table, data) async {
     Database db = await database;
     return await db
         .update(table, data, where: 'teamNo=?', whereArgs: [data['teamNo']]);
   }
 
-  Future<int> delete(String table, id) async {
+  Future<int> delete(String table, teamNo) async {
     Database db = await database;
-    return await db.rawDelete('DELETE FROM $table WHERE id = $id');
+    return await db.rawDelete('DELETE FROM $table WHERE teamNo = $teamNo');
   }
 
   Future<List<Map<String, dynamic>>> getByColumnName(

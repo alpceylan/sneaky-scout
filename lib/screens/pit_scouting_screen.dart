@@ -61,7 +61,7 @@ class _PitScoutingScreenState extends State<PitScoutingScreen> {
           key: Key("$index"),
           onDismissed: (direction) async {
             await pitScoutingService.deleteTeam(
-              teamList[index].id,
+              teamList[index].teamNo,
             );
             teamList.removeAt(index);
           },

@@ -59,7 +59,7 @@ class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
           key: Key("$index"),
           onDismissed: (direction) async {
             await matchScoutingService.deleteTeam(
-              teamList[index].id,
+              teamList[index].teamNo,
             );
             teamList.removeAt(index);
           },

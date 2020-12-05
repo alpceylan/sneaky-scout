@@ -106,7 +106,7 @@ class _TeamScreenState extends State<TeamScreen> {
               );
               await _sheetsService.deleteScoutIfExists(team);
               var newTeam = team.changeStatus(ms.Status.Unsynced);
-              await _matchScoutingService.updateTeamByNo(newTeam);
+              await _matchScoutingService.updateTeam(newTeam);
 
               matchScoutingTeamList.removeAt(index);
             },
@@ -213,7 +213,7 @@ class _TeamScreenState extends State<TeamScreen> {
                 pitScoutingTeamList[index],
               );
               var newTeam = team.changeStatus(Status.Unsynced);
-              await _pitScoutingService.updateTeamByNo(newTeam);
+              await _pitScoutingService.updateTeam(newTeam);
 
               pitScoutingTeamList.removeAt(index);
             },
