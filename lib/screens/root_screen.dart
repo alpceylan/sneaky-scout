@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import '../services/authentication_service.dart';
 
 // Screens
-import '../screens/home_screen.dart';
-import '../screens/auth_screen.dart';
+import 'home/home_screen.dart';
+import 'auth/auth_screen.dart';
 
 class RootScreen extends StatefulWidget {
   static const routeName = '/root';

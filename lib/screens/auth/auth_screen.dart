@@ -4,10 +4,13 @@ import 'package:flutter/services.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 // Services
-import '../services/authentication_service.dart';
+import '../../services/authentication_service.dart';
 
 // Screens
-import '../screens/root_screen.dart';
+import '../root_screen.dart';
+
+// Widgets
+import './widgets/custom_text_field.dart';
 
 class AuthScreen extends StatefulWidget {
   static const routeName = '/auth';
@@ -83,36 +86,6 @@ class _AuthScreenState extends State<AuthScreen> {
       }
     }
 
-    Widget _buildTextField({
-      String labelText,
-      Icon icon,
-      bool obscureText = false,
-      TextInputType keyboardType = TextInputType.name,
-      Function(String) onSaved,
-      Function(String) validator,
-    }) {
-      return TextFormField(
-        decoration: InputDecoration(
-          labelText: labelText,
-          prefixIcon: icon,
-          border: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.blue,
-              width: deviceWidth * 0.01,
-              style: BorderStyle.solid,
-            ),
-            borderRadius: BorderRadius.all(
-              Radius.circular(20),
-            ),
-          ),
-        ),
-        obscureText: obscureText,
-        keyboardType: keyboardType,
-        onSaved: onSaved,
-        validator: validator,
-      );
-    }
-
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -129,7 +102,7 @@ class _AuthScreenState extends State<AuthScreen> {
             child: Column(
               children: [
                 if (!isLogin)
-                  _buildTextField(
+                  CustomTextField(
                     labelText: "Name",
                     icon: Icon(
                       Icons.person_outline,
@@ -151,7 +124,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   height: deviceHeight * 0.03,
                 ),
                 if (!isLogin)
-                  _buildTextField(
+                  CustomTextField(
                     labelText: "Team number",
                     icon: Icon(
                       Icons.group_outlined,
@@ -175,7 +148,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 SizedBox(
                   height: deviceHeight * 0.03,
                 ),
-                _buildTextField(
+                CustomTextField(
                   labelText: "Mail",
                   icon: Icon(
                     Icons.mail_outline,
@@ -194,7 +167,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 SizedBox(
                   height: deviceHeight * 0.03,
                 ),
-                _buildTextField(
+                CustomTextField(
                   labelText: "Password",
                   icon: Icon(
                     Icons.lock_outline,

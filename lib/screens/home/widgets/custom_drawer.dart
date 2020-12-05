@@ -5,10 +5,10 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:image_picker/image_picker.dart';
 
 // Services
-import '../services/authentication_service.dart';
+import '../../../services/authentication_service.dart';
 
 // Screens
-import '../screens/root_screen.dart';
+import '../../root_screen.dart';
 
 class CustomDrawer extends StatelessWidget {
   @override

@@ -9,6 +9,9 @@ import './pit_scouting_service.dart';
 // Models
 import '../models/pit_scouting_team.dart';
 
+// Enums
+import '../enums/pit_scouting_enums.dart';
+
 class OnlinePitScoutingService {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   FirebaseStorage _storage = FirebaseStorage.instance;

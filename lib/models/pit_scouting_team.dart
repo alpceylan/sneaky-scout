@@ -3,45 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 // Services
 import '../services/authentication_service.dart';
 
-enum Status {
-  Unsynced,
-  Synced,
-}
-
-enum Chassis {
-  X,
-  Y,
-  Z,
-}
-
-enum ImageProcessing {
-  Custom,
-  Limelight,
-}
-
-enum Shooter {
-  OneWheel,
-  TwoWheel,
-  LowGoal,
-}
-
-enum Hood {
-  X,
-  Y,
-  Z,
-}
-
-enum Intake {
-  X,
-  Y,
-  Z,
-}
-
-enum Funnel {
-  X,
-  Y,
-  Z,
-}
+// Enums
+import '../enums/pit_scouting_enums.dart';
 
 class PitScoutingTeam {
   final int id;

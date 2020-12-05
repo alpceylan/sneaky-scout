@@ -6,6 +6,9 @@ import './match_scouting_service.dart';
 // Models
 import '../models/match_scouting_team.dart';
 
+// Enums
+import '../enums/match_scouting_enums.dart';
+
 class OnlineMatchScoutingService {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;
   MatchScoutingService _matchScoutingService = MatchScoutingService();

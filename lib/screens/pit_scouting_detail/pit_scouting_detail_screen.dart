@@ -5,15 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 // Services
-import '../services/pit_scouting_service.dart';
-import '../services/blue_alliance_service.dart';
-import '../services/authentication_service.dart';
+import '../../services/pit_scouting_service.dart';
+import '../../services/blue_alliance_service.dart';
+import '../../services/authentication_service.dart';
 
 // Models
-import '../models/pit_scouting_team.dart';
+import '../../models/pit_scouting_team.dart';
 
 // Widgets
-import '../widgets/custom_text_input.dart';
+import '../../widgets/custom_text_input.dart';
+import '../../widgets/custom_dropdown_button.dart';
+import '../../widgets/comment_box.dart';
+
+// Enums
+import '../../enums/pit_scouting_enums.dart';
 
 class PitScoutingDetailScreen extends StatefulWidget {
   static const routeName = '/pit-scouting-detail';
@@ -423,7 +428,6 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomTextInput(
-                      deviceWidth: deviceWidth,
                       labelText: "Scout name",
                       initialValue: team.scoutName,
                       enabled: isCurrentUser,
@@ -462,7 +466,6 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomTextInput(
-                      deviceWidth: deviceWidth,
                       labelText: "Team name",
                       initialValue: team.teamName,
                       enabled: isCurrentUser,
@@ -477,7 +480,6 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                       },
                     ),
                     CustomTextInput(
-                      deviceWidth: deviceWidth,
                       labelText: "Team number",
                       initialValue: "${team.teamNo}",
                       enabled: isCurrentUser,
@@ -516,7 +518,6 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                       ],
                     ),
                     CustomTextInput(
-                      deviceWidth: deviceWidth,
                       labelText: "Max balls",
                       initialValue: "${team.maxBalls}",
                       enabled: isCurrentUser,
@@ -539,31 +540,13 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                   duration: Duration(
                     milliseconds: 300,
                   ),
-                  child: TextFormField(
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 2,
+                  child: CommentBox(
                     initialValue: team.climbingComment,
-                    decoration: InputDecoration(
-                      labelText: "Climbing comment",
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                    enabled: isCurrentUser,
-                    validator: (value) {
-                      if (_newClimbing) {
-                        if (value.length == 0) {
-                          return "Climbing comment shouldn't be empty.";
-                        }
-                        return null;
-                      }
-                      return null;
-                    },
-                    onSaved: (newValue) {
-                      _climbingComment = newValue;
-                    },
+                    value: _climbingComment,
+                    labelText: "Climbing comment",
+                    maxLines: 2,
+                    isCurrentUser: isCurrentUser,
+                    visible: _newClimbing,
                   ),
                 ),
                 Row(
@@ -586,45 +569,15 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                         ),
                       ],
                     ),
-                    Container(
-                      width: deviceWidth * 0.3,
-                      height: deviceHeight * 0.065,
-                      child: DropdownButton(
-                        isExpanded: true,
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.black,
-                        ),
-                        value: _newShooterTypeInt,
-                        items: [
-                          DropdownMenuItem(
-                            child: Text(
-                              shooterTypeStrings[1],
-                            ),
-                            value: 1,
-                          ),
-                          DropdownMenuItem(
-                            child: Text(
-                              shooterTypeStrings[2],
-                            ),
-                            value: 2,
-                          ),
-                          DropdownMenuItem(
-                            child: Text(
-                              shooterTypeStrings[3],
-                            ),
-                            value: 3,
-                          ),
-                        ],
-                        disabledHint: Text(
-                          shooterTypeStrings[_newShooterTypeInt],
-                        ),
-                        onChanged: isCurrentUser
-                            ? (value) {
-                                _newShooterTypeInt = value;
-                              }
-                            : null,
-                      ),
+                    CustomDropdownButton(
+                      menuMap: shooterTypeStrings,
+                      value: _newShooterTypeInt,
+                      isCurrentUser: isCurrentUser,
+                      onChanged: (newValue) {
+                        setState(() {
+                          _newShooterTypeInt = newValue;
+                        });
+                      },
                     ),
                   ],
                 ),
@@ -637,40 +590,15 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Image Processing Type:"),
-                      Container(
-                        width: deviceWidth * 0.3,
-                        height: deviceHeight * 0.065,
-                        child: DropdownButton(
-                          isExpanded: true,
-                          style: TextStyle(
-                            fontSize: 17,
-                            color: Colors.black,
-                          ),
-                          value: _newImageProcessingTypeInt,
-                          items: [
-                            DropdownMenuItem(
-                              child: Text(
-                                imageProcessingTypeStrings[1],
-                              ),
-                              value: 1,
-                            ),
-                            DropdownMenuItem(
-                              child: Text(
-                                imageProcessingTypeStrings[2],
-                              ),
-                              value: 2,
-                            ),
-                          ],
-                          disabledHint: Text(imageProcessingTypeStrings[
-                              _newImageProcessingTypeInt]),
-                          onChanged: isCurrentUser
-                              ? (value) {
-                                  setState(() {
-                                    _newImageProcessingTypeInt = value;
-                                  });
-                                }
-                              : null,
-                        ),
+                      CustomDropdownButton(
+                        menuMap: imageProcessingTypeStrings,
+                        value: _newImageProcessingTypeInt,
+                        isCurrentUser: isCurrentUser,
+                        onChanged: (newValue) {
+                          setState(() {
+                            _newImageProcessingTypeInt = newValue;
+                          });
+                        },
                       ),
                     ],
                   ),
@@ -695,45 +623,15 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                         ),
                       ],
                     ),
-                    Container(
-                      width: deviceWidth * 0.3,
-                      height: deviceHeight * 0.065,
-                      child: DropdownButton(
-                        isExpanded: true,
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.black,
-                        ),
-                        value: _newHoodTypeInt,
-                        items: [
-                          DropdownMenuItem(
-                            child: Text(
-                              hoodTypeStrings[1],
-                            ),
-                            value: 1,
-                          ),
-                          DropdownMenuItem(
-                            child: Text(
-                              hoodTypeStrings[2],
-                            ),
-                            value: 2,
-                          ),
-                          DropdownMenuItem(
-                            child: Text(
-                              hoodTypeStrings[3],
-                            ),
-                            value: 3,
-                          ),
-                        ],
-                        disabledHint: Text(
-                          hoodTypeStrings[_newHoodTypeInt],
-                        ),
-                        onChanged: isCurrentUser
-                            ? (value) {
-                                _newHoodTypeInt = value;
-                              }
-                            : null,
-                      ),
+                    CustomDropdownButton(
+                      menuMap: hoodTypeStrings,
+                      value: _newHoodTypeInt,
+                      isCurrentUser: isCurrentUser,
+                      onChanged: (newValue) {
+                        setState(() {
+                          _newHoodTypeInt = newValue;
+                        });
+                      },
                     ),
                   ],
                 ),
@@ -746,47 +644,15 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Intake Type:"),
-                      Container(
-                        width: deviceWidth * 0.3,
-                        height: deviceHeight * 0.065,
-                        child: DropdownButton(
-                          isExpanded: true,
-                          style: TextStyle(
-                            fontSize: 17,
-                            color: Colors.black,
-                          ),
-                          value: _newIntakeTypeInt,
-                          items: [
-                            DropdownMenuItem(
-                              child: Text(
-                                intakeTypeStrings[1],
-                              ),
-                              value: 1,
-                            ),
-                            DropdownMenuItem(
-                              child: Text(
-                                intakeTypeStrings[2],
-                              ),
-                              value: 2,
-                            ),
-                            DropdownMenuItem(
-                              child: Text(
-                                intakeTypeStrings[3],
-                              ),
-                              value: 3,
-                            ),
-                          ],
-                          disabledHint: Text(
-                            intakeTypeStrings[_newIntakeTypeInt],
-                          ),
-                          onChanged: isCurrentUser
-                              ? (value) {
-                                  setState(() {
-                                    _newIntakeTypeInt = value;
-                                  });
-                                }
-                              : null,
-                        ),
+                      CustomDropdownButton(
+                        menuMap: intakeTypeStrings,
+                        value: _newIntakeTypeInt,
+                        isCurrentUser: isCurrentUser,
+                        onChanged: (newValue) {
+                          setState(() {
+                            _newIntakeTypeInt = newValue;
+                          });
+                        },
                       ),
                     ],
                   ),
@@ -811,45 +677,15 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                         ),
                       ],
                     ),
-                    Container(
-                      width: deviceWidth * 0.3,
-                      height: deviceHeight * 0.065,
-                      child: DropdownButton(
-                        isExpanded: true,
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.black,
-                        ),
-                        value: _newChassisTypeInt,
-                        items: [
-                          DropdownMenuItem(
-                            child: Text(
-                              chassisTypeStrings[1],
-                            ),
-                            value: 1,
-                          ),
-                          DropdownMenuItem(
-                            child: Text(
-                              chassisTypeStrings[2],
-                            ),
-                            value: 2,
-                          ),
-                          DropdownMenuItem(
-                            child: Text(
-                              chassisTypeStrings[3],
-                            ),
-                            value: 3,
-                          ),
-                        ],
-                        disabledHint: Text(
-                          chassisTypeStrings[_newChassisTypeInt],
-                        ),
-                        onChanged: isCurrentUser
-                            ? (value) {
-                                _newChassisTypeInt = value;
-                              }
-                            : null,
-                      ),
+                    CustomDropdownButton(
+                      menuMap: chassisTypeStrings,
+                      value: _newChassisTypeInt,
+                      isCurrentUser: isCurrentUser,
+                      onChanged: (newValue) {
+                        setState(() {
+                          _newChassisTypeInt = newValue;
+                        });
+                      },
                     ),
                   ],
                 ),
@@ -858,78 +694,28 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                   duration: Duration(
                     milliseconds: 300,
                   ),
-                  child: TextFormField(
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 2,
+                  child: CommentBox(
                     initialValue: team.autonomousComment,
-                    decoration: InputDecoration(
-                      labelText: "Autonomous comment",
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                    enabled: isCurrentUser,
-                    validator: (value) {
-                      if (_newClimbing) {
-                        if (value.length == 0) {
-                          return "Autonomous comment shouldn't be empty.";
-                        }
-                        return null;
-                      }
-                      return null;
-                    },
-                    onSaved: (newValue) {
-                      _autonomousComment = newValue;
-                    },
+                    value: _autonomousComment,
+                    labelText: "Autonomous comment",
+                    maxLines: 2,
+                    isCurrentUser: isCurrentUser,
+                    visible: _newAutonomous,
                   ),
                 ),
-                TextFormField(
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 3,
+                CommentBox(
                   initialValue: team.extra,
-                  decoration: InputDecoration(
-                    labelText: "Extra",
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                  enabled: isCurrentUser,
-                  validator: (value) {
-                    if (value.length == 0) {
-                      return "Extra shouldn't be empty.";
-                    }
-                    return null;
-                  },
-                  onSaved: (newValue) {
-                    _extra = newValue;
-                  },
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.multiline,
+                  value: _extra,
+                  labelText: "Extra",
                   maxLines: 3,
+                  isCurrentUser: isCurrentUser,
+                ),
+                CommentBox(
                   initialValue: team.comment,
-                  decoration: InputDecoration(
-                    labelText: "Comment",
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                  enabled: isCurrentUser,
-                  validator: (value) {
-                    if (value.length == 0) {
-                      return "Comment shouldn't be empty.";
-                    }
-                    return null;
-                  },
-                  onSaved: (newValue) {
-                    _comment = newValue;
-                  },
+                  value: _comment,
+                  labelText: "Comment",
+                  maxLines: 3,
+                  isCurrentUser: isCurrentUser,
                 ),
                 SizedBox(
                   height: deviceHeight * 0.02,

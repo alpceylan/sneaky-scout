@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 
 // Services
-import '../services/match_scouting_service.dart';
-import '../services/blue_alliance_service.dart';
-import '../services/authentication_service.dart';
+import '../../services/match_scouting_service.dart';
+import '../../services/blue_alliance_service.dart';
+import '../../services/authentication_service.dart';
 
 // Models
-import '../models/match_scouting_team.dart';
+import '../../models/match_scouting_team.dart';
 
 // Widgets
-import '../widgets/custom_text_input.dart';
+import '../../widgets/custom_text_input.dart';
+import '../../widgets/custom_dropdown_button.dart';
+import '../../widgets/comment_box.dart';
+
+// Enums
+import '../../enums/match_scouting_enums.dart';
 
 class MatchScoutingDetailScreen extends StatefulWidget {
   static const routeName = '/match-scouting-detail';
@@ -268,7 +273,6 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomTextInput(
-                      deviceWidth: deviceWidth,
                       labelText: "Team name",
                       initialValue: team.teamName,
                       keyboardType: TextInputType.name,
@@ -284,7 +288,6 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                       },
                     ),
                     CustomTextInput(
-                      deviceWidth: deviceWidth,
                       labelText: "Team number",
                       initialValue: "${team.teamNo}",
                       keyboardType: TextInputType.number,
@@ -307,48 +310,17 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Container(
-                      width: deviceWidth * 0.3,
-                      height: deviceHeight * 0.065,
-                      child: DropdownButton(
-                        isExpanded: true,
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.black,
-                        ),
-                        value: _newMatchInt,
-                        items: [
-                          DropdownMenuItem(
-                            child: Text(
-                              matchTypeStrings[1],
-                            ),
-                            value: 1,
-                          ),
-                          DropdownMenuItem(
-                            child: Text(
-                              matchTypeStrings[2],
-                            ),
-                            value: 2,
-                          ),
-                          DropdownMenuItem(
-                            child: Text(
-                              matchTypeStrings[3],
-                            ),
-                            value: 3,
-                          ),
-                        ],
-                        disabledHint: Text(
-                          matchTypeStrings[_newMatchInt],
-                        ),
-                        onChanged: isCurrentUser
-                            ? (value) {
-                                _newMatchInt = value;
-                              }
-                            : null,
-                      ),
+                    CustomDropdownButton(
+                      menuMap: matchTypeStrings,
+                      value: _newMatchInt,
+                      isCurrentUser: isCurrentUser,
+                      onChanged: (newValue) {
+                        setState(() {
+                          _newMatchInt = newValue;
+                        });
+                      },
                     ),
                     CustomTextInput(
-                      deviceWidth: deviceWidth,
                       labelText: "Match number",
                       initialValue: team.matchNo,
                       enabled: isCurrentUser,
@@ -368,7 +340,6 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomTextInput(
-                      deviceWidth: deviceWidth,
                       labelText: "Robot color",
                       initialValue: team.color,
                       enabled: isCurrentUser,
@@ -383,7 +354,6 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                       },
                     ),
                     CustomTextInput(
-                      deviceWidth: deviceWidth,
                       labelText: "Powercell count",
                       initialValue: "${team.powerCellCount}",
                       keyboardType: TextInputType.number,
@@ -450,48 +420,15 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Autonomous Starting Point:"),
-                      Container(
-                        width: deviceWidth * 0.3,
-                        height: deviceHeight * 0.065,
-                        child: DropdownButton(
-                          isExpanded: true,
-                          style: TextStyle(
-                            fontSize: 17,
-                            color: Colors.black,
-                          ),
-                          value: _newAutonomousStartingPointInt,
-                          items: [
-                            DropdownMenuItem(
-                              child: Text(
-                                autonomousStartingPointStrings[1],
-                              ),
-                              value: 1,
-                            ),
-                            DropdownMenuItem(
-                              child: Text(
-                                autonomousStartingPointStrings[2],
-                              ),
-                              value: 2,
-                            ),
-                            DropdownMenuItem(
-                              child: Text(
-                                autonomousStartingPointStrings[3],
-                              ),
-                              value: 3,
-                            ),
-                          ],
-                          disabledHint: Text(
-                            autonomousStartingPointStrings[
-                                _newAutonomousStartingPointInt],
-                          ),
-                          onChanged: isCurrentUser
-                              ? (value) {
-                                  setState(() {
-                                    _newAutonomousStartingPointInt = value;
-                                  });
-                                }
-                              : null,
-                        ),
+                      CustomDropdownButton(
+                        menuMap: autonomousStartingPointStrings,
+                        value: _newAutonomousStartingPointInt,
+                        isCurrentUser: isCurrentUser,
+                        onChanged: (newValue) {
+                          setState(() {
+                            _newAutonomousStartingPointInt = newValue;
+                          });
+                        },
                       ),
                     ],
                   ),
@@ -502,47 +439,15 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Powercell Location:"),
-                      Container(
-                        width: deviceWidth * 0.3,
-                        height: deviceHeight * 0.065,
-                        child: DropdownButton(
-                          isExpanded: true,
-                          style: TextStyle(
-                            fontSize: 17,
-                            color: Colors.black,
-                          ),
-                          value: _newPowercellLocationInt,
-                          items: [
-                            DropdownMenuItem(
-                              child: Text(
-                                powercellLocationStrings[1],
-                              ),
-                              value: 1,
-                            ),
-                            DropdownMenuItem(
-                              child: Text(
-                                powercellLocationStrings[2],
-                              ),
-                              value: 2,
-                            ),
-                            DropdownMenuItem(
-                              child: Text(
-                                powercellLocationStrings[3],
-                              ),
-                              value: 3,
-                            ),
-                          ],
-                          disabledHint: Text(
-                            powercellLocationStrings[_newPowercellLocationInt],
-                          ),
-                          onChanged: isCurrentUser
-                              ? (value) {
-                                  setState(() {
-                                    _newPowercellLocationInt = value;
-                                  });
-                                }
-                              : null,
-                        ),
+                      CustomDropdownButton(
+                        menuMap: powercellLocationStrings,
+                        value: _newPowercellLocationInt,
+                        isCurrentUser: isCurrentUser,
+                        onChanged: (newValue) {
+                          setState(() {
+                            _newPowercellLocationInt = newValue;
+                          });
+                        },
                       ),
                     ],
                   ),
@@ -568,7 +473,6 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                       ],
                     ),
                     CustomTextInput(
-                      deviceWidth: deviceWidth,
                       labelText: "Final Score",
                       initialValue: "${team.finalScore}",
                       keyboardType: TextInputType.number,
@@ -592,38 +496,19 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                   duration: Duration(
                     milliseconds: 300,
                   ),
-                  child: TextFormField(
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 2,
+                  child: CommentBox(
                     initialValue: team.defenseComment,
-                    decoration: InputDecoration(
-                      labelText: "Defense comment",
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                    enabled: isCurrentUser,
-                    validator: (value) {
-                      if (_newDefense) {
-                        if (value.length == 0) {
-                          return "Defense comment shouldn't be empty.";
-                        }
-                        return null;
-                      }
-                      return null;
-                    },
-                    onSaved: (newValue) {
-                      _defenseComment = newValue;
-                    },
+                    value: _defenseComment,
+                    labelText: "Defense comment",
+                    maxLines: 2,
+                    isCurrentUser: isCurrentUser,
+                    visible: _newDefense,
                   ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CustomTextInput(
-                      deviceWidth: deviceWidth,
                       labelText: "Foul",
                       initialValue: "${team.foul}",
                       keyboardType: TextInputType.number,
@@ -641,7 +526,6 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                       },
                     ),
                     CustomTextInput(
-                      deviceWidth: deviceWidth,
                       labelText: "Tech Foul",
                       initialValue: "${team.techFoul}",
                       keyboardType: TextInputType.number,
@@ -660,28 +544,12 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                     ),
                   ],
                 ),
-                TextFormField(
-                  keyboardType: TextInputType.multiline,
-                  maxLines: 3,
+                CommentBox(
                   initialValue: team.comment,
-                  decoration: InputDecoration(
-                    labelText: "Comment",
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                  enabled: isCurrentUser,
-                  validator: (value) {
-                    if (value.length == 0) {
-                      return "Comment shouldn't be empty.";
-                    }
-                    return null;
-                  },
-                  onSaved: (newValue) {
-                    _comment = newValue;
-                  },
+                  value: _comment,
+                  labelText: "Comment",
+                  maxLines: 3,
+                  isCurrentUser: isCurrentUser,
                 ),
                 SizedBox(
                   height: deviceHeight * 0.02,

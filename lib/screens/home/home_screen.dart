@@ -1,25 +1,30 @@
 import 'package:flutter/material.dart';
 
 // Services
-import '../services/online_match_scouting_service.dart';
-import '../services/match_scouting_service.dart';
-import '../services/online_pit_scouting_service.dart';
-import '../services/pit_scouting_service.dart';
-import '../services/google_sheets_service.dart';
+import '../../services/online_match_scouting_service.dart';
+import '../../services/match_scouting_service.dart';
+import '../../services/online_pit_scouting_service.dart';
+import '../../services/pit_scouting_service.dart';
+import '../../services/google_sheets_service.dart';
 
 // Screens
-import './match_scouting_screen.dart';
-import './pit_scouting_screen.dart';
-import './team_scouts_screen.dart';
-import './match_scouting_detail_screen.dart';
-import './pit_scouting_detail_screen.dart';
+import '../match_scouting/match_scouting_screen.dart';
+import '../pit_scouting/pit_scouting_screen.dart';
+import '../team_scouts/team_scouts_screen.dart';
+import '../match_scouting_detail/match_scouting_detail_screen.dart';
+import '../pit_scouting_detail/pit_scouting_detail_screen.dart';
 
 // Models
-import '../models/match_scouting_team.dart';
-import '../models/pit_scouting_team.dart' as ps;
+import '../../models/match_scouting_team.dart';
+import '../../models/pit_scouting_team.dart';
 
 // Widgets
-import '../widgets/custom_drawer.dart';
+import './widgets/custom_drawer.dart';
+import './widgets/custom_bottom_navigation_bar.dart';
+
+// Enums
+import '../../enums/match_scouting_enums.dart';
+import '../../enums/pit_scouting_enums.dart' as ps;
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';
@@ -48,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
         arguments: team,
       );
     } else if (currentIndex == 1) {
-      var team = ps.PitScoutingTeam();
+      var team = PitScoutingTeam();
 
       Navigator.of(context).pushNamed(
         PitScoutingDetailScreen.routeName,
@@ -100,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: Icon(Icons.sync),
             onPressed: () async {
-              List<ps.PitScoutingTeam> teams =
+              List<PitScoutingTeam> teams =
                   await _pitScoutingService.getTeams();
               teams.forEach((team) async {
                 if (team.status != ps.Status.Synced) {
@@ -137,28 +142,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             )
           : null,
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: currentIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.radio_button_on,
-            ),
-            label: "Match Scouting",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.browser_not_supported_outlined,
-            ),
-            label: "Pit Scouting",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.group,
-            ),
-            label: "Team Scouts",
-          ),
-        ],
         onTap: (index) {
           setState(() {
             currentIndex = index;

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class CustomTextInput extends StatelessWidget {
-  final double deviceWidth;
   final String labelText;
   final String initialValue;
   final TextInputType keyboardType;
@@ -10,7 +9,6 @@ class CustomTextInput extends StatelessWidget {
   final Function(String newValue) onSaved;
 
   CustomTextInput({
-    @required this.deviceWidth,
     @required this.labelText,
     this.initialValue,
     this.keyboardType,
@@ -21,6 +19,8 @@ class CustomTextInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+
     return Container(
       width: deviceWidth * 0.4,
       child: TextFormField(

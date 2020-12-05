@@ -1,28 +1,8 @@
 // Services
 import '../services/authentication_service.dart';
 
-enum Status {
-  Synced,
-  Unsynced,
-}
-
-enum Match {
-  Practice,
-  Qual,
-  Playoff,
-}
-
-enum PowerCellLocation {
-  Inner,
-  Lower,
-  Outer,
-}
-
-enum AutonomousStartingPoint {
-  Right,
-  Middle,
-  Left,
-}
+// Enums
+import '../enums/match_scouting_enums.dart';
 
 class MatchScoutingTeam {
   AuthenticationService _authService = AuthenticationService();
