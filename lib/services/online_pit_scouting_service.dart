@@ -38,7 +38,7 @@ class OnlinePitScoutingService {
     await _firestore
         .collection('pit_scouting')
         .doc("${newTeam.teamNo}")
-        .set(await newTeam.mapTeam(true, await ref.getDownloadURL()));
+        .set(await newTeam.toFirebase(await ref.getDownloadURL()));
 
     await _pitScoutingService.updateTeam(newTeam);
   }
@@ -49,7 +49,7 @@ class OnlinePitScoutingService {
     QuerySnapshot result = await _firestore.collection('pit_scouting').get();
 
     result.docs.forEach((teamMap) {
-      var team = PitScoutingTeam().unmapTeam(teamMap.data(), true);
+      var team = PitScoutingTeam.fromFirebase(teamMap.data());
       teams.add(team);
     });
 

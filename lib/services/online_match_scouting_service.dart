@@ -19,7 +19,7 @@ class OnlineMatchScoutingService {
     await _firestore
         .collection('match_scouting')
         .doc("${newTeam.teamNo}")
-        .set(await newTeam.mapTeam(true));
+        .set(await newTeam.toFirebase());
 
     await _matchScoutingService.updateTeam(newTeam);
   }
@@ -30,7 +30,7 @@ class OnlineMatchScoutingService {
     QuerySnapshot result = await _firestore.collection('match_scouting').get();
 
     result.docs.forEach((teamMap) {
-      var team = MatchScoutingTeam().unmapTeam(teamMap.data(), true);
+      var team = MatchScoutingTeam.fromFirebase(teamMap.data());
       teams.add(team);
     });
 

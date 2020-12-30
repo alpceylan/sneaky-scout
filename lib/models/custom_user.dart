@@ -15,8 +15,8 @@ class CustomUser {
     this.createdDate,
   });
 
-  CustomUser unmapUser(Map<String, dynamic> userMap) {
-    var user = CustomUser(
+  factory CustomUser.fromFirebase(Map<String, dynamic> userMap) {
+    return CustomUser(
       email: userMap["email"],
       name: userMap["name"],
       userId: userMap["userId"],
@@ -24,7 +24,5 @@ class CustomUser {
       teamNumber: userMap["teamNumber"],
       createdDate: userMap["createdDate"],
     );
-
-    return user;
   }
 }

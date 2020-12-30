@@ -118,83 +118,114 @@ class MatchScoutingTeam {
     return newTeam;
   }
 
-  Future<Map<String, dynamic>> mapTeam(bool isOnline) async {
-    Map<String, dynamic> _map;
-    if (id == null || isOnline) {
-      _map = {
-        "status": statusString,
-        "userId": _authService.currentUser.uid,
-        "scoutName": scoutName,
-        "teamName": teamName,
-        "teamNo": teamNo,
-        "matchType": matchTypeString,
-        "matchNo": matchNo,
-        "color": color,
-        "powerCellCount": powerCellCount,
-        "powerCellLocation": powerCellLocationString,
-        "autonomous": isOnline
-            ? autonomous
-            : autonomous
-                ? 1
-                : 0,
-        "autonomousStartingPoint": autonomousStartingPointString,
-        "comment": comment,
-        "defense": isOnline
-            ? defense
-            : defense
-                ? 1
-                : 0,
-        "defenseComment": defenseComment,
-        "foul": foul,
-        "techFoul": techFoul,
-        "imageProcessing": isOnline
-            ? imageProcessing
-            : imageProcessing
-                ? 1
-                : 0,
-        "finalScore": finalScore,
-      };
-    } else {
-      _map = {
-        "id": id,
-        "status": statusString,
-        "userId": _authService.currentUser.uid,
-        "scoutName": scoutName,
-        "teamName": teamName,
-        "teamNo": teamNo,
-        "matchType": matchTypeString,
-        "matchNo": matchNo,
-        "color": color,
-        "powerCellCount": powerCellCount,
-        "powerCellLocation": powerCellLocationString,
-        "autonomous": isOnline
-            ? autonomous
-            : autonomous
-                ? 1
-                : 0,
-        "autonomousStartingPoint": autonomousStartingPointString,
-        "comment": comment,
-        "defense": isOnline
-            ? defense
-            : defense
-                ? 1
-                : 0,
-        "defenseComment": defenseComment,
-        "foul": foul,
-        "techFoul": techFoul,
-        "imageProcessing": isOnline
-            ? imageProcessing
-            : imageProcessing
-                ? 1
-                : 0,
-        "finalScore": finalScore,
-      };
-    }
+  Future<Map<String, dynamic>> toFirebase() async {
+    Map<String, dynamic> map = {
+      "status": statusString,
+      "userId": _authService.currentUser.uid,
+      "scoutName": scoutName,
+      "teamName": teamName,
+      "teamNo": teamNo,
+      "matchType": matchTypeString,
+      "matchNo": matchNo,
+      "color": color,
+      "powerCellCount": powerCellCount,
+      "powerCellLocation": powerCellLocationString,
+      "autonomous": autonomous,
+      "autonomousStartingPoint": autonomousStartingPointString,
+      "comment": comment,
+      "defense": defense,
+      "defenseComment": defenseComment,
+      "foul": foul,
+      "techFoul": techFoul,
+      "imageProcessing": imageProcessing,
+      "finalScore": finalScore,
+    };
 
-    return _map;
+    return map;
   }
 
-  MatchScoutingTeam unmapTeam(Map<String, dynamic> teamMap, bool isOnline) {
+  Future<Map<String, dynamic>> toLocal() async {
+    Map<String, dynamic> map = {
+      "id": id,
+      "status": statusString,
+      "userId": _authService.currentUser.uid,
+      "scoutName": scoutName,
+      "teamName": teamName,
+      "teamNo": teamNo,
+      "matchType": matchTypeString,
+      "matchNo": matchNo,
+      "color": color,
+      "powerCellCount": powerCellCount,
+      "powerCellLocation": powerCellLocationString,
+      "autonomous": autonomous ? 1 : 0,
+      "autonomousStartingPoint": autonomousStartingPointString,
+      "comment": comment,
+      "defense": defense ? 1 : 0,
+      "defenseComment": defenseComment,
+      "foul": foul,
+      "techFoul": techFoul,
+      "imageProcessing": imageProcessing ? 1 : 0,
+      "finalScore": finalScore,
+    };
+
+    return map;
+  }
+
+  factory MatchScoutingTeam.fromFirebase(Map<String, dynamic> teamMap) {
+    Match matchType;
+    PowerCellLocation powerCellLocation;
+    AutonomousStartingPoint autonomousStartingPoint;
+
+    if (teamMap["matchType"] == "practice") {
+      matchType = Match.Practice;
+    } else if (teamMap["matchType"] == "playoff") {
+      matchType = Match.Playoff;
+    } else {
+      matchType = Match.Qual;
+    }
+
+    if (teamMap["powerCellLocation"] == "inner") {
+      powerCellLocation = PowerCellLocation.Inner;
+    } else if (teamMap["powerCellLocation"] == "lower") {
+      powerCellLocation = PowerCellLocation.Lower;
+    } else {
+      powerCellLocation = PowerCellLocation.Outer;
+    }
+
+    if (teamMap["autonomousStartingPoint"] == "left") {
+      autonomousStartingPoint = AutonomousStartingPoint.Left;
+    } else if (teamMap["autonomousStartingPoint"] == "middle") {
+      autonomousStartingPoint = AutonomousStartingPoint.Middle;
+    } else {
+      autonomousStartingPoint = AutonomousStartingPoint.Right;
+    }
+
+    var team = MatchScoutingTeam(
+      status: teamMap["status"] == 'synced' ? Status.Synced : Status.Unsynced,
+      userId: teamMap["userId"],
+      scoutName: teamMap["scoutName"],
+      teamName: teamMap["teamName"],
+      teamNo: teamMap["teamNo"],
+      matchType: matchType,
+      matchNo: teamMap["matchNo"],
+      color: teamMap["color"],
+      powerCellCount: teamMap["powerCellCount"],
+      powerCellLocation: powerCellLocation,
+      autonomous: teamMap["autonomous"],
+      autonomousStartingPoint: autonomousStartingPoint,
+      comment: teamMap["comment"],
+      defense: teamMap["defense"],
+      defenseComment: teamMap["defenseComment"],
+      foul: teamMap["foul"],
+      techFoul: teamMap["techFoul"],
+      imageProcessing: teamMap["imageProcessing"],
+      finalScore: teamMap["finalScore"],
+    );
+
+    return team;
+  }
+
+  factory MatchScoutingTeam.fromLocal(Map<String, dynamic> teamMap) {
     Match matchType;
     PowerCellLocation powerCellLocation;
     AutonomousStartingPoint autonomousStartingPoint;
@@ -235,33 +266,21 @@ class MatchScoutingTeam {
       color: teamMap["color"],
       powerCellCount: teamMap["powerCellCount"],
       powerCellLocation: powerCellLocation,
-      autonomous: isOnline
-          ? teamMap["autonomous"]
-          : teamMap["autonomous"] == 1
-              ? true
-              : false,
+      autonomous: teamMap["autonomous"] == 1 ? true : false,
       autonomousStartingPoint: autonomousStartingPoint,
       comment: teamMap["comment"],
-      defense: isOnline
-          ? teamMap["defense"]
-          : teamMap["defense"] == 1
-              ? true
-              : false,
+      defense: teamMap["defense"] == 1 ? true : false,
       defenseComment: teamMap["defenseComment"],
       foul: teamMap["foul"],
       techFoul: teamMap["techFoul"],
-      imageProcessing: isOnline
-          ? teamMap["imageProcessing"]
-          : teamMap["imageProcessing"] == 1
-              ? true
-              : false,
+      imageProcessing: teamMap["imageProcessing"] == 1 ? true : false,
       finalScore: teamMap["finalScore"],
     );
 
     return team;
   }
 
-  List<dynamic> mapTeamForSheet() {
+  List<dynamic> toSheet() {
     return [
       "synced",
       _authService.currentUser.uid,

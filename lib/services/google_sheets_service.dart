@@ -29,7 +29,7 @@ class GoogleSheetsService {
     List<List<dynamic>> mappedTeams = [];
 
     teams.forEach((team) async {
-      mappedTeams.add(team.mapTeamForSheet());
+      mappedTeams.add(team.toSheet());
       await deleteScoutIfExists(team);
     });
 

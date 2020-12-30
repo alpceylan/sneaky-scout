@@ -12,7 +12,7 @@ class MatchScoutingService {
   AuthenticationService _authService = AuthenticationService();
 
   Future<int> saveTeam(MatchScoutingTeam team) async {
-    return await _ourDatabase.save('matchScouting', await team.mapTeam(false));
+    return await _ourDatabase.save('matchScouting', await team.toLocal());
   }
 
   Future<List<MatchScoutingTeam>> getTeams() async {
@@ -20,7 +20,7 @@ class MatchScoutingService {
 
     var teams = await _ourDatabase.getAll('matchScouting');
     teams.forEach((teamMap) {
-      var team = MatchScoutingTeam().unmapTeam(teamMap, false);
+      var team = MatchScoutingTeam.fromLocal(teamMap);
       if (team.userId == _authService.currentUser.uid) {
         teamList.add(team);
       }
@@ -30,8 +30,7 @@ class MatchScoutingService {
   }
 
   Future<int> updateTeam(MatchScoutingTeam team) async {
-    return await _ourDatabase.update(
-        'matchScouting', await team.mapTeam(false));
+    return await _ourDatabase.update('matchScouting', await team.toLocal());
   }
 
   Future<void> deleteTeam(int teamNo) async {

@@ -23,7 +23,7 @@ class AuthenticationService {
 
     var result = await _firestore.collection('users').get();
     result.docs.forEach((userMap) {
-      var user = CustomUser().unmapUser(userMap.data());
+      var user = CustomUser.fromFirebase(userMap.data());
       users.add(user);
     });
 
