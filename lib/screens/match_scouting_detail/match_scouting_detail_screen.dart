@@ -498,11 +498,13 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                   ),
                   child: CommentBox(
                     initialValue: team.defenseComment,
-                    value: _defenseComment,
                     labelText: "Defense comment",
                     maxLines: 2,
                     isCurrentUser: isCurrentUser,
                     visible: _newDefense,
+                    onSaved: (newValue) {
+                      _defenseComment = newValue;
+                    },
                   ),
                 ),
                 Row(
@@ -546,10 +548,12 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                 ),
                 CommentBox(
                   initialValue: team.comment,
-                  value: _comment,
                   labelText: "Comment",
                   maxLines: 3,
                   isCurrentUser: isCurrentUser,
+                  onSaved: (newValue) {
+                    _comment = newValue;
+                  },
                 ),
                 SizedBox(
                   height: deviceHeight * 0.02,

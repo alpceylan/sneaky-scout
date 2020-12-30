@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class CommentBox extends StatelessWidget {
   final String labelText;
   final String initialValue;
-  String value;
+  final Function(String) onSaved;
   final int maxLines;
   final bool isCurrentUser;
   final bool visible;
@@ -12,7 +12,7 @@ class CommentBox extends StatelessWidget {
   CommentBox({
     this.labelText,
     this.initialValue,
-    this.value,
+    this.onSaved,
     this.maxLines,
     this.isCurrentUser,
     this.visible = true,
@@ -36,15 +36,13 @@ class CommentBox extends StatelessWidget {
       validator: (value) {
         if (visible) {
           if (value.length == 0) {
-            return "Climbing comment shouldn't be empty.";
+            return "$labelText shouldn't be empty.";
           }
           return null;
         }
         return null;
       },
-      onSaved: (newValue) {
-        value = newValue;
-      },
+      onSaved: onSaved,
     );
   }
 }

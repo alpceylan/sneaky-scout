@@ -542,11 +542,13 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                   ),
                   child: CommentBox(
                     initialValue: team.climbingComment,
-                    value: _climbingComment,
                     labelText: "Climbing comment",
                     maxLines: 2,
                     isCurrentUser: isCurrentUser,
                     visible: _newClimbing,
+                    onSaved: (newValue) {
+                      _climbingComment = newValue;
+                    },
                   ),
                 ),
                 Row(
@@ -696,26 +698,32 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                   ),
                   child: CommentBox(
                     initialValue: team.autonomousComment,
-                    value: _autonomousComment,
                     labelText: "Autonomous comment",
                     maxLines: 2,
                     isCurrentUser: isCurrentUser,
                     visible: _newAutonomous,
+                    onSaved: (newValue) {
+                      _autonomousComment = newValue;
+                    },
                   ),
                 ),
                 CommentBox(
                   initialValue: team.extra,
-                  value: _extra,
                   labelText: "Extra",
                   maxLines: 3,
                   isCurrentUser: isCurrentUser,
+                  onSaved: (newValue) {
+                    _extra = newValue;
+                  },
                 ),
                 CommentBox(
                   initialValue: team.comment,
-                  value: _comment,
                   labelText: "Comment",
                   maxLines: 3,
                   isCurrentUser: isCurrentUser,
+                  onSaved: (newValue) {
+                    _comment = newValue;
+                  },
                 ),
                 SizedBox(
                   height: deviceHeight * 0.02,
