@@ -43,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
   GoogleSheetsService _sheetsService = GoogleSheetsService();
 
   int currentIndex = 0;
+  bool firstTime = true;
 
   void _addNewTeam() {
     if (currentIndex == 0) {
@@ -75,6 +76,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final int index = ModalRoute.of(context).settings.arguments as int;
+    if (firstTime) currentIndex = index;
+
     List<Widget> appBars = [
       AppBar(
         title: Text("Match Scouting"),
@@ -147,6 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: (index) {
           setState(() {
             currentIndex = index;
+            firstTime = false;
           });
         },
       ),

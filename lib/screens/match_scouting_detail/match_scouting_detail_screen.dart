@@ -5,6 +5,9 @@ import '../../services/match_scouting_service.dart';
 import '../../services/blue_alliance_service.dart';
 import '../../services/authentication_service.dart';
 
+// Screens
+import '../home/home_screen.dart';
+
 // Models
 import '../../models/match_scouting_team.dart';
 
@@ -172,6 +175,11 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
         var updatedTeam = newTeam.changeStatus(Status.Unsynced);
         await matchScoutingService.updateTeam(updatedTeam);
       }
+
+      Navigator.of(context).pushReplacementNamed(
+        HomeScreen.routeName,
+        arguments: 0,
+      );
     }
 
     _validate() async {

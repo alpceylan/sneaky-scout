@@ -9,6 +9,9 @@ import '../../services/pit_scouting_service.dart';
 import '../../services/blue_alliance_service.dart';
 import '../../services/authentication_service.dart';
 
+// Screens
+import '../home/home_screen.dart';
+
 // Models
 import '../../models/pit_scouting_team.dart';
 
@@ -262,6 +265,11 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
         var updatedTeam = newTeam.changeStatus(Status.Unsynced);
         await pitScoutingService.updateTeam(updatedTeam);
       }
+
+      Navigator.of(context).pushReplacementNamed(
+        HomeScreen.routeName,
+        arguments: 1,
+      );
     }
 
     var imageProcessingTypeStrings = {1: "Custom", 2: "Limelight"};
