@@ -7,18 +7,13 @@ import '../services/authentication_service.dart';
 import 'home/home_screen.dart';
 import 'auth/auth_screen.dart';
 
-class RootScreen extends StatefulWidget {
+class RootScreen extends StatelessWidget {
   static const routeName = '/root';
 
   @override
-  _RootScreenState createState() => _RootScreenState();
-}
-
-class _RootScreenState extends State<RootScreen> {
-  AuthenticationService _authService = AuthenticationService();
-
-  @override
   Widget build(BuildContext context) {
-    return _authService.currentUser != null ? HomeScreen() : AuthScreen();
+    return AuthenticationService().currentUser != null
+        ? HomeScreen()
+        : AuthScreen();
   }
 }

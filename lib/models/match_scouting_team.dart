@@ -118,7 +118,7 @@ class MatchScoutingTeam {
     return newTeam;
   }
 
-  Future<Map<String, dynamic>> toFirebase() async {
+  Map<String, dynamic> toFirebase() {
     Map<String, dynamic> map = {
       "status": statusString,
       "userId": _authService.currentUser.uid,
@@ -144,7 +144,7 @@ class MatchScoutingTeam {
     return map;
   }
 
-  Future<Map<String, dynamic>> toLocal() async {
+  Map<String, dynamic> toLocal() {
     Map<String, dynamic> map = {
       "id": id,
       "status": statusString,

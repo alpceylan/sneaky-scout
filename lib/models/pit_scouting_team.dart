@@ -163,7 +163,7 @@ class PitScoutingTeam {
     return newTeam;
   }
 
-  Future<Map<String, dynamic>> toFirebase(String newImageUrl) async {
+  Map<String, dynamic> toFirebase(String newImageUrl) {
     Map<String, dynamic> map = {
       "status": statusString,
       "userId": _authService.currentUser.uid,
@@ -192,7 +192,7 @@ class PitScoutingTeam {
     return map;
   }
 
-  Future<Map<String, dynamic>> toLocal(String newImageUrl) async {
+  Map<String, dynamic> toLocal(String newImageUrl) {
     Map<String, dynamic> map = {
       "id": id,
       "status": statusString,

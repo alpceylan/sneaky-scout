@@ -12,7 +12,7 @@ class MatchScoutingService {
   AuthenticationService _authService = AuthenticationService();
 
   Future<int> saveTeam(MatchScoutingTeam team) async {
-    return await _ourDatabase.save('matchScouting', await team.toLocal());
+    return await _ourDatabase.save('matchScouting', team.toLocal());
   }
 
   Future<List<MatchScoutingTeam>> getTeams() async {
@@ -30,7 +30,7 @@ class MatchScoutingService {
   }
 
   Future<int> updateTeam(MatchScoutingTeam team) async {
-    return await _ourDatabase.update('matchScouting', await team.toLocal());
+    return await _ourDatabase.update('matchScouting', team.toLocal());
   }
 
   Future<void> deleteTeam(int teamNo) async {

@@ -19,7 +19,7 @@ class OnlineMatchScoutingService {
     await _firestore
         .collection('match_scouting')
         .doc("${newTeam.teamNo}")
-        .set(await newTeam.toFirebase());
+        .set(newTeam.toFirebase());
 
     await _matchScoutingService.updateTeam(newTeam);
   }

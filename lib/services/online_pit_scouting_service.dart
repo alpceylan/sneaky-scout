@@ -38,7 +38,7 @@ class OnlinePitScoutingService {
     await _firestore
         .collection('pit_scouting')
         .doc("${newTeam.teamNo}")
-        .set(await newTeam.toFirebase(await ref.getDownloadURL()));
+        .set(newTeam.toFirebase(await ref.getDownloadURL()));
 
     await _pitScoutingService.updateTeam(newTeam);
   }
