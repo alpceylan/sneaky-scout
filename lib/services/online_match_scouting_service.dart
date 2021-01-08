@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Services
-import './match_scouting_service.dart';
+import 'package:sneakyscout/services/match_scouting_service.dart';
 
 // Models
-import '../models/match_scouting_team.dart';
+import 'package:sneakyscout/models/match_scouting_team.dart';
 
 // Enums
-import '../enums/match_scouting_enums.dart';
+import 'package:sneakyscout/enums/match_scouting_enums.dart';
 
 class OnlineMatchScoutingService {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;

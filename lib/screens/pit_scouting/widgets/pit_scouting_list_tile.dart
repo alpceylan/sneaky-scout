@@ -3,20 +3,20 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 // Services
-import '../../../services/pit_scouting_service.dart';
+import 'package:sneakyscout/services/pit_scouting_service.dart';
 
 // Screens
-import '../../pit_scouting_detail/pit_scouting_detail_screen.dart';
+import 'package:sneakyscout/screens/pit_scouting_detail/pit_scouting_detail_screen.dart';
 
 // Models
-import '../../../models/pit_scouting_team.dart';
+import 'package:sneakyscout/models/pit_scouting_team.dart';
 
 // Widgets
-import '../../../widgets/dismissible_background.dart';
-import '../../../widgets/dismissible_alert.dart';
+import 'package:sneakyscout/widgets/dismissible_alert.dart';
+import 'package:sneakyscout/widgets/dismissible_background.dart';
 
 // Enums
-import '../../../enums/pit_scouting_enums.dart';
+import 'package:sneakyscout/enums/pit_scouting_enums.dart';
 
 class PitScoutingListTile extends StatelessWidget {
   final List<PitScoutingTeam> teamList;

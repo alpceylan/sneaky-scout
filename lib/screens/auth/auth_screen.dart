@@ -4,13 +4,13 @@ import 'package:flutter/services.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 
 // Services
-import '../../services/authentication_service.dart';
+import 'package:sneakyscout/services/authentication_service.dart';
 
 // Screens
-import '../root_screen.dart';
+import 'package:sneakyscout/screens/root_screen.dart';
 
 // Widgets
-import './widgets/custom_text_field.dart';
+import 'package:sneakyscout/screens/auth/widgets/custom_text_field.dart';
 
 class AuthScreen extends StatefulWidget {
   static const routeName = '/auth';

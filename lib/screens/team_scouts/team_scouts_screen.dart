@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:material_segmented_control/material_segmented_control.dart';
 
 // Services
-import '../../services/online_match_scouting_service.dart';
-import '../../services/online_pit_scouting_service.dart';
-import '../../services/authentication_service.dart';
+import 'package:sneakyscout/services/authentication_service.dart';
+import 'package:sneakyscout/services/online_match_scouting_service.dart';
+import 'package:sneakyscout/services/online_pit_scouting_service.dart';
 
 // Models
-import '../../models/pit_scouting_team.dart';
-import '../../models/match_scouting_team.dart' as ms;
-import '../../models/custom_user.dart';
+import 'package:sneakyscout/models/match_scouting_team.dart' as ms;
+import 'package:sneakyscout/models/pit_scouting_team.dart';
+import 'package:sneakyscout/models/custom_user.dart';
 
 // Widgets
-import './widgets/match_scouting_list_tile.dart';
-import './widgets/pit_scouting_list_tile.dart';
+import 'package:sneakyscout/screens/team_scouts/widgets/match_scouting_list_tile.dart';
+import 'package:sneakyscout/screens/team_scouts/widgets/pit_scouting_list_tile.dart';
 
 class TeamScreen extends StatefulWidget {
   @override

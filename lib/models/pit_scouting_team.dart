@@ -1,8 +1,8 @@
 // Services
-import '../services/authentication_service.dart';
+import 'package:sneakyscout/services/authentication_service.dart';
 
 // Enums
-import '../enums/pit_scouting_enums.dart';
+import 'package:sneakyscout/enums/pit_scouting_enums.dart';
 
 class PitScoutingTeam {
   AuthenticationService _authService = AuthenticationService();

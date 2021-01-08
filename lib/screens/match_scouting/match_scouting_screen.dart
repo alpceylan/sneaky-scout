@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 // Services
-import '../../services/match_scouting_service.dart';
+import 'package:sneakyscout/services/match_scouting_service.dart';
 
 // Models
-import '../../models/match_scouting_team.dart';
+import 'package:sneakyscout/models/match_scouting_team.dart';
 
 // Widgets
-import './widgets/match_scouting_list_tile.dart';
+import 'package:sneakyscout/screens/match_scouting/widgets/match_scouting_list_tile.dart';
 
 class MatchScoutingScreen extends StatefulWidget {
   @override

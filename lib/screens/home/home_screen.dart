@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
 
 // Services
-import '../../services/online_match_scouting_service.dart';
-import '../../services/match_scouting_service.dart';
-import '../../services/online_pit_scouting_service.dart';
-import '../../services/pit_scouting_service.dart';
-import '../../services/google_sheets_service.dart';
+import 'package:sneakyscout/services/google_sheets_service.dart';
+import 'package:sneakyscout/services/match_scouting_service.dart';
+import 'package:sneakyscout/services/online_match_scouting_service.dart';
+import 'package:sneakyscout/services/online_pit_scouting_service.dart';
+import 'package:sneakyscout/services/pit_scouting_service.dart';
 
 // Screens
-import '../match_scouting/match_scouting_screen.dart';
-import '../pit_scouting/pit_scouting_screen.dart';
-import '../team_scouts/team_scouts_screen.dart';
-import '../match_scouting_detail/match_scouting_detail_screen.dart';
-import '../pit_scouting_detail/pit_scouting_detail_screen.dart';
+import 'package:sneakyscout/screens/match_scouting/match_scouting_screen.dart';
+import 'package:sneakyscout/screens/match_scouting_detail/match_scouting_detail_screen.dart';
+import 'package:sneakyscout/screens/pit_scouting/pit_scouting_screen.dart';
+import 'package:sneakyscout/screens/pit_scouting_detail/pit_scouting_detail_screen.dart';
+import 'package:sneakyscout/screens/team_scouts/team_scouts_screen.dart';
 
 // Models
-import '../../models/match_scouting_team.dart';
-import '../../models/pit_scouting_team.dart';
+import 'package:sneakyscout/models/match_scouting_team.dart';
+import 'package:sneakyscout/models/pit_scouting_team.dart';
 
 // Widgets
-import './widgets/custom_drawer.dart';
-import './widgets/custom_bottom_navigation_bar.dart';
+import 'package:sneakyscout/screens/home/widgets/custom_bottom_navigation_bar.dart';
+import 'package:sneakyscout/screens/home/widgets/custom_drawer.dart';
 
 // Enums
-import '../../enums/match_scouting_enums.dart';
-import '../../enums/pit_scouting_enums.dart' as ps;
+import 'package:sneakyscout/enums/match_scouting_enums.dart';
+import 'package:sneakyscout/enums/pit_scouting_enums.dart' as ps;
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/home';

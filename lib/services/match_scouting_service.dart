@@ -1,11 +1,11 @@
 // Database
-import '../database/our_db.dart';
+import 'package:sneakyscout/database/our_db.dart';
 
 // Services
-import './authentication_service.dart';
+import 'package:sneakyscout/services/authentication_service.dart';
 
 // Models
-import '../models/match_scouting_team.dart';
+import 'package:sneakyscout/models/match_scouting_team.dart';
 
 class MatchScoutingService {
   OurDatabase _ourDatabase = OurDatabase();

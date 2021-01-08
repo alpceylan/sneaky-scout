@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 // Services
-import '../../services/pit_scouting_service.dart';
+import 'package:sneakyscout/services/pit_scouting_service.dart';
 
 // Models
-import '../../models/pit_scouting_team.dart';
+import 'package:sneakyscout/models/pit_scouting_team.dart';
 
 // Widgets
-import './widgets/pit_scouting_list_tile.dart';
+import 'package:sneakyscout/screens/pit_scouting/widgets/pit_scouting_list_tile.dart';
 
 class PitScoutingScreen extends StatefulWidget {
   @override

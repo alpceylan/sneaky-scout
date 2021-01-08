@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 // Services
-import '../services/authentication_service.dart';
+import 'package:sneakyscout/services/authentication_service.dart';
 
 // Screens
-import 'home/home_screen.dart';
-import 'auth/auth_screen.dart';
+import 'package:sneakyscout/screens/auth/auth_screen.dart';
+import 'package:sneakyscout/screens/home/home_screen.dart';
 
 class RootScreen extends StatelessWidget {
   static const routeName = '/root';

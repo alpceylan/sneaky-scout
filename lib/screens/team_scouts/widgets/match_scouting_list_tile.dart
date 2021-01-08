@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 
 // Services
-import '../../../services/authentication_service.dart';
-import '../../../services/match_scouting_service.dart';
-import '../../../services/online_match_scouting_service.dart';
-import '../../../services/google_sheets_service.dart';
+import 'package:sneakyscout/services/authentication_service.dart';
+import 'package:sneakyscout/services/google_sheets_service.dart';
+import 'package:sneakyscout/services/match_scouting_service.dart';
+import 'package:sneakyscout/services/online_match_scouting_service.dart';
 
 // Screens
-import '../../match_scouting_detail/match_scouting_detail_screen.dart';
+import 'package:sneakyscout/screens/match_scouting_detail/match_scouting_detail_screen.dart';
 
 // Models
-import '../../../models/match_scouting_team.dart';
-import '../../../models/custom_user.dart';
+import 'package:sneakyscout/models/custom_user.dart';
+import 'package:sneakyscout/models/match_scouting_team.dart';
 
 // Widgets
-import '../../../widgets/dismissible_alert.dart';
-import '../../../widgets/dismissible_background.dart';
+import 'package:sneakyscout/widgets/dismissible_alert.dart';
+import 'package:sneakyscout/widgets/dismissible_background.dart';
 
 // Enums
-import '../../../enums/match_scouting_enums.dart';
+import 'package:sneakyscout/enums/match_scouting_enums.dart';
 
 class MatchScoutingListTile extends StatelessWidget {
   final List<MatchScoutingTeam> matchScoutingTeamList;

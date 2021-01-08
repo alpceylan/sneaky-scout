@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
 // Services
-import '../../services/match_scouting_service.dart';
-import '../../services/blue_alliance_service.dart';
-import '../../services/authentication_service.dart';
+import 'package:sneakyscout/services/authentication_service.dart';
+import 'package:sneakyscout/services/blue_alliance_service.dart';
+import 'package:sneakyscout/services/match_scouting_service.dart';
 
 // Screens
-import '../home/home_screen.dart';
+import 'package:sneakyscout/screens/home/home_screen.dart';
 
 // Models
-import '../../models/match_scouting_team.dart';
+import 'package:sneakyscout/models/match_scouting_team.dart';
 
 // Widgets
-import '../../widgets/custom_text_input.dart';
-import '../../widgets/custom_dropdown_button.dart';
-import '../../widgets/comment_box.dart';
+import 'package:sneakyscout/widgets/comment_box.dart';
+import 'package:sneakyscout/widgets/custom_dropdown_button.dart';
+import 'package:sneakyscout/widgets/custom_text_input.dart';
 
 // Enums
-import '../../enums/match_scouting_enums.dart';
+import 'package:sneakyscout/enums/match_scouting_enums.dart';
 
 class MatchScoutingDetailScreen extends StatefulWidget {
   static const routeName = '/match-scouting-detail';

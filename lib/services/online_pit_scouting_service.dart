@@ -3,14 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 // Services
-import './authentication_service.dart';
-import './pit_scouting_service.dart';
+import 'package:sneakyscout/services/authentication_service.dart';
+import 'package:sneakyscout/services/pit_scouting_service.dart';
 
 // Models
-import '../models/pit_scouting_team.dart';
+import 'package:sneakyscout/models/pit_scouting_team.dart';
 
 // Enums
-import '../enums/pit_scouting_enums.dart';
+import 'package:sneakyscout/enums/pit_scouting_enums.dart';
 
 class OnlinePitScoutingService {
   FirebaseFirestore _firestore = FirebaseFirestore.instance;

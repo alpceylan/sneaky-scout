@@ -1,7 +1,7 @@
 import 'package:gsheets/gsheets.dart';
 
 // Models
-import '../models/match_scouting_team.dart';
+import 'package:sneakyscout/models/match_scouting_team.dart';
 
 class GoogleSheetsService {
   static const _credentials = r'''

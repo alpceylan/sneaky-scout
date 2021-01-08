@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 // Models
-import '../models/custom_user.dart';
+import 'package:sneakyscout/models/custom_user.dart';
 
 class AuthenticationService {
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
