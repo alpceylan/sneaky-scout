@@ -45,6 +45,9 @@ class CustomDropdownButton extends StatelessWidget {
         items: dropdownMenuList,
         disabledHint: Text(
           menuMap[value],
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
         ),
         onChanged: isCurrentUser ? onChanged : null,
       ),
