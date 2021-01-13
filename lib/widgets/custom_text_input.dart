@@ -31,12 +31,12 @@ class CustomTextInput extends StatelessWidget {
           ),
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: Theme.of(context).canvasColor,
+              color: Theme.of(context).highlightColor,
             ),
           ),
           disabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: Theme.of(context).canvasColor,
+              color: Theme.of(context).highlightColor,
             ),
           ),
         ),

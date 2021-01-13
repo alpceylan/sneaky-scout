@@ -9,7 +9,7 @@ import 'package:sneakyscout/screens/pit_scouting_detail/pit_scouting_detail_scre
 import 'package:sneakyscout/screens/root_screen.dart';
 
 // Helpers
-import 'package:sneakyscout/helpers/extension.dart';
+import 'package:sneakyscout/helpers/custom_colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,48 +18,38 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final Color darkThemeBg = HexColor.fromHex("#121212");
-  final Color darkThemeCanvas = HexColor.fromHex("#313131");
-  final Color darkThemeCard = HexColor.fromHex("#2B2B2B");
-  final Color darkThemePrimary = HexColor.fromHex("#2B9C58");
-  final Color darkThemeButton = HexColor.fromHex("#35BE6B");
-  final Color darkThemeHint = HexColor.fromHex("#121212");
-  final Color darkThemeTextSelection = HexColor.fromHex("#D0D0D0");
-  final Color darkThemeTextSelectionHandle = HexColor.fromHex("#BDBDBD");
-  final Color darkThemeShadow = HexColor.fromHex("#7E7E7E");
-  final Color darkThemeIndicator = HexColor.fromHex("#739E68");
-
-  final Color lightThemeBg = HexColor.fromHex("#F8F8F8");
-  final Color lightThemeCanvas = HexColor.fromHex("#FFFFFF");
-  final Color lightThemePrimary = HexColor.fromHex("#00E676");
-  final Color lightThemeButton = HexColor.fromHex("#00E676");
-  final Color lightThemeHint = HexColor.fromHex("#F8F8F8");
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Sneaky Scout',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: lightThemePrimary,
-        backgroundColor: lightThemeBg,
-        canvasColor: lightThemeCanvas,
-        buttonColor: lightThemeButton,
-        hintColor: lightThemeHint,
+        primaryColor: CustomColors.lightThemePrimary,
+        backgroundColor: CustomColors.lightThemeBg,
+        canvasColor: CustomColors.lightThemeCanvas,
+        cardColor: CustomColors.lightThemeCard,
+        buttonColor: CustomColors.lightThemeButton,
+        hintColor: CustomColors.lightThemeHint,
+        textSelectionColor: CustomColors.lightThemeTextSelection,
+        textSelectionHandleColor: CustomColors.lightThemeTextSelectionHandle,
+        shadowColor: CustomColors.lightThemeShadow,
+        indicatorColor: CustomColors.lightThemeIndicator,
+        highlightColor: CustomColors.lightThemeHighlight,
       ),
       darkTheme: ThemeData(
-        primaryColor: darkThemePrimary,
-        backgroundColor: darkThemeBg,
-        canvasColor: darkThemeCanvas,
-        cardColor: darkThemeCard,
-        buttonColor: darkThemeButton,
-        hintColor: darkThemeHint,
-        textSelectionColor: darkThemeTextSelection,
-        textSelectionHandleColor: darkThemeTextSelectionHandle,
-        shadowColor: darkThemeShadow,
-        indicatorColor: darkThemeIndicator,
+        primaryColor: CustomColors.darkThemePrimary,
+        backgroundColor: CustomColors.darkThemeBg,
+        canvasColor: CustomColors.darkThemeCanvas,
+        cardColor: CustomColors.darkThemeCard,
+        buttonColor: CustomColors.darkThemeButton,
+        hintColor: CustomColors.darkThemeHint,
+        textSelectionColor: CustomColors.darkThemeTextSelection,
+        textSelectionHandleColor: CustomColors.darkThemeTextSelectionHandle,
+        shadowColor: CustomColors.darkThemeShadow,
+        indicatorColor: CustomColors.darkThemeIndicator,
+        highlightColor: CustomColors.darkThemeHighlight,
       ),
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.system,
       home: RootScreen(),
       routes: {
         HomeScreen.routeName: (ctx) => HomeScreen(),
