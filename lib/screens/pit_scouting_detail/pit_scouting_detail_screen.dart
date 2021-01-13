@@ -687,7 +687,12 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Intake Type:"),
+                      Text(
+                        "Intake Type:",
+                        style: TextStyle(
+                          color: Theme.of(context).shadowColor,
+                        ),
+                      ),
                       CustomDropdownButton(
                         menuMap: intakeTypeStrings,
                         value: _newIntakeTypeInt,
