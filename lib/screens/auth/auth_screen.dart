@@ -88,8 +88,15 @@ class _AuthScreenState extends State<AuthScreen> {
 
     return Scaffold(
       key: _scaffoldKey,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        title: Text("Sneaky Scout"),
+        title: Text(
+          "Sneaky Scout",
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        backgroundColor: Theme.of(context).canvasColor,
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -104,9 +111,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 if (!isLogin)
                   CustomTextField(
                     labelText: "Name",
-                    icon: Icon(
-                      Icons.person_outline,
-                    ),
+                    icon: Icons.person_outline,
                     validator: (value) {
                       if (!isLogin) {
                         if (value.length == 0) {
@@ -126,9 +131,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 if (!isLogin)
                   CustomTextField(
                     labelText: "Team number",
-                    icon: Icon(
-                      Icons.group_outlined,
-                    ),
+                    icon: Icons.group_outlined,
                     keyboardType: TextInputType.number,
                     validator: (value) {
                       if (!isLogin) {
@@ -150,9 +153,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
                 CustomTextField(
                   labelText: "Mail",
-                  icon: Icon(
-                    Icons.mail_outline,
-                  ),
+                  icon: Icons.mail_outline,
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value.length == 0) {
@@ -169,9 +170,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 ),
                 CustomTextField(
                   labelText: "Password",
-                  icon: Icon(
-                    Icons.lock_outline,
-                  ),
+                  icon: Icons.lock_outline,
                   obscureText: true,
                   validator: (value) {
                     if (value.length == 0) {
@@ -190,9 +189,10 @@ class _AuthScreenState extends State<AuthScreen> {
                   child: Text(
                     isLogin ? 'Login' : 'Signup',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Theme.of(context).hintColor,
                     ),
                   ),
+                  color: Theme.of(context).buttonColor,
                   controller: _btnController,
                   onPressed: () async {
                     await _validate();
@@ -211,6 +211,9 @@ class _AuthScreenState extends State<AuthScreen> {
                     isLogin
                         ? "Don't have an account?"
                         : "Already have an account?",
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ),
                 ),
               ],

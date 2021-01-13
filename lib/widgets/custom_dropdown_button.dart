@@ -39,7 +39,7 @@ class CustomDropdownButton extends StatelessWidget {
         isExpanded: true,
         style: TextStyle(
           fontSize: 17,
-          color: Colors.black,
+          color: Theme.of(context).primaryColor,
         ),
         value: value,
         items: dropdownMenuList,

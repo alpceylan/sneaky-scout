@@ -228,9 +228,17 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
     var powercellLocationStrings = {1: "Inner", 2: "Lower", 3: "Outer"};
 
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Text(
           team.teamName != "" ? team.teamName : "New Team",
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        backgroundColor: Theme.of(context).canvasColor,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColor,
         ),
         actions: [
           if (isCurrentUser)
@@ -261,6 +269,12 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                       child: TextFormField(
                         decoration: InputDecoration(
                           labelText: "Scout name",
+                          labelStyle: TextStyle(
+                            color: Theme.of(context).textSelectionColor,
+                          ),
+                        ),
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
                         ),
                         initialValue: team.scoutName,
                         enabled: isCurrentUser,
@@ -385,11 +399,18 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                   children: [
                     Row(
                       children: [
-                        Text("Autonomous:"),
+                        Text(
+                          "Autonomous:",
+                          style: TextStyle(
+                            color: Theme.of(context).shadowColor,
+                          ),
+                        ),
                         Switch(
                           value: _newAutonomous,
-                          activeTrackColor: Colors.lightBlueAccent,
-                          activeColor: Colors.blue,
+                          activeTrackColor: Theme.of(context).indicatorColor,
+                          activeColor: Theme.of(context).primaryColor,
+                          inactiveThumbColor: Theme.of(context).primaryColor,
+                          inactiveTrackColor: Theme.of(context).shadowColor,
                           onChanged: isCurrentUser
                               ? (value) {
                                   setState(() {
@@ -402,11 +423,18 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                     ),
                     Row(
                       children: [
-                        Text("Image Processing:"),
+                        Text(
+                          "Image Processing:",
+                          style: TextStyle(
+                            color: Theme.of(context).shadowColor,
+                          ),
+                        ),
                         Switch(
                           value: _newImageProcessing,
-                          activeTrackColor: Colors.lightBlueAccent,
-                          activeColor: Colors.blue,
+                          activeTrackColor: Theme.of(context).indicatorColor,
+                          activeColor: Theme.of(context).primaryColor,
+                          inactiveThumbColor: Theme.of(context).primaryColor,
+                          inactiveTrackColor: Theme.of(context).shadowColor,
                           onChanged: isCurrentUser
                               ? (value) {
                                   setState(() {
@@ -427,7 +455,12 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Autonomous Starting Point:"),
+                      Text(
+                        "Autonomous Starting Point:",
+                        style: TextStyle(
+                          color: Theme.of(context).shadowColor,
+                        ),
+                      ),
                       CustomDropdownButton(
                         menuMap: autonomousStartingPointStrings,
                         value: _newAutonomousStartingPointInt,
@@ -446,7 +479,12 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Powercell Location:"),
+                      Text(
+                        "Powercell Location:",
+                        style: TextStyle(
+                          color: Theme.of(context).shadowColor,
+                        ),
+                      ),
                       CustomDropdownButton(
                         menuMap: powercellLocationStrings,
                         value: _newPowercellLocationInt,
@@ -465,11 +503,15 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                   children: [
                     Row(
                       children: [
-                        Text("Defense: "),
+                        Text("Defense: ", style: TextStyle(
+                          color: Theme.of(context).shadowColor,
+                        ),),
                         Switch(
                           value: _newDefense,
-                          activeTrackColor: Colors.lightBlueAccent,
-                          activeColor: Colors.blue,
+                          activeTrackColor: Theme.of(context).indicatorColor,
+                          activeColor: Theme.of(context).primaryColor,
+                          inactiveThumbColor: Theme.of(context).primaryColor,
+                          inactiveTrackColor: Theme.of(context).shadowColor,
                           onChanged: isCurrentUser
                               ? (value) {
                                   setState(() {
@@ -573,8 +615,8 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                   },
                   child: Text("Go to Team's Blue Alliance Page"),
                   minWidth: double.infinity,
-                  color: Colors.blue,
-                  textColor: Colors.white,
+                  color: Theme.of(context).primaryColor,
+                  textColor: Theme.of(context).hintColor,
                 ),
               ],
             ),

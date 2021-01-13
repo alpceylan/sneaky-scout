@@ -26,6 +26,22 @@ class CustomTextInput extends StatelessWidget {
       child: TextFormField(
         decoration: InputDecoration(
           labelText: labelText,
+          labelStyle: TextStyle(
+            color: Theme.of(context).textSelectionColor,
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Theme.of(context).canvasColor,
+            ),
+          ),
+          disabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+              color: Theme.of(context).canvasColor,
+            ),
+          ),
+        ),
+        style: TextStyle(
+          color: Theme.of(context).primaryColor,
         ),
         initialValue: initialValue,
         keyboardType: keyboardType,

@@ -59,14 +59,27 @@ class MatchScoutingListTile extends StatelessWidget {
           );
         },
         child: ListTile(
-          title: Text(team.scoutName),
-          subtitle: Text("${team.teamNo} - ${team.teamName}"),
+          title: Text(
+            team.scoutName,
+            style: TextStyle(
+              color: Theme.of(context).textSelectionColor,
+            ),
+          ),
+          subtitle: Text(
+            "${team.teamNo} - ${team.teamName}",
+            style: TextStyle(
+              color: Theme.of(context).textSelectionHandleColor,
+            ),
+          ),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 team.status == Status.Synced ? "Synced" : "Unsynced",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).textSelectionColor,
+                ),
               ),
               SizedBox(
                 width: deviceWidth * 0.03,

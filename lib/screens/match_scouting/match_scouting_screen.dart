@@ -43,7 +43,11 @@ class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
 
     return isLoading
         ? Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                Theme.of(context).primaryColor,
+              ),
+            ),
           )
         : SingleChildScrollView(
             child: RefreshIndicator(
@@ -51,6 +55,7 @@ class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
                 await getTeams();
               },
               child: Container(
+                color: Theme.of(context).backgroundColor,
                 child: Column(
                   children: [
                     SizedBox(
@@ -60,7 +65,12 @@ class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
                         ? Container(
                             height: deviceHeight * 0.6,
                             alignment: Alignment.center,
-                            child: Text("There are no saved teams."),
+                            child: Text(
+                              "There are no saved teams.",
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                              ),
+                            ),
                           )
                         : ListView.builder(
                             shrinkWrap: true,

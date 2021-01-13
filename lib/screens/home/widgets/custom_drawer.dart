@@ -88,107 +88,168 @@ class CustomDrawer extends StatelessWidget {
     }
 
     return Drawer(
-      child: Column(
-        children: [
-          UserAccountsDrawerHeader(
-            currentAccountPicture: GestureDetector(
-              onTap: () {
-                _showPicker(context);
-              },
-              child: CircleAvatar(
-                backgroundImage: _authService.currentUser.photoURL != null
-                    ? NetworkImage(
-                        _authService.currentUser.photoURL,
-                      )
-                    : AssetImage(
-                        "assets/images/default_profile_photo.png",
-                      ),
+      child: Container(
+        color: Theme.of(context).cardColor,
+        child: Column(
+          children: [
+            UserAccountsDrawerHeader(
+              decoration: BoxDecoration(
+                color: Theme.of(context).canvasColor,
+              ),
+              currentAccountPicture: GestureDetector(
+                onTap: () {
+                  _showPicker(context);
+                },
+                child: CircleAvatar(
+                  backgroundImage: _authService.currentUser.photoURL != null
+                      ? NetworkImage(
+                          _authService.currentUser.photoURL,
+                        )
+                      : AssetImage(
+                          "assets/images/default_profile_photo.png",
+                        ),
+                ),
+              ),
+              accountName: Text(
+                _authService.currentUser.displayName,
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+              accountEmail: Text(
+                _authService.currentUser.email,
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                ),
               ),
             ),
-            accountName: Text(
-              _authService.currentUser.displayName,
+            SizedBox(
+              height: deviceHeight * 0.03,
             ),
-            accountEmail: Text(
-              _authService.currentUser.email,
-            ),
-          ),
-          SizedBox(
-            height: deviceHeight * 0.03,
-          ),
-          ListTile(
-            leading: Icon(Icons.whatshot),
-            title: Text("About Sneaky Snakes"),
-            onTap: () async {
-              await goToLink("http://www.team7285.com/about/#whoarewe");
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.code),
-            title: Text("Check app repo"),
-            onTap: () async {
-              await goToLink("https://github.com/alpceylan/sneaky-scout");
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.question_answer),
-            title: Text("Go to Community Discord"),
-            onTap: () async {
-              await goToLink("https://discord.gg/ebu74U5qeF");
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.logout),
-            title: Text("Logout"),
-            onTap: () async {
-              await _authService.logout();
-
-              Navigator.of(context).pushReplacementNamed(RootScreen.routeName);
-            },
-          ),
-          Spacer(),
-          Divider(
-            endIndent: 10,
-            indent: 10,
-            color: Colors.grey[350],
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-              top: deviceHeight * 0.012,
-              left: deviceWidth * 0.06,
-              bottom: deviceHeight * 0.003,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  "DOCUMENTATION",
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.bold,
-                  ),
+            ListTile(
+              leading: Icon(
+                Icons.whatshot,
+                color: Theme.of(context).primaryColor,
+              ),
+              title: Text(
+                "About Sneaky Snakes",
+                style: TextStyle(
+                  color: Theme.of(context).textSelectionColor,
                 ),
-              ],
+              ),
+              onTap: () async {
+                await goToLink("http://www.team7285.com/about/#whoarewe");
+              },
             ),
-          ),
-          ListTile(
-            leading: Icon(Icons.text_snippet),
-            title: Text("Get Started"),
-            onTap: () {
-              print("empty for now");
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.help),
-            title: Text("How to use"),
-            onTap: () {
-              print("empty for now");
-            },
-          ),
-          SizedBox(
-            height: deviceHeight * 0.13,
-          ),
-        ],
+            ListTile(
+              leading: Icon(
+                Icons.code,
+                color: Theme.of(context).primaryColor,
+              ),
+              title: Text(
+                "Check app repo",
+                style: TextStyle(
+                  color: Theme.of(context).textSelectionColor,
+                ),
+              ),
+              onTap: () async {
+                await goToLink("https://github.com/alpceylan/sneaky-scout");
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.question_answer,
+                color: Theme.of(context).primaryColor,
+              ),
+              title: Text(
+                "Go to Community Discord",
+                style: TextStyle(
+                  color: Theme.of(context).textSelectionColor,
+                ),
+              ),
+              onTap: () async {
+                await goToLink("https://discord.gg/uVhBqG");
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.logout,
+                color: Theme.of(context).primaryColor,
+              ),
+              title: Text(
+                "Logout",
+                style: TextStyle(
+                  color: Theme.of(context).textSelectionColor,
+                ),
+              ),
+              onTap: () async {
+                await _authService.logout();
+
+                Navigator.of(context)
+                    .pushReplacementNamed(RootScreen.routeName);
+              },
+            ),
+            Spacer(),
+            Divider(
+              endIndent: 10,
+              indent: 10,
+              color: Colors.grey[350],
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                top: deviceHeight * 0.012,
+                left: deviceWidth * 0.06,
+                bottom: deviceHeight * 0.003,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    "DOCUMENTATION",
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.text_snippet,
+                color: Theme.of(context).primaryColor,
+              ),
+              title: Text(
+                "Get Started",
+                style: TextStyle(
+                  color: Theme.of(context).textSelectionColor,
+                ),
+              ),
+              onTap: () {
+                print("empty for now");
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.help,
+                color: Theme.of(context).primaryColor,
+              ),
+              title: Text(
+                "How to use",
+                style: TextStyle(
+                  color: Theme.of(context).textSelectionColor,
+                ),
+              ),
+              onTap: () {
+                print("empty for now");
+              },
+            ),
+            SizedBox(
+              height: deviceHeight * 0.13,
+            ),
+          ],
+        ),
       ),
     );
   }

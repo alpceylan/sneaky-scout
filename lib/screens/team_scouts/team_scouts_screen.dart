@@ -78,7 +78,11 @@ class _TeamScreenState extends State<TeamScreen> {
 
     return isLoading
         ? Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(
+                Theme.of(context).primaryColor,
+              ),
+            ),
           )
         : SingleChildScrollView(
             child: RefreshIndicator(
@@ -86,6 +90,7 @@ class _TeamScreenState extends State<TeamScreen> {
                 await getTeams();
               },
               child: Container(
+                color: Theme.of(context).backgroundColor,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -95,9 +100,9 @@ class _TeamScreenState extends State<TeamScreen> {
                     MaterialSegmentedControl(
                       children: _children,
                       selectionIndex: _currentSelection,
-                      borderColor: Colors.grey,
-                      selectedColor: Colors.blue,
-                      unselectedColor: Colors.white,
+                      borderColor: Theme.of(context).backgroundColor,
+                      selectedColor: Theme.of(context).buttonColor,
+                      unselectedColor: Theme.of(context).canvasColor,
                       borderRadius: 8.0,
                       onSegmentChosen: (index) {
                         setState(() {

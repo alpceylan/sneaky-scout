@@ -83,15 +83,28 @@ class PitScoutingListTile extends StatelessWidget {
                 base64Decode(team.imageString),
               ),
             ),
-            title: Text(team.scoutName),
-            subtitle: Text("${team.teamNo} - ${team.teamName}"),
+            title: Text(
+              team.scoutName,
+              style: TextStyle(
+                color: Theme.of(context).textSelectionColor,
+              ),
+            ),
+            subtitle: Text(
+              "${team.teamNo} - ${team.teamName}",
+              style: TextStyle(
+                color: Theme.of(context).textSelectionHandleColor,
+              ),
+            ),
             trailing: user.userId == _authService.currentUser.uid
                 ? Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         team.status == Status.Synced ? "Synced" : "Unsynced",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).textSelectionColor,
+                        ),
                       ),
                       SizedBox(
                         width: deviceWidth * 0.03,
@@ -119,14 +132,14 @@ class PitScoutingListTile extends StatelessWidget {
                           Text(
                             user.name,
                             style: TextStyle(
-                              color: Colors.grey[700],
+                              color: Theme.of(context).textSelectionHandleColor,
                               fontSize: 12,
                             ),
                           ),
                           Text(
                             "${user.teamNumber}",
                             style: TextStyle(
-                              color: Colors.grey[700],
+                              color: Theme.of(context).textSelectionHandleColor,
                               fontSize: 11,
                             ),
                           ),

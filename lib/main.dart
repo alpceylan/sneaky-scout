@@ -19,7 +19,21 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   final Color darkThemeBg = HexColor.fromHex("#121212");
-  final Color lightThemeBg = HexColor.fromHex("#FFFFFF");
+  final Color darkThemeCanvas = HexColor.fromHex("#313131");
+  final Color darkThemeCard = HexColor.fromHex("#2B2B2B");
+  final Color darkThemePrimary = HexColor.fromHex("#2B9C58");
+  final Color darkThemeButton = HexColor.fromHex("#35BE6B");
+  final Color darkThemeHint = HexColor.fromHex("#121212");
+  final Color darkThemeTextSelection = HexColor.fromHex("#D0D0D0");
+  final Color darkThemeTextSelectionHandle = HexColor.fromHex("#BDBDBD");
+  final Color darkThemeShadow = HexColor.fromHex("#7E7E7E");
+  final Color darkThemeIndicator = HexColor.fromHex("#739E68");
+
+  final Color lightThemeBg = HexColor.fromHex("#F8F8F8");
+  final Color lightThemeCanvas = HexColor.fromHex("#FFFFFF");
+  final Color lightThemePrimary = HexColor.fromHex("#00E676");
+  final Color lightThemeButton = HexColor.fromHex("#00E676");
+  final Color lightThemeHint = HexColor.fromHex("#F8F8F8");
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +41,23 @@ class MyApp extends StatelessWidget {
       title: 'Sneaky Scout',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: lightThemeBg,
+        primaryColor: lightThemePrimary,
+        backgroundColor: lightThemeBg,
+        canvasColor: lightThemeCanvas,
+        buttonColor: lightThemeButton,
+        hintColor: lightThemeHint,
       ),
       darkTheme: ThemeData(
-        primaryColor: darkThemeBg,
+        primaryColor: darkThemePrimary,
+        backgroundColor: darkThemeBg,
+        canvasColor: darkThemeCanvas,
+        cardColor: darkThemeCard,
+        buttonColor: darkThemeButton,
+        hintColor: darkThemeHint,
+        textSelectionColor: darkThemeTextSelection,
+        textSelectionHandleColor: darkThemeTextSelectionHandle,
+        shadowColor: darkThemeShadow,
+        indicatorColor: darkThemeIndicator,
       ),
       themeMode: ThemeMode.dark,
       home: RootScreen(),

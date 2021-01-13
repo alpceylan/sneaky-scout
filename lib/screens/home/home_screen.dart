@@ -76,12 +76,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final int index = ModalRoute.of(context).settings.arguments as int;
-    if (firstTime) currentIndex = index;
+    final index = ModalRoute.of(context).settings.arguments;
+    if (index != null) if (firstTime) currentIndex = index as int;
 
     List<Widget> appBars = [
       AppBar(
-        title: Text("Match Scouting"),
+        title: Text(
+          "Match Scouting",
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        backgroundColor: Theme.of(context).canvasColor,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColor,
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.sync),
@@ -104,7 +113,16 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       AppBar(
-        title: Text("Pit Scouting"),
+        title: Text(
+          "Pit Scouting",
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        backgroundColor: Theme.of(context).canvasColor,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColor,
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.sync),
@@ -121,7 +139,16 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       AppBar(
-        title: Text("Team Scouts"),
+        title: Text(
+          "Team Scouts",
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        backgroundColor: Theme.of(context).canvasColor,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColor,
+        ),
       ),
     ];
 
@@ -132,17 +159,23 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
 
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: appBars[currentIndex],
       body: screens[currentIndex],
       drawer: CustomDrawer(),
       floatingActionButton: currentIndex == 0 || currentIndex == 1
           ? FloatingActionButton.extended(
+              backgroundColor: Theme.of(context).buttonColor,
               onPressed: _addNewTeam,
               icon: Icon(
                 Icons.add,
+                color: Theme.of(context).hintColor,
               ),
               label: Text(
                 floatingActionButtonLabel,
+                style: TextStyle(
+                  color: Theme.of(context).hintColor,
+                ),
               ),
             )
           : null,

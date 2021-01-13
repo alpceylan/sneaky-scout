@@ -407,9 +407,17 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
     }
 
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Text(
           team.teamName != "" ? team.teamName : "New Team",
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        backgroundColor: Theme.of(context).canvasColor,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColor,
         ),
         actions: [
           if (isCurrentUser)
@@ -510,11 +518,18 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                   children: [
                     Row(
                       children: [
-                        Text("Climbing:"),
+                        Text(
+                          "Climbing:",
+                          style: TextStyle(
+                            color: Theme.of(context).shadowColor,
+                          ),
+                        ),
                         Switch(
                           value: _newClimbing,
-                          activeTrackColor: Colors.lightBlueAccent,
-                          activeColor: Colors.blue,
+                          activeTrackColor: Theme.of(context).indicatorColor,
+                          activeColor: Theme.of(context).primaryColor,
+                          inactiveThumbColor: Theme.of(context).primaryColor,
+                          inactiveTrackColor: Theme.of(context).shadowColor,
                           onChanged: isCurrentUser
                               ? (value) {
                                   setState(() {
@@ -564,11 +579,18 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                   children: [
                     Row(
                       children: [
-                        Text("Image Processing:"),
+                        Text(
+                          "Image Processing:",
+                          style: TextStyle(
+                            color: Theme.of(context).shadowColor,
+                          ),
+                        ),
                         Switch(
                           value: _newImageProcessing,
-                          activeTrackColor: Colors.lightBlueAccent,
-                          activeColor: Colors.blue,
+                          activeTrackColor: Theme.of(context).indicatorColor,
+                          activeColor: Theme.of(context).primaryColor,
+                          inactiveThumbColor: Theme.of(context).primaryColor,
+                          inactiveTrackColor: Theme.of(context).shadowColor,
                           onChanged: isCurrentUser
                               ? (value) {
                                   setState(() {
@@ -599,7 +621,12 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Image Processing Type:"),
+                      Text(
+                        "Image Processing Type:",
+                        style: TextStyle(
+                          color: Theme.of(context).shadowColor,
+                        ),
+                      ),
                       CustomDropdownButton(
                         menuMap: imageProcessingTypeStrings,
                         value: _newImageProcessingTypeInt,
@@ -618,11 +645,18 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                   children: [
                     Row(
                       children: [
-                        Text("Intake:"),
+                        Text(
+                          "Intake:",
+                          style: TextStyle(
+                            color: Theme.of(context).shadowColor,
+                          ),
+                        ),
                         Switch(
                           value: _newIntake,
-                          activeTrackColor: Colors.lightBlueAccent,
-                          activeColor: Colors.blue,
+                          activeTrackColor: Theme.of(context).indicatorColor,
+                          activeColor: Theme.of(context).primaryColor,
+                          inactiveThumbColor: Theme.of(context).primaryColor,
+                          inactiveTrackColor: Theme.of(context).shadowColor,
                           onChanged: isCurrentUser
                               ? (value) {
                                   setState(() {
@@ -672,11 +706,18 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                   children: [
                     Row(
                       children: [
-                        Text("Autonomous::"),
+                        Text(
+                          "Autonomous::",
+                          style: TextStyle(
+                            color: Theme.of(context).shadowColor,
+                          ),
+                        ),
                         Switch(
                           value: _newAutonomous,
-                          activeTrackColor: Colors.lightBlueAccent,
-                          activeColor: Colors.blue,
+                          activeTrackColor: Theme.of(context).indicatorColor,
+                          activeColor: Theme.of(context).primaryColor,
+                          inactiveThumbColor: Theme.of(context).primaryColor,
+                          inactiveTrackColor: Theme.of(context).shadowColor,
                           onChanged: isCurrentUser
                               ? (value) {
                                   setState(() {
@@ -743,8 +784,8 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
                   },
                   child: Text("Go to Team's Blue Alliance Page"),
                   minWidth: double.infinity,
-                  color: Colors.blue,
-                  textColor: Colors.white,
+                  color: Theme.of(context).primaryColor,
+                  textColor: Theme.of(context).hintColor,
                 ),
               ],
             ),
