@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
         indicatorColor: CustomColors.darkThemeIndicator,
         highlightColor: CustomColors.darkThemeHighlight,
       ),
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.dark,
       home: RootScreen(),
       routes: {
         HomeScreen.routeName: (ctx) => HomeScreen(),
