@@ -20,7 +20,7 @@ class CustomColors {
   static final Color lightThemeCanvas = HexColor.fromHex("#FFFFFF");
   static final Color lightThemeCard = HexColor.fromHex("#F8F8F8");
   static final Color lightThemePrimary = HexColor.fromHex("#2B9C58");
-  static final Color lightThemeButton = HexColor.fromHex("#00E676");
+  static final Color lightThemeButton = HexColor.fromHex("#35BE6B");
   static final Color lightThemeHint = HexColor.fromHex("#F8F8F8");
   static final Color lightThemeTextSelection = HexColor.fromHex("#121212");
   static final Color lightThemeTextSelectionHandle = HexColor.fromHex("#969292");
