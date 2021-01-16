@@ -56,6 +56,7 @@ class _MatchScoutingScreenState extends State<MatchScoutingScreen> {
               },
               child: Container(
                 color: Theme.of(context).backgroundColor,
+                height: MediaQuery.of(context).size.height * 0.81,
                 child: Column(
                   children: [
                     SizedBox(

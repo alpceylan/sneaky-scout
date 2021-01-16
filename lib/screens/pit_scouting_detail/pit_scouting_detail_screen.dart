@@ -259,11 +259,12 @@ class _PitScoutingDetailScreenState extends State<PitScoutingDetailScreen> {
         comment: _comment,
       );
 
+      newTeam = newTeam.changeStatus(Status.Unsynced);
+
       if (isNew) {
         await pitScoutingService.saveTeam(newTeam);
       } else {
-        var updatedTeam = newTeam.changeStatus(Status.Unsynced);
-        await pitScoutingService.updateTeam(updatedTeam);
+        await pitScoutingService.updateTeam(newTeam);
       }
 
       Navigator.of(context).pushReplacementNamed(

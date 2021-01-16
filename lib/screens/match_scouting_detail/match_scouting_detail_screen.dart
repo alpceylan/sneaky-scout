@@ -169,11 +169,12 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
         comment: _comment,
       );
 
+      newTeam = newTeam.changeStatus(Status.Unsynced);
+
       if (isNew) {
         await matchScoutingService.saveTeam(newTeam);
       } else {
-        var updatedTeam = newTeam.changeStatus(Status.Unsynced);
-        await matchScoutingService.updateTeam(updatedTeam);
+        await matchScoutingService.updateTeam(newTeam);
       }
 
       Navigator.of(context).pushReplacementNamed(
@@ -503,9 +504,12 @@ class _MatchScoutingDetailScreenState extends State<MatchScoutingDetailScreen> {
                   children: [
                     Row(
                       children: [
-                        Text("Defense: ", style: TextStyle(
-                          color: Theme.of(context).shadowColor,
-                        ),),
+                        Text(
+                          "Defense: ",
+                          style: TextStyle(
+                            color: Theme.of(context).shadowColor,
+                          ),
+                        ),
                         Switch(
                           value: _newDefense,
                           activeTrackColor: Theme.of(context).indicatorColor,
